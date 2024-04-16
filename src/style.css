@@ -1,0 +1,299 @@
+/* GLOBAL STYLES */
+:root {
+  --font: Verdana, Geneva, Tahoma, sans-serif;
+  --elem-symbol-size: 18px;
+}
+
+* {
+  font-family: var(--font);
+  text-align: center;
+}
+
+body {
+  color: white;
+  background-color: hsl(0, 0%, 7%);
+  overflow: hidden;
+  font-size: 14px;
+  margin: 0px;
+  user-select: none;
+  /* this is so stupid why does redshark not have that problem grumble grumble */
+  width: 100vw;
+  height: 100vh;
+}
+
+table,
+tr {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  border: solid 2px white;
+  background-color: #171717;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition-property: background-color, border, transform, box-shadow;
+  transition-duration: 0.15s;
+}
+
+h1 {
+  display: inline;
+  font-weight: normal;
+  font-size: 35px;
+}
+
+h2 {
+  display: inline;
+  font-weight: normal;
+  font-size: 25px;
+}
+
+h3 {
+  display: inline;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+h4 {
+  display: inline;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+p {
+  line-height: 0.6;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: #0000;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+/* COLORS */
+.light-red {
+  color: lightcoral;
+}
+
+.red {
+  color: red;
+}
+
+.orange {
+  color: orange;
+}
+
+.yellow {
+  color: yellow;
+}
+
+.green {
+  color: #00bb00;
+}
+
+.light-green {
+  color: lightgreen;
+}
+
+.sky {
+  color: skyblue;
+}
+
+.cyan {
+  color: #07f;
+}
+
+.magenta {
+  color: magenta;
+}
+
+.gray {
+  color: gray;
+}
+
+/* GLOBAL CLASSES */
+
+.stab-btn .btn-tab {
+  min-height: 40px;
+  font-size: 12px;
+}
+
+.btn-tab {
+  width: calc(100% - 5px);
+  min-height: 40px;
+}
+
+.btn-tab:hover {
+  background-color: #444;
+}
+
+.btn-tab.dm {
+  color: gold;
+  border-color: gold;
+}
+
+.btn-tab.dm:hover {
+  background-color: #493e00;
+}
+
+.btn-tab.atom {
+  color: #3157be;
+  border-color: #3157be;
+}
+
+.btn-tab.atom:hover {
+  background-color: #172857;
+}
+
+.btn-tab.chosen {
+  border-bottom-width: 6px;
+}
+
+.table-center {
+  display: flex;
+  justify-content: center;
+  flex-flow: row wrap;
+}
+
+.btn {
+  cursor: pointer;
+  background-color: #444;
+  font-size: 12px;
+  max-width: 250px;
+  padding: 7px 25px;
+  text-decoration: none;
+}
+
+.btn:not(.locked):hover,
+.img-btn:not(.locked):not(.bought):hover {
+  background-color: #555;
+}
+
+.btn.locked,
+.img-btn.locked {
+  background-color: #171717;
+  cursor: default;
+}
+
+.img-btn {
+  cursor: pointer;
+  background-color: #444;
+  transition-duration: 0.15s;
+}
+
+.img-btn.bought {
+  background-color: #00520b;
+  cursor: default;
+}
+
+/* TODO: upload fonts */
+@font-face {
+  font-family: "Andy Bold";
+  src: url("fonts/design.graffiti.ANDYB.ttf");
+  size-adjust: 110%;
+}
+
+@font-face {
+  font-family: "Cousine";
+  src: url("fonts/Cousine-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Flexi IBM VGA False";
+  src: url("fonts/Flexi_IBM_VGA_False.ttf");
+}
+
+@font-face {
+  font-family: "Inconsolata";
+  src: url("fonts/Inconsolata-VariableFont_wdth\,wght.ttf");
+  size-adjust: 110%;
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url("fonts/Lato-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Lucida Handwriting";
+  src: url("fonts/qkmarisa.ttf");
+  size-adjust: 85%;
+}
+
+@font-face {
+  font-family: "Lunasima";
+  src: url("fonts/Lunasima-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Monospace-Typewritter";
+  src: url("fonts/MonospaceTypewriter.ttf");
+  size-adjust: 85%;
+}
+
+@font-face {
+  font-family: "MS Sans Serif";
+  src: url("fonts/ms_sans_serif.woff");
+  size-adjust: 110%;
+}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src: url("fonts/NotoSansJP.ttf");
+}
+
+@font-face {
+  font-family: "Nova Mono";
+  src: url("fonts/NovaMono-Regular.ttf");
+  size-adjust: 85%;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("fonts/Nunito-VariableFont_wght.ttf");
+  size-adjust: 90%;
+}
+
+@font-face {
+  font-family: "Retron2000";
+  src: url("fonts/Retron2000.ttf");
+  size-adjust: 85%;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("fonts/Roboto-Regular.ttf");
+  /*size-adjust: 90%;*/
+}
+
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("fonts/RobotoMono-VariableFont_wght.ttf");
+  size-adjust: 90%;
+}
+
+@font-face {
+  font-family: "Source Sans Pro";
+  src: url("fonts/SourceSansPro-Regular.ttf");
+  size-adjust: 110%;
+}
+
+@font-face {
+  font-family: "Source Serif Pro";
+  src: url("fonts/SourceSerifPro-Regular.ttf");
+  size-adjust: 110%;
+}
+
+@font-face {
+  font-family: "Wingding";
+  src: url("fonts/wingding.ttf");
+  size-adjust: 90%;
+}
