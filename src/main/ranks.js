@@ -1,24 +1,24 @@
-import { computed } from 'vue';
-import { player } from '../core/save';
-import Decimal from 'break_eternity.js';
-import { costScaling, manualCostScaling } from '../core/cost';
-import { buildingAmount, resetBuilding } from './buildings';
+import { computed } from "vue";
+import { player } from "../core/save";
+import Decimal from "break_eternity.js";
+import { costScaling, manualCostScaling } from "../core/cost";
+import { buildingAmount, resetBuilding } from "./buildings";
 import {
   format,
   formatInteger,
   formatMult,
   formatPercent,
-} from '../core/format';
-import { hasUpgrade } from './upgrades';
-import { showQuote } from '../core/popups';
-import { challengeEffect, inChallenge } from './challenges';
+} from "../core/format";
+import { hasUpgrade } from "./upgrades";
+import { showQuote } from "../core/popups";
+import { challengeEffect, inChallenge } from "./challenges";
 
 export const RANKS = [
   {
-    name: 'Rank',
+    name: "Rank",
     unlocked: computed(() => true),
-    autoUnlocked: computed(() => hasUpgrade('rp', 4)),
-    noReset: computed(() => hasUpgrade('rp', 3)),
+    autoUnlocked: computed(() => hasUpgrade("rp", 4)),
+    noReset: computed(() => hasUpgrade("rp", 3)),
     cost: costScaling({
       cost: (a) => {
         let amt = a;
@@ -34,7 +34,7 @@ export const RANKS = [
       linear: computed(() => {
         let base = new Decimal(7);
         if (hasRankReward(1, 0)) base = base.pow(0.9);
-        if (hasUpgrade('rp', 9)) base = base.pow(0.8);
+        if (hasUpgrade("rp", 9)) base = base.pow(0.8);
         base = base.pow(challengeEffect(0));
         return base;
       }),
@@ -49,7 +49,7 @@ export const RANKS = [
     rewards: [
       {
         require: 1,
-        desc: 'unlock Muscler',
+        desc: "unlock Muscler",
       },
       {
         require: 2,
@@ -57,8 +57,8 @@ export const RANKS = [
           () =>
             `unlock Booster, and reduce Muscler's scaling by ${formatPercent(
               0.2,
-              0
-            )}`
+              0,
+            )}`,
         ),
       },
       {
@@ -67,27 +67,27 @@ export const RANKS = [
           () =>
             `unlock Stronger, reduce Booster's scaling by ${formatPercent(
               0.2,
-              0
-            )}, and Muscler boosts itself`
+              0,
+            )}, and Muscler boosts itself`,
         ),
-        eff: computed(() => buildingAmount('mass1').div(20)),
+        eff: computed(() => buildingAmount("mass1").div(20)),
         effDesc: (x) => `+${format(x)}`,
       },
       {
         require: 4,
         desc: computed(
-          () => `reduce Stronger's scaling by ${formatPercent(0.1, 0)}`
+          () => `reduce Stronger's scaling by ${formatPercent(0.1, 0)}`,
         ),
       },
       {
         require: 5,
-        desc: 'Booster boosts itself',
-        eff: computed(() => buildingAmount('mass2').div(40)),
+        desc: "Booster boosts itself",
+        eff: computed(() => buildingAmount("mass2").div(40)),
         effDesc: (x) => `+${format(x)}`,
       },
       {
         require: 6,
-        desc: 'Ranks boost Mass gain',
+        desc: "Ranks boost Mass gain",
         eff: computed(() => {
           let base = player.ranks[0];
           if (hasRankReward(0, 8)) base = base.pow(1.5);
@@ -102,7 +102,7 @@ export const RANKS = [
       {
         require: 14,
         desc: computed(
-          () => `divide Mass upgrade costs by ${formatInteger(10)}`
+          () => `divide Mass upgrade costs by ${formatInteger(10)}`,
         ),
       },
       {
@@ -116,24 +116,24 @@ export const RANKS = [
       {
         require: 90,
         desc: computed(
-          () => `+${formatPercent(0.004, 1)} Tickspeed power per Rank`
+          () => `+${formatPercent(0.004, 1)} Tickspeed power per Rank`,
         ),
         eff: computed(() => player.ranks[0].mul(0.004)),
         effDesc: (x) => `+${formatPercent(x)}`,
       },
       {
         require: 180,
-        desc: 'Boost Rage Power gain based on Rank',
+        desc: "Boost Rage Power gain based on Rank",
         eff: computed(() => player.ranks[0].pow(2)),
         effDesc: (x) => formatMult(x),
       },
     ],
   },
   {
-    name: 'Tier',
+    name: "Tier",
     unlocked: computed(() => player.ranks[0].gte(3) || player.ranks[1].gt(0)),
-    autoUnlocked: computed(() => hasUpgrade('rp', 5)),
-    noReset: computed(() => hasUpgrade('dm', 3)),
+    autoUnlocked: computed(() => hasUpgrade("rp", 5)),
+    noReset: computed(() => hasUpgrade("dm", 3)),
     cost: manualCostScaling({
       amt: computed({
         get: () => player.ranks[1],
@@ -157,20 +157,20 @@ export const RANKS = [
       {
         require: 3,
         desc: computed(
-          () => `reduce Mass upgrade scalings by ${formatPercent(0.1, 0)}`
+          () => `reduce Mass upgrade scalings by ${formatPercent(0.1, 0)}`,
         ),
       },
       {
         require: 4,
         desc: computed(
-          () => `+${formatPercent(0.075, 1)} Tickspeed power for every Tier`
+          () => `+${formatPercent(0.075, 1)} Tickspeed power for every Tier`,
         ),
         eff: computed(() => player.ranks[1].mul(0.075)),
         effDesc: (x) => `+${formatPercent(x)}`,
       },
       {
         require: 7,
-        desc: 'multiply Rage Power gain based on Tiers',
+        desc: "multiply Rage Power gain based on Tiers",
         eff: computed(() => {
           let base = player.ranks[1].pow_base(2);
           if (hasRankReward(1, 5)) base = base.pow(rankReward(1, 5));
@@ -182,15 +182,15 @@ export const RANKS = [
         require: 13,
         desc: "Raise Tier 7's reward based on Dark Matter",
         eff: computed(() =>
-          player.dm.darkMatter.add(1).log10().add(1).log10().add(1)
+          player.dm.darkMatter.add(1).log10().add(1).log10().add(1),
         ),
         effDesc: (x) => `^${format(x)}`,
       },
     ],
   },
   {
-    name: 'Tetr',
-    unlocked: computed(() => hasUpgrade('atom', 2)),
+    name: "Tetr",
+    unlocked: computed(() => hasUpgrade("atom", 2)),
     autoUnlocked: computed(() => false),
     noReset: computed(() => false),
     cost: manualCostScaling({
@@ -214,9 +214,9 @@ export function rankReset(level) {
   }
 
   player.mass = Decimal.dZero;
-  resetBuilding('mass1');
-  resetBuilding('mass2');
-  resetBuilding('mass3');
+  resetBuilding("mass1");
+  resetBuilding("mass2");
+  resetBuilding("mass3");
 }
 
 export function rankUp(level, max) {

@@ -6,7 +6,7 @@
       style="width: 80px"
       @click="autoRank = !autoRank"
     >
-      {{ autoRank ? 'ON' : 'OFF' }}
+      {{ autoRank ? "ON" : "OFF" }}
     </button>
     {{ rank.name }}
     <h4>{{ formatInteger(amt) }}</h4>
@@ -22,10 +22,10 @@
   </div>
 </template>
 <script setup>
-import { RANKS, rankUp } from './ranks';
-import { computed, unref } from 'vue';
-import { formatInteger, formatMass } from '../core/format';
-import { player } from '../core/save';
+import { RANKS, rankUp } from "./ranks";
+import { computed, unref } from "vue";
+import { formatInteger, formatMass } from "../core/format";
+import { player } from "../core/save";
 
 const props = defineProps({
   num: {
@@ -38,14 +38,14 @@ const rank = RANKS[props.num];
 
 const amt = computed(() => rank.cost.amt.value);
 const resetText = computed(() => {
-  if (props.num > 0) return RANKS[props.num - 1].name + 's';
-  return 'mass and upgrades';
+  if (props.num > 0) return RANKS[props.num - 1].name + "s";
+  return "mass and upgrades";
 });
 
 const nextText = computed(() => {
   const r = rank.rewards.find((i) => amt.value.lt(i.require));
 
-  if (!r) return '';
+  if (!r) return "";
 
   return `At ${rank.name} ${formatInteger(r.require)} - ${unref(r.desc)}.`;
 });

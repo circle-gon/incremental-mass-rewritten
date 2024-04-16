@@ -12,6 +12,6 @@
   <Building name="tickspeed" />
 </template>
 <script setup>
-import Rank from './Rank.vue';
-import Building from './Building.vue';
+import Rank from "./Rank.vue";
+import Building from "./Building.vue";
 </script>
