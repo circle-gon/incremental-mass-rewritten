@@ -11,6 +11,7 @@ import { PARTICLES } from "../atom/atom";
 function defaultStart() {
   return {
     time: 0,
+    version: 0.01,
     lastUpdate: Date.now(),
     mass: Decimal.dZero,
     rage: {
