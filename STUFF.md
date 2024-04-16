@@ -1,8 +1,5 @@
 # TODO
 
-- implement atom
-- add FONTS
-
 # Balance
 
 - nerfing power (weakest to strongest):
