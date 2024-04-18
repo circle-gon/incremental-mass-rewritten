@@ -497,8 +497,8 @@ const FORMATS = {
               if (mod1000 === 1 && !ee3) final = "U";
               if (ee3)
                 final =
-                  FORMATS.standard.tier2(ee3) + (final ? "-" + final : "");
-              if (mod1000 > 1) final = FORMATS.standard.tier1(mod1000) + final;
+                  this.tier2(ee3) + (final ? "-" + final : "");
+              if (mod1000 > 1) final = this.tier1(mod1000) + final;
             }
             e3 = div1000;
             ee3++;
