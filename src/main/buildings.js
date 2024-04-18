@@ -74,7 +74,7 @@ export const BUILDINGS = {
     }),
     formatCost: (x) => formatMass(x),
     formatPower: (x) => `+${formatMass(x)}`,
-    formatEffect: (x) => `+${formatMass(x)} to ass gain`,
+    formatEffect: (x) => `+${formatMass(x)} to mass gain`,
     effect(amt) {
       let power = Decimal.dOne;
       if (hasRankReward(0, 2)) power = power.add(rankReward(0, 2));
