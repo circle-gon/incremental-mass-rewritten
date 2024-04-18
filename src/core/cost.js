@@ -4,11 +4,7 @@ import Decimal from "break_eternity.js";
 export function manualCostScaling(data) {
   const costFunc = data.cost;
   const cost = computed(() => costFunc(data.amt.value));
-  const max = computed(() => {
-    const base = data.invert(data.res.value).floor().add(1);
-    if (Decimal.isNaN(base)) return Decimal.dZero;
-    return base;
-  });
+  const max = computed(() => data.invert(data.res.value).floor().add(1));
   return {
     cost,
     costFunc,
@@ -46,9 +42,13 @@ export function costScaling(data) {
         .mul(trueAmt(amt).pow_base(unref(data.linear)))
         .mul(unref(data.base)),
     invert(res) {
+      const base = unref(data.base);
+
       const a = Decimal.log10(unref(data.quad));
       const b = Decimal.log10(unref(data.linear));
-      const c = res.div(unref(data.base)).log10();
+      const c = res.div(base).log10();
+
+      if (c.lte(0) || !Decimal.isFinite(base)) return Decimal.dOne.neg();
 
       let result;
 

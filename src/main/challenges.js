@@ -123,8 +123,8 @@ export const CHALLENGES = [
     unlocked: computed(() => player.atom.unlocked),
     cost: costScaling({
       base: Decimal.dInf,
-      linear: Decimal.dInf,
-      quad: Decimal.dInf,
+      linear: 1,
+      quad: 1,
       amt: computed({
         get: () => player.challenge.comps[4],
         set: (v) => (player.challenge.comps[4] = v),
