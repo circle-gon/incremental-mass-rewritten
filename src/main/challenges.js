@@ -11,7 +11,6 @@ import {
 } from "../core/format";
 import { atomReset } from "../atom/atom";
 
-const INF = Decimal.tetrate(10, Number.MAX_VALUE);
 export const CHALLENGES = [
   {
     title: "Instant Scale",
@@ -123,9 +122,9 @@ export const CHALLENGES = [
     reward: "Reduce Rank scaling.",
     unlocked: computed(() => player.atom.unlocked),
     cost: costScaling({
-      base: INF,
-      linear: INF,
-      quad: INF,
+      base: Decimal.dInf,
+      linear: Decimal.dInf,
+      quad: Decimal.dInf,
       amt: computed({
         get: () => player.challenge.comps[4],
         set: (v) => (player.challenge.comps[4] = v),
