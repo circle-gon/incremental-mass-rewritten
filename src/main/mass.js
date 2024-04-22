@@ -23,7 +23,7 @@ export const massGain = computed(() => {
   if (hasRankReward(1, 1)) gain = gain.pow(1.1);
   if (inChallenge(2)) gain = gain.pow(0.7);
   else gain = gain.pow(challengeEffect(2));
-  if (hasRankReward(0, 12)) gain = gain.pow(1.02)
+  if (hasRankReward(0, 12)) gain = gain.pow(1.02);
 
   return gain;
 });

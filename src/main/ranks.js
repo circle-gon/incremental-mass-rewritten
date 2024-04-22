@@ -26,27 +26,27 @@ export const RANKS = [
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
         if (hasRankReward(2, 0)) amt = amt.mul(0.9);
-        amt = amt.div(challengeEffect(4))
-        if (hasRankReward(2, 3)) amt = amt.div(rankReward(2, 3))
+        amt = amt.div(challengeEffect(4));
+        if (hasRankReward(2, 3)) amt = amt.div(rankReward(2, 3));
         return amt;
       },
       amtInvert: (a) => {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).div(2).add(25);
         if (hasRankReward(2, 0)) amt = amt.div(0.9);
-        amt = amt.mul(challengeEffect(4))
-        if (hasRankReward(2, 3)) amt = amt.mul(rankReward(2, 3))
+        amt = amt.mul(challengeEffect(4));
+        if (hasRankReward(2, 3)) amt = amt.mul(rankReward(2, 3));
         return amt;
       },
-      costScale: c => {
-        let cost = c
-        if (hasUpgrade('atom', 9)) cost = cost.div(upgradeEffect('atom', 9))
-        return cost
+      costScale: (c) => {
+        let cost = c;
+        if (hasUpgrade("atom", 9)) cost = cost.div(upgradeEffect("atom", 9));
+        return cost;
       },
-      costInvert: c => {
-        let cost = c
-        if (hasUpgrade('atom', 9)) cost = cost.mul(upgradeEffect('atom', 9))
-        return cost
+      costInvert: (c) => {
+        let cost = c;
+        if (hasUpgrade("atom", 9)) cost = cost.mul(upgradeEffect("atom", 9));
+        return cost;
       },
       base: 5,
       linear: computed(() => {
@@ -147,19 +147,24 @@ export const RANKS = [
       },
       {
         require: 930,
-        desc: computed(() => `Raise Mass gain by ${format(1.02, 2)}`)
+        desc: computed(() => `Raise Mass gain by ${format(1.02, 2)}`),
       },
       {
         require: 1290,
         desc: "Boost Quark gain based on Rank",
         eff: computed(() => player.ranks[0].add(1).sqrt()),
-        effDesc: x => formatMult(x)
-      }
+        effDesc: (x) => formatMult(x),
+      },
     ],
   },
   {
     name: "Tier",
-    unlocked: computed(() => player.ranks[0].gte(3) || player.ranks[1].gt(0) || hasUpgrade("atom", 2)),
+    unlocked: computed(
+      () =>
+        player.ranks[0].gte(3) ||
+        player.ranks[1].gt(0) ||
+        hasUpgrade("atom", 2),
+    ),
     autoUnlocked: computed(() => hasUpgrade("rp", 5)),
     noReset: computed(() => hasUpgrade("dm", 3)),
     cost: manualCostScaling({
@@ -173,21 +178,21 @@ export const RANKS = [
       cost: (x) => {
         let base = x;
         if (hasRankReward(2, 0)) base = base.mul(0.9);
-        if (hasUpgrade('atom', 4)) base = base.mul(0.86);
-        if (hasRankReward(2, 3)) base = base.mul(0.9)
+        if (hasUpgrade("atom", 4)) base = base.mul(0.86);
+        if (hasRankReward(2, 3)) base = base.mul(0.9);
 
-        let cost = base.add(2).sqr()
-        if (hasUpgrade('atom', 9)) cost = cost.mul(0.7)
+        let cost = base.add(2).sqr();
+        if (hasUpgrade("atom", 9)) cost = cost.mul(0.7);
         return cost.round();
       },
       invert: (x) => {
-        let base = x
-        if (hasUpgrade('atom', 9)) base = base.div(0.7);
+        let base = x;
+        if (hasUpgrade("atom", 9)) base = base.div(0.7);
 
-        let cost = base.sqrt().sub(2)
+        let cost = base.sqrt().sub(2);
         if (hasRankReward(2, 0)) cost = cost.div(0.9);
-        if (hasUpgrade('atom', 4)) cost = cost.div(0.86);
-        if (hasRankReward(2, 3)) cost = cost.div(0.9)
+        if (hasUpgrade("atom", 4)) cost = cost.div(0.86);
+        if (hasRankReward(2, 3)) cost = cost.div(0.9);
         return cost;
       },
     }),
@@ -226,7 +231,9 @@ export const RANKS = [
       },
       {
         require: 13,
-        desc: computed(() => `Raise Tier ${formatInteger(7)}'s reward based on Dark Matter`),
+        desc: computed(
+          () => `Raise Tier ${formatInteger(7)}'s reward based on Dark Matter`,
+        ),
         eff: computed(() =>
           player.dm.darkMatter.add(1).log10().add(1).log10().add(1),
         ),
@@ -234,14 +241,16 @@ export const RANKS = [
       },
       {
         require: 67,
-        desc: computed(() => `Stronger's power is increased by ${format(0.05, 2)}`)
-      }
+        desc: computed(
+          () => `Stronger's power is increased by ${format(0.05, 2)}`,
+        ),
+      },
     ],
   },
   {
     name: "Tetr",
     unlocked: computed(() => hasUpgrade("atom", 2)),
-    autoUnlocked: computed(() => hasUpgrade('atom', 4)),
+    autoUnlocked: computed(() => hasUpgrade("atom", 4)),
     noReset: computed(() => false),
     cost: manualCostScaling({
       amt: computed({
@@ -264,18 +273,25 @@ export const RANKS = [
         require: 2,
         desc: "Stronger boosts itself",
         eff: computed(() => dilate(player.buildings.mass3, 1 / 3).div(400)),
-        effDesc: x => `+${format(x)}`
+        effDesc: (x) => `+${format(x)}`,
       },
       {
         require: 3,
-        desc: computed(() => `Raise Tickspeed effect by ${format(1.05, 2)}`)
+        desc: computed(() => `Raise Tickspeed effect by ${format(1.05, 2)}`),
       },
       {
         require: 4,
-        desc: computed(() => `Tier scales ${formatPercent(0.1, 0)} slower, and Rank scaling is reduced based on Tiers`),
-        eff: computed(() => dilate(player.ranks[1], 1/3).mul(0.01).add(1)),
-        effDesc: x => formatReduction(x.recip())
-      }
+        desc: computed(
+          () =>
+            `Tier scales ${formatPercent(0.1, 0)} slower, and Rank scaling is reduced based on Tiers`,
+        ),
+        eff: computed(() =>
+          dilate(player.ranks[1], 1 / 3)
+            .mul(0.01)
+            .add(1),
+        ),
+        effDesc: (x) => formatReduction(x.recip()),
+      },
     ],
   },
 ];

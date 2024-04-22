@@ -7,6 +7,6 @@ export default defineConfig({
   base: "",
   build: {
     // for debugging
-    sourcemap: true
-  }
+    sourcemap: true,
+  },
 });

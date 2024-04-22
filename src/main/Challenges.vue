@@ -102,7 +102,7 @@ const chalText = computed(() => {
 const goalText = computed(() => {
   if (!isGood.value) return "";
 
-  const bh = player.challenge.chosen >= 4 ? " of Black Hole" : ""
+  const bh = player.challenge.chosen >= 4 ? " of Black Hole" : "";
   return `Goal: ${formatMass(current.value.cost.cost.value)}${bh}`;
 });
 const currText = computed(() => {

@@ -138,13 +138,15 @@ export const CHALLENGES = [
       return new Decimal(50);
     }),
     eff: computed(() => {
-      return dilate(player.challenge.comps[4], 0.5).mul(0.02).add(1)
+      return dilate(player.challenge.comps[4], 0.5).mul(0.02).add(1);
     }),
     effDesc: (x) => `${formatReduction(x.recip())}`,
   },
   {
     title: "Weakened Tickspeed and BH Condenser",
-    desc: computed(() => `Tickspeed and BH Condenser scale ${formatMult(5, 0)} as fast.`),
+    desc: computed(
+      () => `Tickspeed and BH Condenser scale ${formatMult(5, 0)} as fast.`,
+    ),
     reward: "Add to Tickspeed and BH Condenser power.",
     unlocked: computed(() => player.challenge.comps[4].gte(1)),
     cost: costScaling({
@@ -159,22 +161,28 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      return new Decimal(50)
+      return new Decimal(50);
     }),
     eff: computed(() => {
-      const comps = player.challenge.comps[5]
+      const comps = player.challenge.comps[5];
       return {
         tickspeed: comps.mul(0.2),
-        bhc: comps.mul(0.1)
-      }
+        bhc: comps.mul(0.1),
+      };
     }),
-    effDesc: (x) => `+${formatPercent(x.tickspeed)} to Tickspeed, +${format(x.bhc)} to Black Hole Condenser`,
+    effDesc: (x) =>
+      `+${formatPercent(x.tickspeed)} to Tickspeed, +${format(x.bhc)} to Black Hole Condenser`,
   },
   {
     title: "No Rage Power",
     desc: "Rage Power is disabled. However, Dark Matter is gained from Mass instead of Rage Power at a reduced rate.",
-    firstTime: computed(() => `After completing this challenge ${formatInteger(16)} times, unlock Elements, a new subtab found in the Atom tab.`),
-    reward: computed(() => `Each completion adds ${formatInteger(4)} to challenges 1-4 cap.`),
+    firstTime: computed(
+      () =>
+        `After completing this challenge ${formatInteger(16)} times, unlock Elements, a new subtab found in the Atom tab.`,
+    ),
+    reward: computed(
+      () => `Each completion adds ${formatInteger(4)} to challenges 1-4 cap.`,
+    ),
     unlocked: computed(() => player.challenge.comps[5].gte(1)),
     cost: costScaling({
       base: 1e53,
@@ -188,13 +196,13 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      return new Decimal(50)
+      return new Decimal(50);
     }),
     eff: computed(() => {
       return player.challenge.comps[6].mul(4);
     }),
-    effDesc: x => `+${formatInteger(x)}`
-  }
+    effDesc: (x) => `+${formatInteger(x)}`,
+  },
 ];
 
 function challengeReset(num) {

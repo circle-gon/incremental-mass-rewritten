@@ -108,7 +108,7 @@ export const UPGRADES = {
         cost: "1e1045",
         unlocked: computed(() => player.atom.unlocked),
         eff: computed(() => player.mass.add(1).log10().add(1).pow(0.5)),
-        effDesc: x => formatMult(x)
+        effDesc: (x) => formatMult(x),
       },
     ],
   },
@@ -194,7 +194,10 @@ export const UPGRADES = {
         unlocked: computed(() => player.atom.unlocked),
       },
       {
-        desc: computed(() => `Raise Mass upgrade and Tickspeed costs by ${format(0.985, 3)}.`),
+        desc: computed(
+          () =>
+            `Raise Mass upgrade and Tickspeed costs by ${format(0.985, 3)}.`,
+        ),
         cost: 1e255,
         unlocked: computed(() => player.atom.unlocked),
       },
@@ -208,14 +211,14 @@ export const UPGRADES = {
         cost: "1e335",
         unlocked: computed(() => player.atom.unlocked),
         eff: computed(() => player.atom.powers[2].add(1)),
-        effDesc: x => formatMult(x)
+        effDesc: (x) => formatMult(x),
       },
       {
         desc: "Atomic Power gives free Black Hole Condensers.",
         cost: "1e385",
         unlocked: computed(() => player.atom.unlocked),
         eff: computed(() => player.atom.power.add(1).log10().floor()),
-        effDesc: x => `+${formatInteger(x)}`
+        effDesc: (x) => `+${formatInteger(x)}`,
       },
     ],
   },
@@ -245,39 +248,51 @@ export const UPGRADES = {
         desc: "Keep challenge 1-4 completions on an Atom reset. Cosmic Ray power is boosted by BH Condensers.",
         cost: 1e6,
         eff: computed(() => player.buildings.bhc.root(3).mul(0.2)),
-        effDesc: x => `+${format(x)}`
+        effDesc: (x) => `+${format(x)}`,
       },
       {
-        desc: computed(() => `Auto-buy Tetr. Tier scales ${formatPercent(0.14, 0)} slower.`),
+        desc: computed(
+          () => `Auto-buy Tetr. Tier scales ${formatPercent(0.14, 0)} slower.`,
+        ),
         cost: 1e11,
       },
       {
-        desc: computed(() => `Gain ${formatPercent(1, 0)} of Dark Matter gained from reset per second. Divide BH Condenser cost based on Atomic Power.`),
+        desc: computed(
+          () =>
+            `Gain ${formatPercent(1, 0)} of Dark Matter gained from reset per second. Divide BH Condenser cost based on Atomic Power.`,
+        ),
         cost: 1e14,
-        eff: computed(() => player.atom.power.add(1).log10().mul(5).add(1).pow(5)),
-        effDesc: x => `/${format(x)}`
+        eff: computed(() =>
+          player.atom.power.add(1).log10().mul(5).add(1).pow(5),
+        ),
+        effDesc: (x) => `/${format(x)}`,
       },
       {
         desc: "Particle powers gain is boosted by Tickspeed.",
         cost: 1e18,
         eff: computed(() => player.buildings.tickspeed.pow_base(1.01)),
-        effDesc: x => formatMult(x)
+        effDesc: (x) => formatMult(x),
       },
       {
         desc: "Atomic Power boosts Quark gain.",
         cost: 1e28,
         eff: computed(() => player.atom.power.add(1).log10().add(1)),
-        effDesc: x => formatMult(x)
+        effDesc: (x) => formatMult(x),
       },
       {
-        desc: computed(() => `Stronger's power is increased by ${format(0.05, 2)}.`),
+        desc: computed(
+          () => `Stronger's power is increased by ${format(0.05, 2)}.`,
+        ),
         cost: 1e45,
       },
       {
-        desc: computed(() => `The Tier requirement is reduced by ${formatPercent(0.3, 0)}. Divide the Rank requirement based on Tier.`),
+        desc: computed(
+          () =>
+            `The Tier requirement is reduced by ${formatPercent(0.3, 0)}. Divide the Rank requirement based on Tier.`,
+        ),
         cost: 1e52,
         eff: computed(() => player.ranks[1].pow10()),
-        effDesc: x => `/${format(x)}`
+        effDesc: (x) => `/${format(x)}`,
       },
     ],
   },

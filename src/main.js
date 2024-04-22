@@ -34,7 +34,10 @@ function loop() {
         .mul(diff)
         .add(player.atom.power);
     }
-    if (hasUpgrade("atom", 5)) player.dm.darkMatter = darkMatterGain.value.mul(diff).add(player.dm.darkMatter)
+    if (hasUpgrade("atom", 5))
+      player.dm.darkMatter = darkMatterGain.value
+        .mul(diff)
+        .add(player.dm.darkMatter);
   }
 
   upgradeAuto();

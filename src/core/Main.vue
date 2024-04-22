@@ -51,8 +51,8 @@ const currentComp = computed(() => {
   return act.cost.max.value.min(act.max.value).max(act.cost.amt.value);
 });
 const bhText = computed(() => {
-  return player.challenge.active >= 4 ? " of Black Hole" : ""
-})
+  return player.challenge.active >= 4 ? " of Black Hole" : "";
+});
 </script>
 <style scoped>
 #main {

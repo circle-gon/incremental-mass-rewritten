@@ -40,13 +40,16 @@ export default {
   dm: {
     name: "Dark Matter",
     tooltip: computed(
-      () => `<i>Reach <b>${format(1e22, 0)}</b> Rage Power to gain Dark Matter.</i>`,
+      () =>
+        `<i>Reach <b>${format(1e22, 0)}</b> Rage Power to gain Dark Matter.</i>`,
     ),
     class: "yellow",
     show: computed(() => player.rage.unlocked),
     desc: computed(() => [
       formatInteger(player.dm.darkMatter),
-      hasUpgrade("atom", 5) ? formatGain(player.dm.darkMatter, darkMatterGain.value) : `(+${formatInteger(darkMatterGain.value)})`,
+      hasUpgrade("atom", 5)
+        ? formatGain(player.dm.darkMatter, darkMatterGain.value)
+        : `(+${formatInteger(darkMatterGain.value)})`,
     ]),
     click() {
       manualDMReset();

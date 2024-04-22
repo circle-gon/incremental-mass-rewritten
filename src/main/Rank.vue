@@ -27,7 +27,7 @@ import { RANKS, rankUp } from "./ranks";
 import { computed, unref } from "vue";
 import { formatInteger, formatMass } from "../core/format";
 import { player } from "../core/save";
-import { inChallenge } from "./challenges"
+import { inChallenge } from "./challenges";
 
 const props = defineProps({
   num: {

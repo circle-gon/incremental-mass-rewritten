@@ -79,8 +79,8 @@ const tabs = [
       {
         name: "Elements",
         comp: textComponent("This isn't implemented yet, be patient!"),
-        unlocked: computed(() => player.challenge.comps[6].gte(16))
-      }
+        unlocked: computed(() => player.challenge.comps[6].gte(16)),
+      },
     ],
   },
   {

@@ -9,16 +9,16 @@ import { powerEffect } from "../atom/atom";
 import { inChallenge } from "./challenges";
 
 const canDMReset = computed(() => {
-  if (inChallenge(6)) return player.mass.gte(1e200)
+  if (inChallenge(6)) return player.mass.gte(1e200);
   return player.rage.power.gte(1e22);
 });
 
 export const darkMatterGain = computed(() => {
   if (!canDMReset.value) return Decimal.dZero;
 
-  let base = player.rage.power.div(1e22).root(4)
-  if (inChallenge(6)) base = player.mass.div(1e200).root(8)
-  
+  let base = player.rage.power.div(1e22).root(4);
+  if (inChallenge(6)) base = player.mass.div(1e200).root(8);
+
   base = base.mul(powerEffect(1, 0));
 
   return base.floor();
@@ -51,7 +51,7 @@ export const bhMulti = computed(() => {
   let base = Decimal.dOne;
   base = base.mul(buildingEffect("bhc"));
   if (hasUpgrade("rp", 10)) base = base.mul(upgradeEffect("rp", 10));
-  if (hasUpgrade('dm', 13)) base = base.mul(upgradeEffect('dm', 13))
+  if (hasUpgrade("dm", 13)) base = base.mul(upgradeEffect("dm", 13));
 
   return base;
 });

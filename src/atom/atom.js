@@ -19,7 +19,7 @@ export const atomGain = computed(() => {
   if (!canAtomReset.value) return Decimal.dZero;
 
   let base = player.dm.mass.div(REQUIRE).root(5);
-  if (hasUpgrade('rp', 14)) base = base.mul(upgradeEffect('rp', 14))
+  if (hasUpgrade("rp", 14)) base = base.mul(upgradeEffect("rp", 14));
   return base.floor();
 });
 
@@ -27,9 +27,9 @@ export const quarkGain = computed(() => {
   if (!canAtomReset.value) return Decimal.dZero;
 
   let base = atomGain.value.log10().add(1).pow(1.1);
-  if (hasUpgrade('dm', 12)) base = base.mul(10)
-  if (hasUpgrade('atom', 7)) base = base.mul(upgradeEffect('atom', 7))
-  if (hasRankReward(0, 13)) base = base.mul(rankReward(0, 13))
+  if (hasUpgrade("dm", 12)) base = base.mul(10);
+  if (hasUpgrade("atom", 7)) base = base.mul(upgradeEffect("atom", 7));
+  if (hasRankReward(0, 13)) base = base.mul(rankReward(0, 13));
   return base.floor();
 });
 
@@ -38,7 +38,8 @@ function atomResetCore() {
   resetUpgrades("dm", KEEP_DM_UPGRADES);
   player.dm.darkMatter = Decimal.dZero;
   resetBuilding("bhc");
-  if (!hasUpgrade('atom', 3)) for (let i = 0; i < 4; i++) player.challenge.comps[i] = Decimal.dZero;
+  if (!hasUpgrade("atom", 3))
+    for (let i = 0; i < 4; i++) player.challenge.comps[i] = Decimal.dZero;
   player.atom.power = Decimal.dZero;
   dmResetCore();
 }
@@ -81,7 +82,7 @@ export function assignParticles() {
 
 export function powerGain(i) {
   let base = player.atom.particles[i].pow(2);
-  if (hasUpgrade('atom', 6)) base = base.mul(upgradeEffect('atom', 6))
+  if (hasUpgrade("atom", 6)) base = base.mul(upgradeEffect("atom", 6));
   return base;
 }
 
@@ -122,7 +123,7 @@ export const PARTICLES = [
       `Boost Dark Matter gain by ${formatMult(eff[0])}`,
       `Increase BH Condenser power by ${format(eff[1])}`,
     ],
-    color:"#ff0" ,
+    color: "#ff0",
   },
   {
     name: "Electron",
