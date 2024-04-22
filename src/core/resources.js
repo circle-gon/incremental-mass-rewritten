@@ -23,9 +23,7 @@ export default {
   rage: {
     name: "Rage Power",
     tooltip: computed(
-      () => `<i>
-    Reach <b>${formatMass(1e16)}</b> Mass to gain Rage Powers.
-    </i>`,
+      () => `<i>Reach <b>${formatMass(1e16)}</b> Mass to gain Rage Powers.</i>`,
     ),
     class: "red",
     show: computed(() => true),
@@ -42,15 +40,13 @@ export default {
   dm: {
     name: "Dark Matter",
     tooltip: computed(
-      () => `<i>
-    Reach <b>${format(1e22, 0)}</b> Rage Power to gain Dark Matter.
-    </i>`,
+      () => `<i>Reach <b>${format(1e22, 0)}</b> Rage Power to gain Dark Matter.</i>`,
     ),
     class: "yellow",
     show: computed(() => player.rage.unlocked),
     desc: computed(() => [
       formatInteger(player.dm.darkMatter),
-      `(+${formatInteger(darkMatterGain.value)})`,
+      hasUpgrade("atom", 5) ? formatGain(player.dm.darkMatter, darkMatterGain.value) : `(+${formatInteger(darkMatterGain.value)})`,
     ]),
     click() {
       manualDMReset();
@@ -72,9 +68,7 @@ export default {
     name: "Atom",
     tooltip: computed(
       () =>
-        `<i>
-    Reach <b>${formatMass(uni(1e90))}</b> of Black Hole to gain Atoms & Quarks.
-    </i>`,
+        `<i>Reach <b>${formatMass(uni(1e90))}</b> of Black Hole to gain Atoms & Quarks.</i>`,
     ),
     show: computed(() => player.dm.unlocked),
     desc: computed(() => [
@@ -90,6 +84,7 @@ export default {
     tooltip: computed(
       () => `You have <b>${formatInteger(player.atom.quark)}</b> Quark.`,
     ),
+    class: "quark-color",
     show: computed(() => player.atom.unlocked),
     desc: computed(() => [
       formatInteger(player.atom.quark),

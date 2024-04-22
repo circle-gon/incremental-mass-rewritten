@@ -194,6 +194,22 @@ p {
   cursor: default;
 }
 
+.quark-color {
+	animation: quark-color 6s cubic-bezier(0.37, 0, 0.63, 1) infinite
+}
+
+@keyframes quark-color {
+	0%, 100% {
+		color: red;
+	}
+	33.3% {
+		color: blue;
+	}
+	66.7% {
+		color: limegreen;
+	}
+}
+
 /* TODO: upload fonts */
 @font-face {
   font-family: "Andy Bold";

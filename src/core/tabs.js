@@ -8,6 +8,7 @@ import DM from "../main/DM.vue";
 import AtomicGenerator from "../atom/AtomicGenerator.vue";
 import Particles from "../atom/Particles.vue";
 import { player } from "./save";
+import { textComponent } from "./utils";
 
 const tabs = [
   {
@@ -75,6 +76,11 @@ const tabs = [
         name: "Particles",
         comp: Particles,
       },
+      {
+        name: "Elements",
+        comp: textComponent("This isn't implemented yet, be patient!"),
+        unlocked: computed(() => player.challenge.comps[6].gte(16))
+      }
     ],
   },
   {

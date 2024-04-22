@@ -8,15 +8,17 @@ import {
   formatReduction,
   format,
   formatInteger,
+  formatMult,
 } from "../core/format";
 import { atomReset } from "../atom/atom";
+import { dilate } from "../core/utils";
 
 export const CHALLENGES = [
   {
     title: "Instant Scale",
     desc: "Mass upgrades, Rank, and Tickspeed scale twice as fast after 25.",
-    reward: "Reduce Tickspeed and Rank scaling.",
-    unlocked: computed(() => true),
+    reward: "Reduce Rank and Tickspeed scaling.",
+    unlocked: computed(() => player.challenge.unlocked),
     cost: costScaling({
       base: 1e54,
       linear: 10,
@@ -29,17 +31,17 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      return new Decimal(100);
+      return challengeEffect(6).add(100);
     }),
     eff: computed(() => {
       const comps = player.challenge.comps[0];
       return comps.pow(0.8).pow_base(0.95);
     }),
-    effDesc: (x) => `-${formatReduction(x)} to Rank and Tickspeed scaling`,
+    effDesc: (x) => `${formatReduction(x)}`,
   },
   {
     title: "Anti-Tickspeed",
-    desc: "Tickspeed cannot be bought.",
+    desc: "Tickspeed is disabled.",
     reward: computed(
       () => `+${formatPercent(0.05, 0)} Tickspeed power per completion.`,
     ),
@@ -56,13 +58,13 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      return new Decimal(100);
+      return challengeEffect(6).add(100);
     }),
     eff: computed(() => {
       const comps = player.challenge.comps[1];
       return comps.mul(0.05);
     }),
-    effDesc: (x) => `+${formatPercent(x)} to Tickspeed power`,
+    effDesc: (x) => `+${formatPercent(x)}`,
   },
   {
     title: "Melted Mass",
@@ -82,13 +84,13 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      return new Decimal(100);
+      return challengeEffect(6).add(100);
     }),
     eff: computed(() => {
       const comps = player.challenge.comps[2];
       return comps.add(1).log10().mul(0.05).add(1);
     }),
-    effDesc: (x) => `^${format(x)} to Mass gain`,
+    effDesc: (x) => `^${format(x)}`,
   },
   {
     title: "Weakened Rage",
@@ -108,13 +110,13 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      return new Decimal(100);
+      return challengeEffect(6).add(100);
     }),
     eff: computed(() => {
       const comps = player.challenge.comps[3];
       return comps.add(1).log10().mul(0.1).add(1);
     }),
-    effDesc: (x) => `^${format(x)} to Rage Power gain`,
+    effDesc: (x) => `^${format(x)}`,
   },
   {
     title: "No Rank",
@@ -122,24 +124,77 @@ export const CHALLENGES = [
     reward: "Reduce Rank scaling.",
     unlocked: computed(() => player.atom.unlocked),
     cost: costScaling({
-      base: Decimal.dInf,
-      linear: 1,
-      quad: 1,
+      base: 1e58,
+      linear: 200,
+      quad: 1.1,
       amt: computed({
         get: () => player.challenge.comps[4],
         set: (v) => (player.challenge.comps[4] = v),
       }),
-      res: computed(() => player.mass),
+      res: computed(() => player.dm.mass),
       spend: false,
     }),
     max: computed(() => {
       return new Decimal(50);
     }),
     eff: computed(() => {
-      return Decimal.dOne;
+      return dilate(player.challenge.comps[4], 0.5).mul(0.02).add(1)
     }),
-    effDesc: (x) => `-${formatReduction(x)} to Rank scaling`,
+    effDesc: (x) => `${formatReduction(x.recip())}`,
   },
+  {
+    title: "Weakened Tickspeed and BH Condenser",
+    desc: computed(() => `Tickspeed and BH Condenser scale ${formatMult(5, 0)} as fast.`),
+    reward: "Add to Tickspeed and BH Condenser power.",
+    unlocked: computed(() => player.challenge.comps[4].gte(1)),
+    cost: costScaling({
+      base: 1e35,
+      linear: 100,
+      quad: 1.1,
+      amt: computed({
+        get: () => player.challenge.comps[5],
+        set: (v) => (player.challenge.comps[5] = v),
+      }),
+      res: computed(() => player.dm.mass),
+      spend: false,
+    }),
+    max: computed(() => {
+      return new Decimal(50)
+    }),
+    eff: computed(() => {
+      const comps = player.challenge.comps[5]
+      return {
+        tickspeed: comps.mul(0.2),
+        bhc: comps.mul(0.1)
+      }
+    }),
+    effDesc: (x) => `+${formatPercent(x.tickspeed)} to Tickspeed, +${format(x.bhc)} to Black Hole Condenser`,
+  },
+  {
+    title: "No Rage Power",
+    desc: "Rage Power is disabled. However, Dark Matter is gained from Mass instead of Rage Power at a reduced rate.",
+    firstTime: computed(() => `After completing this challenge ${formatInteger(16)} times, unlock Elements, a new subtab found in the Atom tab.`),
+    reward: computed(() => `Each completion adds ${formatInteger(4)} to challenges 1-4 cap.`),
+    unlocked: computed(() => player.challenge.comps[5].gte(1)),
+    cost: costScaling({
+      base: 1e53,
+      linear: 100,
+      quad: 1.1,
+      amt: computed({
+        get: () => player.challenge.comps[6],
+        set: (v) => (player.challenge.comps[6] = v),
+      }),
+      res: computed(() => player.dm.mass),
+      spend: false,
+    }),
+    max: computed(() => {
+      return new Decimal(50)
+    }),
+    eff: computed(() => {
+      return player.challenge.comps[6].mul(4);
+    }),
+    effDesc: x => `+${formatInteger(x)}`
+  }
 ];
 
 function challengeReset(num) {

@@ -1,10 +1,15 @@
 <template>
   <div class="table-center stab-btn">
-    <div v-for="(rk, idx) in RANKS" :key="rk.name" style="width: 145px">
-      <button class="btn-tab" @click="player.options.rankRewardSelected = idx">
-        {{ rk.name }}
-      </button>
-    </div>
+    <template v-for="(rk, idx) in RANKS" :key="rk.name">
+      <div v-if="rk.unlocked.value" style="width: 145px">
+        <button
+          class="btn-tab"
+          @click="player.options.rankRewardSelected = idx"
+        >
+          {{ rk.name }}
+        </button>
+      </div>
+    </template>
   </div>
   <br />
   <div>

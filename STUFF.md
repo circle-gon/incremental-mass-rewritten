@@ -1,5 +1,8 @@
 # TODO
 
+- add a loading screen
+- add offline progress
+
 # Balance
 
 - nerfing power (weakest to strongest):

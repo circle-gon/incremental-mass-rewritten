@@ -1,14 +1,14 @@
 import { computed } from "vue";
 import { player } from "../core/save";
 import Decimal from "break_eternity.js";
-import { hasRankReward, rankReset, rankReward } from "./ranks";
+import { RANKS, hasRankReward, rankReset, rankReward } from "./ranks";
 import { hasUpgrade, upgradeEffect } from "./upgrades";
 import { showPopup, showQuote } from "../core/popups";
 import { challengeEffect, inChallenge } from "./challenges";
 import { powerEffect } from "../atom/atom";
 
 const canRageReset = computed(() => {
-  return player.mass.gte(1e16);
+  return player.mass.gte(1e16) && !inChallenge(6);
 });
 
 export const ragePowerGain = computed(() => {
@@ -18,7 +18,7 @@ export const ragePowerGain = computed(() => {
   if (hasRankReward(1, 4)) base = base.mul(rankReward(1, 4));
   if (hasUpgrade("dm", 5)) base = base.mul(upgradeEffect("dm", 5));
   if (hasRankReward(0, 11)) base = base.mul(rankReward(0, 11));
-  base = base.mul(powerEffect(1, 0));
+  base = base.mul(powerEffect(2, 0));
 
   if (inChallenge(3)) base = base.root(10);
   else base = base.pow(challengeEffect(3));
@@ -28,8 +28,7 @@ export const ragePowerGain = computed(() => {
 });
 
 export function rageResetCore() {
-  // Tiers + 1 so it resets all
-  rankReset(2);
+  rankReset(RANKS.length);
 }
 
 export function rageReset() {

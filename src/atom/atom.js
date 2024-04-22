@@ -1,12 +1,13 @@
 import { computed } from "vue";
 import { player } from "../core/save";
-import { dilate, uni } from "../core/utils";
+import { uni } from "../core/utils";
 import Decimal from "break_eternity.js";
 import { showPopup, showQuote } from "../core/popups";
 import { buildingEffect, resetBuilding } from "../main/buildings";
 import { dmResetCore } from "../main/dm";
-import { resetUpgrades } from "../main/upgrades";
+import { hasUpgrade, resetUpgrades, upgradeEffect } from "../main/upgrades";
 import { format, formatMult, formatPercent } from "../core/format";
+import { hasRankReward, rankReward } from "../main/ranks";
 
 const REQUIRE = uni(1e90);
 
@@ -18,6 +19,7 @@ export const atomGain = computed(() => {
   if (!canAtomReset.value) return Decimal.dZero;
 
   let base = player.dm.mass.div(REQUIRE).root(5);
+  if (hasUpgrade('rp', 14)) base = base.mul(upgradeEffect('rp', 14))
   return base.floor();
 });
 
@@ -25,6 +27,9 @@ export const quarkGain = computed(() => {
   if (!canAtomReset.value) return Decimal.dZero;
 
   let base = atomGain.value.log10().add(1).pow(1.1);
+  if (hasUpgrade('dm', 12)) base = base.mul(10)
+  if (hasUpgrade('atom', 7)) base = base.mul(upgradeEffect('atom', 7))
+  if (hasRankReward(0, 13)) base = base.mul(rankReward(0, 13))
   return base.floor();
 });
 
@@ -33,7 +38,7 @@ function atomResetCore() {
   resetUpgrades("dm", KEEP_DM_UPGRADES);
   player.dm.darkMatter = Decimal.dZero;
   resetBuilding("bhc");
-  for (let i = 0; i < 4; i++) player.challenge.comps[i] = Decimal.dZero;
+  if (!hasUpgrade('atom', 3)) for (let i = 0; i < 4; i++) player.challenge.comps[i] = Decimal.dZero;
   player.atom.power = Decimal.dZero;
   dmResetCore();
 }
@@ -76,6 +81,7 @@ export function assignParticles() {
 
 export function powerGain(i) {
   let base = player.atom.particles[i].pow(2);
+  if (hasUpgrade('atom', 6)) base = base.mul(upgradeEffect('atom', 6))
   return base;
 }
 
@@ -98,7 +104,7 @@ export const PARTICLES = [
     name: "Proton",
     effect: computed(() => {
       const amt = player.atom.powers[0];
-      return [amt.add(1).pow(3.5), amt.add(1).log10().mul(0.2)];
+      return [amt.add(1).pow(3), amt.add(1).log10().mul(0.2)];
     }),
     desc: (eff) => [
       `Boost Mass gain by ${formatMult(eff[0])}`,
@@ -107,29 +113,29 @@ export const PARTICLES = [
     color: "#0f0",
   },
   {
-    name: "Electron",
-    effect: computed(() => {
-      const amt = player.atom.powers[1];
-      const mass = player.mass.add(1).log10().add(1).pow(1.5);
-      const rage = player.rage.power.add(1).log10().add(1).pow(0.2).sub(1);
-      const amtboost = amt.add(1).log10().add(1).pow(0.4).sub(1);
-      return [amt.add(1).pow(3), mass.pow(rage.mul(amtboost))];
-    }),
-    desc: (eff) => [
-      `Boost Rage Power gain by ${formatMult(eff[0])}`,
-      `Boost Mass gain based on Rage Power - ${formatMult(eff[1])}`,
-    ],
-    color: "#ff0",
-  },
-  {
     name: "Neutron",
     effect: computed(() => {
-      const amt = player.atom.powers[2];
-      return [amt.add(1).pow(2), amt.add(1).log10().mul(0.1)];
+      const amt = player.atom.powers[1];
+      return [amt.add(1), amt.add(1).log10().mul(0.04)];
     }),
     desc: (eff) => [
       `Boost Dark Matter gain by ${formatMult(eff[0])}`,
       `Increase BH Condenser power by ${format(eff[1])}`,
+    ],
+    color:"#ff0" ,
+  },
+  {
+    name: "Electron",
+    effect: computed(() => {
+      const amt = player.atom.powers[2];
+      const mass = player.mass.add(1).log10().add(1).pow(1.25);
+      const rage = player.rage.power.add(1).log10().add(1).pow(0.2).sub(1);
+      const amtboost = amt.add(1).log10().add(1).pow(0.4).sub(1);
+      return [amt.add(1).pow(2), mass.pow(rage.mul(amtboost))];
+    }),
+    desc: (eff) => [
+      `Boost Rage Power gain by ${formatMult(eff[0])}`,
+      `Boost Mass gain based on Rage Power - ${formatMult(eff[1])}`,
     ],
     color: "#f00",
   },

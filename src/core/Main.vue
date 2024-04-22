@@ -5,10 +5,10 @@
       <div id="chal-upper">
         <template v-if="player.challenge.active !== -1">
           You are now in the [{{ active.title }}] Challenge! Get over
-          {{ formatMass(active.cost.cost.value) }} to complete.<br />
+          {{ formatMass(active.cost.cost.value) }}{{ bhText }} to complete.<br />
           +{{ formatInteger(currentComp.sub(active.cost.amt.value)) }}
           completions (+1 at
-          {{ formatMass(active.cost.costFunc(currentComp)) }})
+          {{ formatMass(active.cost.costFunc(currentComp)) }}{{ bhText }})
         </template>
       </div>
     </div>
@@ -50,6 +50,9 @@ const currentComp = computed(() => {
   const act = active.value;
   return act.cost.max.value.min(act.max.value).max(act.cost.amt.value);
 });
+const bhText = computed(() => {
+  return player.challenge.active >= 4 ? " of Black Hole" : ""
+})
 </script>
 <style scoped>
 #main {

@@ -23,13 +23,13 @@ export const UPGRADES = {
         desc: "Boosters give free Musclers.",
         cost: 1,
         eff: computed(() => player.buildings.mass2),
-        effDesc: (x) => `+${formatInteger(x)} free Musclers`,
+        effDesc: (x) => `+${formatInteger(x)}`,
       },
       {
         desc: "Strongers give free Boosters.",
         cost: 10,
         eff: computed(() => player.buildings.mass3),
-        effDesc: (x) => `+${formatInteger(x)} free Boosters`,
+        effDesc: (x) => `+${formatInteger(x)}`,
       },
       {
         desc: "Auto-buy Mass upgrades.",
@@ -51,13 +51,13 @@ export const UPGRADES = {
         desc: "Tickspeeds give free Strongers.",
         cost: 1e5,
         eff: computed(() => player.buildings.tickspeed.sqrt().floor()),
-        effDesc: (x) => `+${formatInteger(x)} free Strongers`,
+        effDesc: (x) => `+${formatInteger(x)}`,
       },
       {
         desc: "Divide Mass upgrade costs based on Rage Powers.",
         cost: 1e14,
         eff: computed(() => player.rage.power.add(1).log10().add(1).pow(2)),
-        effDesc: (x) => `/${format(x)} to Mass upgrade costs`,
+        effDesc: (x) => `/${format(x)}`,
       },
       {
         desc: computed(
@@ -99,12 +99,16 @@ export const UPGRADES = {
         effDesc: (x) => formatMult(x),
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: "Subtract effective Tickspeed amount in the cost formula by 50.",
+        cost: "1e880",
+        unlocked: computed(() => player.atom.unlocked),
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: "Atom gain is boosted by Mass.",
+        cost: "1e1045",
+        unlocked: computed(() => player.atom.unlocked),
+        eff: computed(() => player.mass.add(1).log10().add(1).pow(0.5)),
+        effDesc: x => formatMult(x)
       },
     ],
   },
@@ -156,7 +160,7 @@ export const UPGRADES = {
         effDesc: (x) => formatMult(x),
       },
       {
-        desc: "Divide the BH Condenser cost based on Mass.",
+        desc: "Divide BH Condenser cost based on Mass.",
         cost: 1e45,
         unlocked: computed(() => player.challenge.unlocked),
         eff: computed(() => player.mass.add(1).log10().add(1).pow(2)),
@@ -185,24 +189,33 @@ export const UPGRADES = {
         effDesc: (x) => formatMult(x),
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: computed(() => `Raise Mass upgrade costs by ${format(0.98, 2)}.`),
+        cost: 1e240,
+        unlocked: computed(() => player.atom.unlocked),
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: computed(() => `Raise Mass upgrade and Tickspeed costs by ${format(0.985, 3)}.`),
+        cost: 1e255,
+        unlocked: computed(() => player.atom.unlocked),
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: "Quark gain is multiplied by 10.",
+        cost: 1e285,
+        unlocked: computed(() => player.atom.unlocked),
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: "Black Hole's mass gain is boosted by Neutron Power.",
+        cost: "1e335",
+        unlocked: computed(() => player.atom.unlocked),
+        eff: computed(() => player.atom.powers[2].add(1)),
+        effDesc: x => formatMult(x)
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: "Atomic Power gives free Black Hole Condensers.",
+        cost: "1e385",
+        unlocked: computed(() => player.atom.unlocked),
+        eff: computed(() => player.atom.power.add(1).log10().floor()),
+        effDesc: x => `+${formatInteger(x)}`
       },
     ],
   },
@@ -222,40 +235,49 @@ export const UPGRADES = {
       },
       {
         desc: "Auto-buy BH Condensers and Dark Matter upgrades. Tickspeed no longer spend Rage Power.",
-        // yes the inflation is real
-        cost: 5e7,
+        cost: 5000,
       },
       {
         desc: "Unlock Tetr, a new type of Rank found in the Mass tab.",
-        cost: 1e9,
+        cost: 20000,
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: "Keep challenge 1-4 completions on an Atom reset. Cosmic Ray power is boosted by BH Condensers.",
+        cost: 1e6,
+        eff: computed(() => player.buildings.bhc.root(3).mul(0.2)),
+        effDesc: x => `+${format(x)}`
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: computed(() => `Auto-buy Tetr. Tier scales ${formatPercent(0.14, 0)} slower.`),
+        cost: 1e11,
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: computed(() => `Gain ${formatPercent(1, 0)} of Dark Matter gained from reset per second. Divide BH Condenser cost based on Atomic Power.`),
+        cost: 1e14,
+        eff: computed(() => player.atom.power.add(1).log10().mul(5).add(1).pow(5)),
+        effDesc: x => `/${format(x)}`
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: "Particle powers gain is boosted by Tickspeed.",
+        cost: 1e18,
+        eff: computed(() => player.buildings.tickspeed.pow_base(1.01)),
+        effDesc: x => formatMult(x)
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: "Atomic Power boosts Quark gain.",
+        cost: 1e28,
+        eff: computed(() => player.atom.power.add(1).log10().add(1)),
+        effDesc: x => formatMult(x)
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: computed(() => `Stronger's power is increased by ${format(0.05, 2)}.`),
+        cost: 1e45,
       },
       {
-        desc: "TBD.",
-        cost: Infinity,
+        desc: computed(() => `The Tier requirement is reduced by ${formatPercent(0.3, 0)}. Divide the Rank requirement based on Tier.`),
+        cost: 1e52,
+        eff: computed(() => player.ranks[1].pow10()),
+        effDesc: x => `/${format(x)}`
       },
     ],
   },

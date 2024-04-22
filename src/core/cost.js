@@ -31,22 +31,26 @@ export function manualCostScaling(data) {
 }
 
 export function costScaling(data) {
-  const trueAmt = (amt) => (data.cost ? data.cost(amt) : amt);
-  const trueInvert = (amt) => (data.invert ? data.invert(amt) : amt);
+  const amtScale = (amt) => (data.amtScale ? data.amtScale(amt) : amt);
+  const amtInvert = (amt) => (data.amtInvert ? data.amtInvert(amt) : amt);
+  const costScale = cost => (data.costScale ? data.costScale(cost) : cost)
+  const costInvert = cost => (data.costInvert ? data.costInvert(cost) : cost)
   return manualCostScaling({
-    ...data,
+    amt: data.amt,
+    res: data.res,
+    spend: data.spend,
     cost: (amt) =>
-      trueAmt(amt)
+      costScale(amtScale(amt)
         .pow(2)
         .pow_base(unref(data.quad))
-        .mul(trueAmt(amt).pow_base(unref(data.linear)))
-        .mul(unref(data.base)),
+        .mul(amtScale(amt).pow_base(unref(data.linear)))
+        .mul(unref(data.base))),
     invert(res) {
       const base = unref(data.base);
 
       const a = Decimal.log10(unref(data.quad));
       const b = Decimal.log10(unref(data.linear));
-      const c = res.div(base).log10();
+      const c = costInvert(res).div(base).log10();
 
       if (c.lte(0) || !Decimal.isFinite(base)) return Decimal.dOne.neg();
 
@@ -58,7 +62,7 @@ export function costScaling(data) {
         result = a.mul(c).mul(4).add(b.sqr()).sqrt().sub(b).div(2).div(a);
       }
 
-      return trueInvert(result);
+      return amtInvert(result);
     },
   });
 }

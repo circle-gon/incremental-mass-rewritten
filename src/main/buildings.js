@@ -33,15 +33,27 @@ export const BUILDINGS = {
     unlocked: computed(() => hasRankReward(0, 0) || hasUpgrade("atom", 0)),
     autoUnlocked: computed(() => hasUpgrade("rp", 2)),
     cost: costScaling({
-      cost: (a) => {
+      amtScale: (a) => {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
         return amt;
       },
-      invert: (a) => {
+      amtInvert: (a) => {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).div(2).add(25);
         return amt;
+      },
+      costScale: c => {
+        let cost = c
+        if (hasUpgrade('dm', 10)) cost = cost.pow(0.98)
+        if (hasUpgrade('dm', 11)) cost = cost.pow(0.985)
+        return cost
+      },
+      costInvert: c => {
+        let cost = c
+        if (hasUpgrade('dm', 10)) cost = cost.root(0.98)
+        if (hasUpgrade('dm', 11)) cost = cost.root(0.985)
+        return cost
       },
       base: computed(() => {
         let base = Decimal.dOne;
@@ -81,7 +93,7 @@ export const BUILDINGS = {
       power = power.mul(buildingEffect("mass2"));
 
       return {
-        power: power,
+        power,
         effect: power.mul(amt),
       };
     },
@@ -91,15 +103,27 @@ export const BUILDINGS = {
     unlocked: computed(() => hasRankReward(0, 1) || hasUpgrade("atom", 0)),
     autoUnlocked: computed(() => hasUpgrade("rp", 2)),
     cost: costScaling({
-      cost: (a) => {
+      amtScale: (a) => {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
         return amt;
       },
-      invert: (a) => {
+      amtInvert: (a) => {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).div(2).add(25);
         return amt;
+      },
+      costScale: c => {
+        let cost = c
+        if (hasUpgrade('dm', 10)) cost = cost.pow(0.98)
+        if (hasUpgrade('dm', 11)) cost = cost.pow(0.985)
+        return cost
+      },
+      costInvert: c => {
+        let cost = c
+        if (hasUpgrade('dm', 10)) cost = cost.root(0.98)
+        if (hasUpgrade('dm', 11)) cost = cost.root(0.985)
+        return cost
       },
       base: computed(() => {
         let base = new Decimal(5);
@@ -139,7 +163,7 @@ export const BUILDINGS = {
       power = power.pow(buildingEffect("mass3"));
 
       return {
-        power: power,
+        power,
         effect: power.mul(amt).add(1),
       };
     },
@@ -149,15 +173,27 @@ export const BUILDINGS = {
     unlocked: computed(() => hasRankReward(0, 2) || hasUpgrade("atom", 0)),
     autoUnlocked: computed(() => hasUpgrade("rp", 2)),
     cost: costScaling({
-      cost: (a) => {
+      amtScale: (a) => {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
         return amt;
       },
-      invert: (a) => {
+      amtInvert: (a) => {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).div(2).add(25);
         return amt;
+      },
+      costScale: c => {
+        let cost = c
+        if (hasUpgrade('dm', 10)) cost = cost.pow(0.98)
+        if (hasUpgrade('dm', 11)) cost = cost.pow(0.985)
+        return cost
+      },
+      costInvert: c => {
+        let cost = c
+        if (hasUpgrade('dm', 10)) cost = cost.root(0.98)
+        if (hasUpgrade('dm', 11)) cost = cost.root(0.985)
+        return cost
       },
       base: computed(() => {
         let base = new Decimal(100);
@@ -196,6 +232,9 @@ export const BUILDINGS = {
       if (hasRankReward(0, 9)) power = power.add(0.1);
       if (hasUpgrade("rp", 8)) power = power.add(0.15);
       if (hasUpgrade("rp", 11)) power = power.add(upgradeEffect("rp", 11));
+      if (hasRankReward(2, 1)) power = power.add(rankReward(2, 1))
+      if (hasUpgrade("atom", 8)) power = power.add(0.05)
+      if (hasRankReward(1, 6)) power = power.add(0.05)
 
       let effect = power.mul(amt).add(1);
       if (hasUpgrade("dm", 8)) effect = effect.add(upgradeEffect("dm", 8));
@@ -212,15 +251,29 @@ export const BUILDINGS = {
     purchasable: computed(() => !inChallenge(1)),
     autoUnlocked: computed(() => hasUpgrade("dm", 4)),
     cost: costScaling({
-      cost: (a) => {
+      amtScale: (a) => {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
+        if (hasUpgrade('rp', 13)) amt = amt.sub(50)
+        if (inChallenge(5)) amt = amt.mul(5)
         return amt;
       },
-      invert: (a) => {
+      amtInvert: (a) => {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).div(2).add(25);
+        if (hasUpgrade('rp', 13)) amt = amt.add(50)
+        if (inChallenge(5)) amt = amt.div(5)
         return amt;
+      },
+      costScale: c => {
+        let cost = c
+        if (hasUpgrade('dm', 11)) cost = cost.pow(0.985)
+        return cost
+      },
+      costInvert: c => {
+        let cost = c
+        if (hasUpgrade('dm', 11)) cost = cost.root(0.985)
+        return cost
       },
       base: 1,
       linear: computed(() => {
@@ -253,10 +306,14 @@ export const BUILDINGS = {
       if (hasRankReward(0, 10)) power = power.add(rankReward(0, 10));
       power = power.add(challengeEffect(1));
       power = power.add(powerEffect(0, 1));
+      power = power.add(challengeEffect(5).tickspeed)
+
+      let effect = power.pow(amt)
+      if (hasRankReward(2, 2)) effect = effect.pow(1.05)
 
       return {
-        power: power,
-        effect: power.pow(amt),
+        power,
+        effect,
       };
     },
   }),
@@ -265,9 +322,20 @@ export const BUILDINGS = {
     unlocked: computed(() => player.dm.unlocked),
     autoUnlocked: computed(() => hasUpgrade("atom", 1)),
     cost: costScaling({
+      amtScale: a => {
+        let amt = a
+        if (inChallenge(5)) amt = amt.mul(5)
+        return amt
+      },
+      amtInvert: a => {
+        let amt = a
+        if (inChallenge(5)) amt = amt.div(5)
+        return amt
+      },
       base: computed(() => {
         let base = Decimal.dOne;
         if (hasUpgrade("dm", 6)) base = base.div(upgradeEffect("dm", 6));
+        if (hasUpgrade("atom", 5)) base = base.div(upgradeEffect("atom", 5))
         return base;
       }),
       linear: 2,
@@ -282,16 +350,22 @@ export const BUILDINGS = {
       }),
       spend: true,
     }),
+    bonus: computed(() => {
+      let bonus = Decimal.dZero
+      if (hasUpgrade('dm', 14)) bonus = bonus.add(upgradeEffect('dm', 14))
+      return bonus
+    }),
     formatCost: (x) => `${formatInteger(x)} Dark Matter`,
     formatPower: (x) => formatMult(x),
     formatEffect: (x) => `${formatMult(x)} to Black Hole's mass gain`,
     effect(amt) {
       let power = Decimal.dTwo;
-      power = power.add(powerEffect(2, 1));
+      power = power.add(powerEffect(1, 1));
       if (hasUpgrade("dm", 1)) power = power.mul(upgradeEffect("dm", 1));
+      power = power.add(challengeEffect(5).bhc)
 
       return {
-        power: power,
+        power,
         effect: power.pow(amt),
       };
     },
@@ -322,9 +396,10 @@ export const BUILDINGS = {
     formatEffect: (x) => `${formatMult(x)} to Atomic Power gain`,
     effect(amt) {
       let power = Decimal.dTwo;
+      if (hasUpgrade('atom', 3)) power = power.add(upgradeEffect('atom', 3))
 
       return {
-        power: power,
+        power,
         effect: power.pow(amt).sub(1),
       };
     },

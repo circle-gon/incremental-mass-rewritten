@@ -495,9 +495,7 @@ const FORMATS = {
             const mod1000 = e3.sub(div1000.mul(1e3)).floor().toNumber();
             if (mod1000 > 0) {
               if (mod1000 === 1 && !ee3) final = "U";
-              if (ee3)
-                final =
-                  this.tier2(ee3) + (final ? "-" + final : "");
+              if (ee3) final = this.tier2(ee3) + (final ? "-" + final : "");
               if (mod1000 > 1) final = this.tier1(mod1000) + final;
             }
             e3 = div1000;
@@ -692,7 +690,9 @@ export function formatTime(e, acc = 2, type = "s") {
 }
 
 export function formatReduction(ex) {
-  return format(Decimal.sub(1, ex).mul(100)) + "%";
+  const e = new Decimal(ex)
+  if (e.lte(0.1)) return "/" + format(e.recip())
+  return "-" + format(e.neg().add(1).mul(100)) + "%";
 }
 
 export function formatPercent(ex, acc = 4) {

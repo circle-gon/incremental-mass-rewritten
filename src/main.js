@@ -7,7 +7,7 @@ import "./style.css";
 import { buildingAuto } from "./main/buildings";
 import { hasUpgrade, upgradeAuto } from "./main/upgrades";
 import { rankAuto } from "./main/ranks";
-import { bhGain } from "./main/dm";
+import { bhGain, darkMatterGain } from "./main/dm";
 import { ragePowerGain } from "./main/rage";
 import { PARTICLES, atomicPowerGain, powerGain } from "./atom/atom";
 
@@ -34,6 +34,7 @@ function loop() {
         .mul(diff)
         .add(player.atom.power);
     }
+    if (hasUpgrade("atom", 5)) player.dm.darkMatter = darkMatterGain.value.mul(diff).add(player.dm.darkMatter)
   }
 
   upgradeAuto();

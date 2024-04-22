@@ -11,9 +11,10 @@
     {{ rank.name }}
     <h4>{{ formatInteger(amt) }}</h4>
     <br /><br />
+    <!-- Special treatment for challenge 5 -->
     <button
       class="btn"
-      :class="!rank.cost.canAfford.value ? 'locked' : null"
+      :class="inChallenge(4) || !rank.cost.canAfford.value ? 'locked' : null"
       @click="rankUp(num, false)"
     >
       Reset your {{ resetText }} but {{ rank.name }} up. {{ nextText }}<br />
@@ -26,6 +27,7 @@ import { RANKS, rankUp } from "./ranks";
 import { computed, unref } from "vue";
 import { formatInteger, formatMass } from "../core/format";
 import { player } from "../core/save";
+import { inChallenge } from "./challenges"
 
 const props = defineProps({
   num: {

@@ -42,7 +42,7 @@
         >
           Enter Challenge
         </button>
-        <p>{{ chalText }}</p>
+        <p style="line-height: 1">{{ chalText }}</p>
         <span class="red">{{ isGood ? unref(current.desc) : "" }}</span
         ><br />
         <span class="red">{{
@@ -51,6 +51,10 @@
         <p>{{ goalText }}</p>
         <span class="green">{{ isGood ? unref(current.reward) : "" }}</span
         ><br />
+        <template v-if="current.firstTime">
+          <span class="yellow">{{ unref(current.firstTime) }}</span>
+          <br />
+        </template>
         <span class="green">{{ currText }}</span>
       </div>
     </div>
@@ -98,7 +102,8 @@ const chalText = computed(() => {
 const goalText = computed(() => {
   if (!isGood.value) return "";
 
-  return `Goal: ${formatMass(current.value.cost.cost.value)}`;
+  const bh = player.challenge.chosen >= 4 ? " of Black Hole" : ""
+  return `Goal: ${formatMass(current.value.cost.cost.value)}${bh}`;
 });
 const currText = computed(() => {
   if (!isGood.value) return "";
