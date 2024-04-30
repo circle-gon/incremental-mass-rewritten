@@ -31,6 +31,7 @@ function defaultStart() {
       ratio: Array(PARTICLES.length).fill(1),
       particles: Array(PARTICLES.length).fill(Decimal.dZero),
       powers: Array(PARTICLES.length).fill(Decimal.dZero),
+      elements: [],
       unlocked: false,
     },
     quotes: [],

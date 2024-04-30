@@ -43,13 +43,13 @@
           Enter Challenge
         </button>
         <p style="line-height: 1">{{ chalText }}</p>
-        <span class="red">{{ isGood ? unref(current.desc) : "" }}</span
+        <span class="red">{{ unref(current.desc) }}</span
         ><br />
         <span class="red">{{
-          isGood ? challengeResetText(player.challenge.chosen) : ""
+          challengeResetText(player.challenge.chosen)
         }}</span>
         <p>{{ goalText }}</p>
-        <span class="green">{{ isGood ? unref(current.reward) : "" }}</span
+        <span class="green">{{ unref(current.reward) }}</span
         ><br />
         <template v-if="current.firstTime">
           <span class="yellow">{{ unref(current.firstTime) }}</span>

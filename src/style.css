@@ -173,12 +173,14 @@ p {
 }
 
 .btn:not(.locked):hover,
-.img-btn:not(.locked):not(.bought):hover {
+.img-btn:not(.locked):not(.bought):hover,
+.elements:not(.locked):not(.bought):hover {
   background-color: #555;
 }
 
 .btn.locked,
-.img-btn.locked {
+.img-btn.locked,
+.elements.locked {
   background-color: #171717;
   cursor: default;
 }
@@ -189,6 +191,7 @@ p {
   transition-duration: 0.15s;
 }
 
+.elements.bought,
 .img-btn.bought {
   background-color: #00520b;
   cursor: default;
@@ -209,6 +212,13 @@ p {
   66.7% {
     color: limegreen;
   }
+}
+
+.elements {
+  font-size: var(--elem-symbol-size);
+  width: 50px;
+  height: 50px;
+  background-color: #444;
 }
 
 /* TODO: upload fonts */

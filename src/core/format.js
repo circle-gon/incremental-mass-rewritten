@@ -4,7 +4,7 @@ import { player } from "./save";
 import { TPS, mlt } from "./utils";
 
 const GREEK = "βζλψΣΘΨω";
-const ELEMENT_LIST = [
+export const ELEMENT_FORMAT_LIST = [
   ["H"],
   ["He", "Li", "Be", "B", "C", "N", "O", "F"],
   ["Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl"],
@@ -230,7 +230,7 @@ const FORMATS = {
 
       return elem > 118
         ? this.beyondOg(elem)
-        : ELEMENT_LIST[group - 1][elemRel];
+        : ELEMENT_FORMAT_LIST[group - 1][elemRel];
     },
     beyondOg(x) {
       const log = Math.floor(Math.log10(x));

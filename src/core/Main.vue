@@ -57,8 +57,7 @@ const bhText = computed(() => {
 <style scoped>
 #main {
   height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: auto;
   position: relative;
 }
 
