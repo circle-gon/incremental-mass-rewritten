@@ -12,6 +12,7 @@ import {
 } from "../core/format";
 import { atomReset } from "../atom/atom";
 import { dilate } from "../core/utils";
+import { hasElement } from "../atom/elements";
 
 export const CHALLENGES = [
   {
@@ -35,9 +36,15 @@ export const CHALLENGES = [
     }),
     eff: computed(() => {
       const comps = player.challenge.comps[0];
-      return comps.pow(0.8).pow_base(0.95);
+      return {
+        linear: comps.pow(0.8).pow_base(0.95),
+        amount: dilate(comps, 1 / 3).div(300).add(1)
+      };
     }),
-    effDesc: (x) => `${formatReduction(x)}`,
+    effDesc: (x) => {
+      const second = hasElement(7) ? `, ${formatReduction(x.amount.recip())} to amount scaling` : ""
+      return `${formatReduction(x.linear)} to linear scaling` + second
+    },
   },
   {
     title: "Anti-Tickspeed",
@@ -135,7 +142,9 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      return new Decimal(50);
+      let max = new Decimal(100);
+      if (hasElement(4)) max = max.add(50)
+      return max
     }),
     eff: computed(() => {
       return dilate(player.challenge.comps[4], 0.5).mul(0.02).add(1);
@@ -151,7 +160,7 @@ export const CHALLENGES = [
     unlocked: computed(() => player.challenge.comps[4].gte(1)),
     cost: costScaling({
       base: 1e35,
-      linear: 100,
+      linear: computed(() => hasElement(1) ? 5 : 100),
       quad: 1.1,
       amt: computed({
         get: () => player.challenge.comps[5],
@@ -161,13 +170,16 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      return new Decimal(50);
+      let max = new Decimal(100);
+      if (hasElement(4)) max = max.add(50)
+      return max
     }),
     eff: computed(() => {
       const comps = player.challenge.comps[5];
+      const better = hasElement(1) && !(inChallenge(1) || inChallenge(6))
       return {
         tickspeed: comps.mul(0.2),
-        bhc: comps.mul(0.1),
+        bhc: comps.mul(better ? 0.05 : 0.1),
       };
     }),
     effDesc: (x) =>
@@ -181,7 +193,7 @@ export const CHALLENGES = [
         `After completing this challenge ${formatInteger(16)} times, unlock Elements, a new subtab found in the Atom tab.`,
     ),
     reward: computed(
-      () => `Each completion adds ${formatInteger(4)} to challenges 1-4 cap.`,
+      () => `Each completion adds ${formatInteger(4)} to C${formatInteger(1)}-${formatInteger(4)} cap.`,
     ),
     unlocked: computed(() => player.challenge.comps[5].gte(1)),
     cost: costScaling({
@@ -196,13 +208,41 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      return new Decimal(50);
+      let max = new Decimal(100);
+      if (hasElement(4)) max = max.add(50)
+      return max
     }),
     eff: computed(() => {
       return player.challenge.comps[6].mul(4);
     }),
     effDesc: (x) => `+${formatInteger(x)}`,
   },
+  {
+    title: "White Hole",
+    desc: computed(() => `Dark Matter & Black Hole's mass gain is rooted by ${formatInteger(8)}.`),
+    firstTime: computed(() => `After completing this challenge once, unlock up to ${formatInteger(3)} rows of Elements`),
+    reward: "Raise Dark Matter & Black Hole's mass gain multiplier based on completions.",
+    unlocked: computed(() => player.challenge.comps[6].gte(1)),
+    cost: costScaling({
+      base: 1e29,
+      linear: 50,
+      quad: 1.1,
+      amt: computed({
+        get: () => player.challenge.comps[7],
+        set: (v) => (player.challenge.comps[7] = v),
+      }),
+      res: computed(() => player.dm.mass),
+      spend: false,
+    }),
+    max: computed(() => {
+      return new Decimal(50);
+    }),
+    eff: computed(() => {
+      const comps = player.challenge.comps[7]
+      return comps.add(1).log10().mul(0.05).add(1).pow(2);
+    }),
+    effDesc: (x) => `^${format(x)}`,
+  }
 ];
 
 function challengeReset(num) {

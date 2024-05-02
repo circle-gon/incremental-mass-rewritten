@@ -14,7 +14,7 @@
         .</span
       ><br /><br />
       Black Hole's mass gain formula - (x + 1)<sup>{{ format(bhExpo) }}</sup> *
-      <span>{{ format(bhMulti) }}</span>
+      <span>{{ format(bhMulti) }}</span><sup v-if="bhMultiExpo.gt(1)">{{ format(bhMultiExpo) }}</sup>
     </div>
   </div>
   <br /><br />
@@ -24,5 +24,5 @@
 import Building from "./Building.vue";
 import { player } from "../core/save";
 import { formatMass, formatGain, formatMult, format } from "../core/format";
-import { bhMulti, bhExpo, bhGain, bhEffect } from "./dm";
+import { bhMulti, bhMultiExpo, bhExpo, bhGain, bhEffect } from "./dm";
 </script>

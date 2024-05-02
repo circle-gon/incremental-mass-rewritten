@@ -691,7 +691,7 @@ export function formatTime(e, acc = 2, type = "s") {
 
 export function formatReduction(ex) {
   const e = new Decimal(ex);
-  if (e.lte(0.1)) return "/" + format(e.recip());
+  if (e.lte(0.001)) return "/" + format(e.recip());
   return "-" + format(e.neg().add(1).mul(100)) + "%";
 }
 

@@ -6,7 +6,7 @@ import { rageResetCore } from "./rage";
 import { showPopup, showQuote } from "../core/popups";
 import { hasUpgrade, resetUpgrades, upgradeEffect } from "./upgrades";
 import { powerEffect } from "../atom/atom";
-import { inChallenge } from "./challenges";
+import { challengeEffect, inChallenge } from "./challenges";
 
 const canDMReset = computed(() => {
   if (inChallenge(6)) return player.mass.gte(1e200);
@@ -20,6 +20,7 @@ export const darkMatterGain = computed(() => {
   if (inChallenge(6)) base = player.mass.div(1e200).root(8);
 
   base = base.mul(powerEffect(1, 0));
+  if (inChallenge(7)) base = base.root(8)
 
   return base.floor();
 });
@@ -56,13 +57,20 @@ export const bhMulti = computed(() => {
   return base;
 });
 
+export const bhMultiExpo = computed(() => {
+  return challengeEffect(7)
+})
+
 export const bhExpo = computed(() => {
   return 0.33;
 });
 
 export const bhGain = computed(() => {
   const self = player.dm.mass.add(1).pow(bhExpo.value);
-  return bhMulti.value.mul(self);
+  const multi = bhMulti.value.pow(bhMultiExpo.value)
+  let gain = multi.mul(self);
+  if (inChallenge(7)) gain = gain.root(8)
+  return gain
 });
 
 export const bhEffect = computed(() => {

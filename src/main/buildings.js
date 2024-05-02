@@ -13,6 +13,7 @@ import { hasUpgrade, upgradeEffect } from "./upgrades";
 import { player } from "../core/save";
 import { challengeEffect, inChallenge } from "./challenges";
 import { atomicPowerEffect, powerEffect } from "../atom/atom";
+import { elementEffect, hasElement } from "../atom/elements";
 
 function upgrade(result) {
   return {
@@ -235,6 +236,7 @@ export const BUILDINGS = {
       if (hasRankReward(2, 1)) power = power.add(rankReward(2, 1));
       if (hasUpgrade("atom", 8)) power = power.add(0.05);
       if (hasRankReward(1, 6)) power = power.add(0.05);
+      if (hasElement(3)) power = power.mul(elementEffect(3))
 
       let effect = power.mul(amt).add(1);
       if (hasUpgrade("dm", 8)) effect = effect.add(upgradeEffect("dm", 8));
@@ -253,9 +255,11 @@ export const BUILDINGS = {
     cost: costScaling({
       amtScale: (a) => {
         let amt = a;
-        if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
-        if (hasUpgrade("rp", 13)) amt = amt.sub(50);
+        if (hasElement(7)) amt = amt.div(challengeEffect(0).amount)
+        if (hasRankReward(2, 4)) amt = amt.div(rankReward(2, 4))
         if (inChallenge(5)) amt = amt.mul(5);
+        if (hasUpgrade("rp", 13)) amt = amt.sub(50);
+        if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
         return amt;
       },
       amtInvert: (a) => {
@@ -263,6 +267,8 @@ export const BUILDINGS = {
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).div(2).add(25);
         if (hasUpgrade("rp", 13)) amt = amt.add(50);
         if (inChallenge(5)) amt = amt.div(5);
+        if (hasRankReward(2, 4)) amt = amt.mul(rankReward(2, 4))
+        if (hasElement(7)) amt = amt.mul(challengeEffect(0).amount)
         return amt;
       },
       costScale: (c) => {
@@ -278,7 +284,7 @@ export const BUILDINGS = {
       base: 1,
       linear: computed(() => {
         let base = Decimal.dTwo;
-        base = base.pow(challengeEffect(0));
+        base = base.pow(challengeEffect(0).linear);
         return base;
       }),
       quad: 1.015,
@@ -359,10 +365,12 @@ export const BUILDINGS = {
     formatPower: (x) => formatMult(x),
     formatEffect: (x) => `${formatMult(x)} to Black Hole's mass gain`,
     effect(amt) {
+      const better = hasElement(1) && !(inChallenge(1) || inChallenge(6))
       let power = Decimal.dTwo;
       power = power.add(powerEffect(1, 1));
+      if (better) power = power.add(challengeEffect(5).bhc);
       if (hasUpgrade("dm", 1)) power = power.mul(upgradeEffect("dm", 1));
-      power = power.add(challengeEffect(5).bhc);
+      if (!better) power = power.add(challengeEffect(5).bhc);
 
       return {
         power,

@@ -8,6 +8,7 @@ import { dmResetCore } from "../main/dm";
 import { hasUpgrade, resetUpgrades, upgradeEffect } from "../main/upgrades";
 import { format, formatMult, formatPercent } from "../core/format";
 import { hasRankReward, rankReward } from "../main/ranks";
+import { elementEffect, hasElement } from "./elements";
 
 const REQUIRE = uni(1e90);
 
@@ -26,10 +27,13 @@ export const atomGain = computed(() => {
 export const quarkGain = computed(() => {
   if (!canAtomReset.value) return Decimal.dZero;
 
-  let base = atomGain.value.log10().add(1).pow(1.1);
+  let base = hasElement(0) 
+    ? atomGain.value.root(10) 
+    : atomGain.value.log10().add(1).pow(1.1);
   if (hasUpgrade("dm", 12)) base = base.mul(10);
   if (hasUpgrade("atom", 7)) base = base.mul(upgradeEffect("atom", 7));
   if (hasRankReward(0, 13)) base = base.mul(rankReward(0, 13));
+  if (hasElement(5)) base = base.mul(elementEffect(5))
   return base.floor();
 });
 
@@ -92,6 +96,7 @@ export function powerEffect(i, j) {
 
 export const atomicPowerGain = computed(() => {
   let base = buildingEffect("cosmic");
+  if (hasElement(2)) base = base.mul(elementEffect(2))
   return base;
 });
 

@@ -19,11 +19,13 @@ export const massGain = computed(() => {
   if (hasUpgrade("rp", 12)) gain = gain.mul(upgradeEffect("rp", 12));
   gain = gain.mul(powerEffect(0, 0));
   gain = gain.mul(powerEffect(2, 1));
+  if (hasRankReward(0, 14)) gain = gain.mul(rankReward(0, 14))
 
   if (hasRankReward(1, 1)) gain = gain.pow(1.1);
   if (inChallenge(2)) gain = gain.pow(0.7);
   else gain = gain.pow(challengeEffect(2));
   if (hasRankReward(0, 12)) gain = gain.pow(1.02);
+  if (hasRankReward(2, 5)) gain = gain.pow(1.02)
 
   return gain;
 });

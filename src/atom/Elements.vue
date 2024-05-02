@@ -3,11 +3,11 @@
     <template v-if="elemSelected !== -1">
       <span class="sky"
         ><b>[{{ ELEMENT_FULL_LIST[elemSelected] }}]</b>
-        {{ selected.desc }}</span
+        {{ unref(selected.desc) }}.</span
       ><br />
-      Cost: <span>{{ formatInteger(selected.cost) }}</span
+      Cost: <span>{{ formatInteger(selected.cost) }} Quarks</span
       ><br />
-      <span class="green" v-if="selected.effDesc">{{
+      <span class="green" v-if="selected.effDesc">Currently: {{
         selected.effDesc(selected.eff.value)
       }}</span>
     </template>
@@ -17,7 +17,9 @@
     <div class="table-center" v-for="order in elemOrder">
       <template v-for="{ char, idx } in order">
         <template v-if="char === '_' || !isNaN(char)">
-          <div style="width: 50px; height: 50px">
+          <div style="width: 50px; height: 50px" :style="{
+            visibility: idx < elementsUnlocked ? 'visible' : 'hidden'
+          }">
             <template v-if="!isNaN(char)">
               <br />{{ ELEMENT_ASTERISK[char] }}
             </template>
@@ -29,6 +31,9 @@
             :class="{
               bought: hasElement(idx),
               locked: !canBuyElement(idx),
+            }"
+            :style="{
+              visibility: idx < elementsUnlocked ? 'visible' : 'hidden'
             }"
             @click="buyElement(idx)"
             @mouseover="elemSelected = idx"
@@ -53,9 +58,10 @@ import {
   hasElement,
   canBuyElement,
   buyElement,
+  elementsUnlocked
 } from "./elements";
 import { formatInteger } from "../core/format";
-import { computed } from "vue";
+import { computed, unref } from "vue";
 
 const selected = computed(() => ELEMENT_UPGRADES[elemSelected.value]);
 

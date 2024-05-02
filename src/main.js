@@ -22,7 +22,7 @@ function loop() {
     player.mass = massGain.value.mul(diff).add(player.mass);
     if (player.dm.unlocked)
       player.dm.mass = bhGain.value.mul(diff).add(player.dm.mass);
-    if (hasUpgrade("dm", 5))
+    if (hasUpgrade("dm", 5) || hasUpgrade("atom", 5))
       player.rage.power = ragePowerGain.value.mul(diff).add(player.rage.power);
     if (player.ranks[0].gte(175)) player.challenge.unlocked = true;
     if (player.atom.unlocked) {

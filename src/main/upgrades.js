@@ -259,7 +259,7 @@ export const UPGRADES = {
       {
         desc: computed(
           () =>
-            `Gain ${formatPercent(1, 0)} of Dark Matter gained from reset per second. Divide BH Condenser cost based on Atomic Power.`,
+            `Gain ${formatPercent(1, 0)} of Dark Matter and Rage Power gained from reset per second. Divide BH Condenser cost based on Atomic Power.`,
         ),
         cost: 1e14,
         eff: computed(() =>

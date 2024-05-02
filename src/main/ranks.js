@@ -14,6 +14,7 @@ import { hasUpgrade, upgradeEffect } from "./upgrades";
 import { showQuote } from "../core/popups";
 import { challengeEffect, inChallenge } from "./challenges";
 import { dilate } from "../core/utils";
+import { hasElement } from "../atom/elements";
 
 export const RANKS = [
   {
@@ -24,10 +25,11 @@ export const RANKS = [
     cost: costScaling({
       amtScale: (a) => {
         let amt = a;
-        if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
-        if (hasRankReward(2, 0)) amt = amt.mul(0.9);
-        amt = amt.div(challengeEffect(4));
+        if (hasElement(7)) amt = amt.div(challengeEffect(0).amount)
         if (hasRankReward(2, 3)) amt = amt.div(rankReward(2, 3));
+        amt = amt.div(challengeEffect(4));
+        if (hasRankReward(2, 0)) amt = amt.mul(0.9);
+        if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
         return amt;
       },
       amtInvert: (a) => {
@@ -36,6 +38,7 @@ export const RANKS = [
         if (hasRankReward(2, 0)) amt = amt.div(0.9);
         amt = amt.mul(challengeEffect(4));
         if (hasRankReward(2, 3)) amt = amt.mul(rankReward(2, 3));
+        if (hasElement(7)) amt = amt.mul(challengeEffect(0).amount)
         return amt;
       },
       costScale: (c) => {
@@ -53,7 +56,7 @@ export const RANKS = [
         let base = new Decimal(7);
         if (hasRankReward(1, 0)) base = base.pow(0.9);
         if (hasUpgrade("rp", 9)) base = base.pow(0.8);
-        base = base.pow(challengeEffect(0));
+        base = base.pow(challengeEffect(0).linear);
         return base;
       }),
       quad: 1.01,
@@ -155,6 +158,16 @@ export const RANKS = [
         eff: computed(() => player.ranks[0].add(1).sqrt()),
         effDesc: (x) => formatMult(x),
       },
+      {
+        require: 1950,
+        desc: "Boost Mass gain based on Rank",
+        eff: computed(() => {
+          let base = player.ranks[0].sub(1949).pow(0.75).pow_base(1e6)
+          if (hasRankReward(1, 7)) base = base.pow(rankReward(1, 7))
+          return base
+        }),
+        effDesc: x => formatMult(x)
+      }
     ],
   },
   {
@@ -183,7 +196,7 @@ export const RANKS = [
 
         let cost = base.add(2).sqr();
         if (hasUpgrade("atom", 9)) cost = cost.mul(0.7);
-        return cost.round();
+        return cost.ceil();
       },
       invert: (x) => {
         let base = x;
@@ -245,6 +258,12 @@ export const RANKS = [
           () => `Stronger's power is increased by ${format(0.05, 2)}`,
         ),
       },
+      {
+        require: 75,
+        desc: computed(() => `Raise Rank ${formatInteger(1950)}'s effect based on Tier`),
+        eff: computed(() => player.ranks[1].sub(74).div(30).add(1).pow(0.3)),
+        effDesc: x => `^${format(x)}`
+      }
     ],
   },
   {
@@ -259,8 +278,16 @@ export const RANKS = [
       }),
       res: computed(() => player.ranks[1]),
       spend: false,
-      cost: (amt) => amt.pow(2).mul(3).add(23),
-      invert: (res) => res.sub(23).div(3).max(0).sqrt(),
+      cost: (a) => {
+        let amt = a
+        if (hasElement(8)) amt = amt.mul(0.85)
+        return amt.pow(2).mul(3).add(23).ceil()
+      },
+      invert: (res) => {
+        let amt = res.sub(23).div(3).max(0).sqrt()
+        if (hasElement(8)) amt = amt.div(0.85)
+        return amt
+      },
     }),
     rewards: [
       {
@@ -292,6 +319,16 @@ export const RANKS = [
         ),
         effDesc: (x) => formatReduction(x.recip()),
       },
+      {
+        require: 5,
+        desc: "Tickspeed scales slower based on Tetr",
+        eff: computed(() => dilate(player.ranks[2], 1 / 3).mul(0.02).add(1)),
+        effDesc: x => formatReduction(x.recip())
+      },
+      {
+        require: 7,
+        desc: computed(() => `Raise Mass gain by ${format(1.02, 2)}`)
+      }
     ],
   },
 ];
