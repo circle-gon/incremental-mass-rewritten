@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { player } from "../core/save";
-import { uni } from "../core/utils";
+import { dilate, uni } from "../core/utils";
 import Decimal from "break_eternity.js";
 import { showPopup, showQuote } from "../core/popups";
 import { buildingEffect, resetBuilding } from "../main/buildings";
@@ -21,6 +21,7 @@ export const atomGain = computed(() => {
 
   let base = player.dm.mass.div(REQUIRE).root(5);
   if (hasUpgrade("rp", 14)) base = base.mul(upgradeEffect("rp", 14));
+  if (hasElement(16)) base = base.pow(1.05)
   return base.floor();
 });
 
@@ -87,6 +88,7 @@ export function assignParticles() {
 export function powerGain(i) {
   let base = player.atom.particles[i].pow(2);
   if (hasUpgrade("atom", 6)) base = base.mul(upgradeEffect("atom", 6));
+  if (hasElement(11)) base = base.pow(dilate(base.add(1).log10(), 1 / 3).div(100).add(1))
   return base;
 }
 
@@ -122,18 +124,6 @@ export const PARTICLES = [
     name: "Neutron",
     effect: computed(() => {
       const amt = player.atom.powers[1];
-      return [amt.add(1), amt.add(1).log10().mul(0.04)];
-    }),
-    desc: (eff) => [
-      `Boost Dark Matter gain by ${formatMult(eff[0])}`,
-      `Increase BH Condenser power by ${format(eff[1])}`,
-    ],
-    color: "#ff0",
-  },
-  {
-    name: "Electron",
-    effect: computed(() => {
-      const amt = player.atom.powers[2];
       const mass = player.mass.add(1).log10().add(1).pow(1.25);
       const rage = player.rage.power.add(1).log10().add(1).pow(0.2).sub(1);
       const amtboost = amt.add(1).log10().add(1).pow(0.4).sub(1);
@@ -142,6 +132,18 @@ export const PARTICLES = [
     desc: (eff) => [
       `Boost Rage Power gain by ${formatMult(eff[0])}`,
       `Boost Mass gain based on Rage Power - ${formatMult(eff[1])}`,
+    ],
+    color: "#ff0",
+  },
+  {
+    name: "Electron",
+    effect: computed(() => {
+      const amt = player.atom.powers[2];
+      return [amt.add(1), amt.add(1).log10().mul(0.04)];
+    }),
+    desc: (eff) => [
+      `Boost Dark Matter gain by ${formatMult(eff[0])}`,
+      `Increase BH Condenser power by ${format(eff[1])}`,
     ],
     color: "#f00",
   },

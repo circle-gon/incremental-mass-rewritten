@@ -210,7 +210,8 @@ export const UPGRADES = {
         desc: "Black Hole's mass gain is boosted by Neutron Power.",
         cost: "1e335",
         unlocked: computed(() => player.atom.unlocked),
-        eff: computed(() => player.atom.powers[2].add(1)),
+        // INFLATION
+        eff: computed(() => dilate(player.atom.powers[2].add(1), 0.5).pow(4)),
         effDesc: (x) => formatMult(x),
       },
       {

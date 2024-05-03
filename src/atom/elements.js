@@ -1,5 +1,5 @@
 import { computed, ref } from "vue";
-import { ELEMENT_FORMAT_LIST, formatInteger, formatMult, formatPercent } from "../core/format";
+import { ELEMENT_FORMAT_LIST, format, formatInteger, formatMult, formatPercent } from "../core/format";
 import { player } from "../core/save";
 import { dilate } from "../core/utils";
 import Decimal from "break_eternity.js";
@@ -143,7 +143,8 @@ export const ELEMENT_UPGRADES = [
   {
     desc: "Atomic Power gain is boosted by Electron Powers",
     cost: 1e22,
-    eff: computed(() => player.atom.powers[2].add(1).sqrt()),
+    // INFLATION
+    eff: computed(() => 1 /*player.atom.powers[2].add(1).sqrt()*/),
     effDesc: x => formatMult(x)
   },
   {
@@ -170,7 +171,11 @@ export const ELEMENT_UPGRADES = [
   {
     desc: "Multiply effective completions in Carbon's effect based on the number of elements bought",
     cost: 1e37,
-    eff: computed(() => player.atom.elements.length + 1),
+    eff: computed(() => {
+      let eff = player.atom.elements.length + 1
+      if (hasElement(10)) eff **= 2
+      return eff
+    }),
     effDesc: x => formatMult(x)
   },
   {
@@ -180,6 +185,55 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(() => `Tetr scales ${formatPercent(0.15, 0)} slower`),
     cost: 5e45
+  },
+  {
+    desc: computed(() => `C${formatInteger(3)} and C${formatInteger(4)}'s rewards are stronger`),
+    cost: 5e47
+  },
+  {
+    desc: "Nitrogen's multiplier is squared",
+    cost: 5e53
+  },
+  {
+    desc: "Particle Power gain is improved",
+    cost: 2.5e57
+  },
+  {
+    desc: computed(() => `Increase C${formatInteger(5)} and C${formatInteger(6)} cap for every C${formatInteger(7)} completion past ${formatInteger(100)}`),
+    cost: 1e65,
+    eff: computed(() => player.challenge.comps[6].sub(100).max(0)),
+    effDesc: x => `+${formatInteger(x)}`
+  },
+  {
+    desc: computed(() => `Automatically gain a percentage of Quarks gained from reset passively`),
+    cost: 6.9e69,
+    eff: computed(() => {
+      let eff = 0.25
+      if (hasElement(15)) eff += elementEffect(15)
+      return eff
+    }),
+    effDesc: x => formatPercent(x, 0)
+  },
+  {
+    desc: computed(() => `BH Condenser and Cosmic Ray scale ${formatPercent(0.05, 0)} slower`),
+    cost: 5e70
+  },
+  {
+    desc: computed(() => `Increase Silicon's effect by ${formatPercent(0.02, 0)} for every element bought`),
+    // TODO: is this balanced?
+    cost: 1e77,
+    eff: computed(() => 0.02 * player.atom.elements.length),
+    effDesc: x => `+${formatPercent(x)}`
+  },
+  {
+    desc: computed(() => `Raise Atom gain by ${format(1.05, 2)}`),
+    cost: 2.5e78
+  },
+  {
+    desc: "Auto-buy Cosmic Ray, and it raises the Tickspeed effect",
+    cost: 5e86,
+    eff: computed(() => dilate(player.buildings.cosmic, 1 / 3).div(500).add(1)),
+    effDesc: x => `^${format(x)}`
   }
 ];
 
@@ -191,7 +245,8 @@ ELEMENT_UPGRADES.push(...Array(118 - ELEMENT_UPGRADES.length).fill({
 export const elementsUnlocked = computed(() => {
   let unl = 0
   if (player.challenge.comps[6].gte(16)) unl += 4
-  if (player.challenge.comps[7].gte(1)) unl += 16
+  if (player.challenge.comps[7].gte(1)) unl += 14
+  if (hasElement(17)) unl += 3
   return unl
 })
 

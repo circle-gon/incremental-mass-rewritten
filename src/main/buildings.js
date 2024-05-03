@@ -316,6 +316,7 @@ export const BUILDINGS = {
 
       let effect = power.pow(amt);
       if (hasRankReward(2, 2)) effect = effect.pow(1.05);
+      if (hasElement(17)) effect = effect.pow(elementEffect(17))
 
       return {
         power,
@@ -331,11 +332,13 @@ export const BUILDINGS = {
       amtScale: (a) => {
         let amt = a;
         if (inChallenge(5)) amt = amt.mul(5);
+        if (hasElement(14)) amt = amt.mul(0.95)
         return amt;
       },
       amtInvert: (a) => {
         let amt = a;
         if (inChallenge(5)) amt = amt.div(5);
+        if (hasElement(14)) amt = amt.div(0.95)
         return amt;
       },
       base: computed(() => {
@@ -367,7 +370,7 @@ export const BUILDINGS = {
     effect(amt) {
       const better = hasElement(1) && !(inChallenge(1) || inChallenge(6))
       let power = Decimal.dTwo;
-      power = power.add(powerEffect(1, 1));
+      power = power.add(powerEffect(2, 1));
       if (better) power = power.add(challengeEffect(5).bhc);
       if (hasUpgrade("dm", 1)) power = power.mul(upgradeEffect("dm", 1));
       if (!better) power = power.add(challengeEffect(5).bhc);
@@ -381,8 +384,18 @@ export const BUILDINGS = {
   cosmic: upgrade({
     name: "Cosmic Ray",
     unlocked: computed(() => player.atom.unlocked),
-    autoUnlocked: computed(() => false),
+    autoUnlocked: computed(() => hasElement(17)),
     cost: costScaling({
+      amtScale: a => {
+        let amt = a
+        if (hasElement(14)) amt = amt.mul(0.95)
+        return amt
+      },
+      amtInvert: a => {
+        let amt = a
+        if (hasElement(14)) amt = amt.div(0.95)
+        return amt
+      },
       base: computed(() => {
         let base = Decimal.dOne;
         return base;

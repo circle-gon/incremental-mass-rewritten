@@ -19,7 +19,7 @@ export const darkMatterGain = computed(() => {
   let base = player.rage.power.div(1e22).root(4);
   if (inChallenge(6)) base = player.mass.div(1e200).root(8);
 
-  base = base.mul(powerEffect(1, 0));
+  base = base.mul(powerEffect(2, 0));
   if (inChallenge(7)) base = base.root(8)
 
   return base.floor();

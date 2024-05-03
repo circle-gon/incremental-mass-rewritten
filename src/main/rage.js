@@ -18,7 +18,7 @@ export const ragePowerGain = computed(() => {
   if (hasRankReward(1, 4)) base = base.mul(rankReward(1, 4));
   if (hasUpgrade("dm", 5)) base = base.mul(upgradeEffect("dm", 5));
   if (hasRankReward(0, 11)) base = base.mul(rankReward(0, 11));
-  base = base.mul(powerEffect(2, 0));
+  base = base.mul(powerEffect(1, 0));
 
   if (inChallenge(3)) base = base.root(10);
   else base = base.pow(challengeEffect(3));

@@ -9,7 +9,8 @@ import { hasUpgrade, upgradeAuto } from "./main/upgrades";
 import { rankAuto } from "./main/ranks";
 import { bhGain, darkMatterGain } from "./main/dm";
 import { ragePowerGain } from "./main/rage";
-import { PARTICLES, atomicPowerGain, powerGain } from "./atom/atom";
+import { PARTICLES, atomicPowerGain, powerGain, quarkGain } from "./atom/atom";
+import { elementEffect, hasElement } from "./atom/elements";
 
 function loop() {
   const now = Date.now();
@@ -17,7 +18,7 @@ function loop() {
   player.lastUpdate = now;
   TPS.value = 1 / diff;
 
-  if (!player.options.paused) {
+  if (!(import.meta.env.DEV && player.options.paused)) {
     player.time += diff;
     player.mass = massGain.value.mul(diff).add(player.mass);
     if (player.dm.unlocked)
@@ -38,6 +39,10 @@ function loop() {
       player.dm.darkMatter = darkMatterGain.value
         .mul(diff)
         .add(player.dm.darkMatter);
+    if (hasElement(13))
+      player.atom.quark = quarkGain.value
+        .mul(elementEffect(13) * diff)
+        .add(player.atom.quark)
   }
 
   upgradeAuto();

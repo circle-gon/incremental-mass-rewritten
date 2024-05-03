@@ -12,7 +12,7 @@ import {
 } from "../core/format";
 import { atomReset } from "../atom/atom";
 import { dilate } from "../core/utils";
-import { hasElement } from "../atom/elements";
+import { elementEffect, hasElement } from "../atom/elements";
 
 export const CHALLENGES = [
   {
@@ -95,7 +95,9 @@ export const CHALLENGES = [
     }),
     eff: computed(() => {
       const comps = player.challenge.comps[2];
-      return comps.add(1).log10().mul(0.05).add(1);
+      let eff = comps.add(1).log10().mul(0.05).add(1);
+      if (hasElement(9)) eff = eff.pow(1.25)
+      return eff
     }),
     effDesc: (x) => `^${format(x)}`,
   },
@@ -121,7 +123,9 @@ export const CHALLENGES = [
     }),
     eff: computed(() => {
       const comps = player.challenge.comps[3];
-      return comps.add(1).log10().mul(0.1).add(1);
+      let eff = comps.add(1).log10().mul(0.1).add(1);
+      if (hasElement(9)) eff = eff.pow(1.25)
+      return eff
     }),
     effDesc: (x) => `^${format(x)}`,
   },
@@ -144,6 +148,7 @@ export const CHALLENGES = [
     max: computed(() => {
       let max = new Decimal(100);
       if (hasElement(4)) max = max.add(50)
+      if (hasElement(12)) max = max.add(elementEffect(12))
       return max
     }),
     eff: computed(() => {
@@ -172,6 +177,7 @@ export const CHALLENGES = [
     max: computed(() => {
       let max = new Decimal(100);
       if (hasElement(4)) max = max.add(50)
+      if (hasElement(12)) max = max.add(elementEffect(12))
       return max
     }),
     eff: computed(() => {

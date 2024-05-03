@@ -7,6 +7,7 @@ import { bhGain, darkMatterGain, manualDMReset } from "../main/dm";
 import { hasUpgrade } from "../main/upgrades";
 import { uni } from "./utils";
 import { atomGain, manualAtomReset, quarkGain } from "../atom/atom";
+import { elementEffect, hasElement } from "../atom/elements";
 
 export default {
   mass: {
@@ -91,7 +92,9 @@ export default {
     show: computed(() => player.atom.unlocked),
     desc: computed(() => [
       formatInteger(player.atom.quark),
-      `(+${formatInteger(quarkGain.value)})`,
+      hasElement(13) 
+        ? formatGain(player.atom.quark, quarkGain.value.mul(elementEffect(13))) 
+        : `(+${formatInteger(quarkGain.value)})`,
     ]),
   },
 };
