@@ -146,7 +146,7 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      let max = new Decimal(100);
+      let max = new Decimal(75);
       if (hasElement(4)) max = max.add(50)
       if (hasElement(12)) max = max.add(elementEffect(12))
       return max
@@ -175,7 +175,7 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      let max = new Decimal(100);
+      let max = new Decimal(75);
       if (hasElement(4)) max = max.add(50)
       if (hasElement(12)) max = max.add(elementEffect(12))
       return max
@@ -214,8 +214,10 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      let max = new Decimal(100);
+      let max = new Decimal(75);
       if (hasElement(4)) max = max.add(50)
+      if (hasElement(12)) max = max.add(25)
+      if (hasElement(19)) max = max.add(50)
       return max
     }),
     eff: computed(() => {
@@ -230,7 +232,7 @@ export const CHALLENGES = [
     reward: "Raise Dark Matter & Black Hole's mass gain multiplier based on completions.",
     unlocked: computed(() => player.challenge.comps[6].gte(1)),
     cost: costScaling({
-      base: 1e29,
+      base: 1e27,
       linear: 50,
       quad: 1.1,
       amt: computed({

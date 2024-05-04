@@ -153,6 +153,15 @@ p {
   background-color: #172857;
 }
 
+.btn-tab.md {
+	color: #25ff30;
+	border-color: #25ff30;
+}
+
+.btn-tab.md:hover {
+	background-color: #0a470d;
+}
+
 .btn-tab.chosen {
   border-bottom-width: 6px;
 }
@@ -174,13 +183,13 @@ p {
 
 .btn:not(.locked):hover,
 .img-btn:not(.locked):not(.bought):hover,
-.elements:not(.locked):not(.bought):hover {
+.element:not(.locked):not(.bought):hover {
   background-color: #555;
 }
 
 .btn.locked,
 .img-btn.locked,
-.elements.locked {
+.element.locked {
   background-color: #171717;
   cursor: default;
 }
@@ -191,7 +200,7 @@ p {
   transition-duration: 0.15s;
 }
 
-.elements.bought,
+.element.bought,
 .img-btn.bought {
   background-color: #00520b;
   cursor: default;
@@ -212,13 +221,6 @@ p {
   66.7% {
     color: limegreen;
   }
-}
-
-.elements {
-  font-size: var(--elem-symbol-size);
-  width: 50px;
-  height: 50px;
-  background-color: #444;
 }
 
 /* TODO: upload fonts */

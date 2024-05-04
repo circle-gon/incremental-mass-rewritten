@@ -134,32 +134,32 @@ export const elemSelected = ref(-1);
 export const ELEMENT_UPGRADES = [
   {
     desc: "Improve Quark gain",
-    cost: 1e7,
+    cost: 5e7,
   },
   {
     desc: computed(() => `Reduce C${formatInteger(6)}'s scaling and strengthen its reward when not in C${formatInteger(2)} or C${formatInteger(7)}`),
-    cost: 5e12
+    cost: 5e13
   },
   {
     desc: "Atomic Power gain is boosted by Electron Powers",
-    cost: 1e22,
+    cost: 1e21,
     // INFLATION
-    eff: computed(() => 1 /*player.atom.powers[2].add(1).sqrt()*/),
+    eff: computed(() => dilate(player.atom.powers[2].add(1), 1 / 4).pow(10)),
     effDesc: x => formatMult(x)
   },
   {
     desc: "Stronger's power is boosted by Proton Powers",
-    cost: 1e27,
+    cost: 1e24,
     eff: computed(() => dilate(player.atom.powers[0].add(1).log10(), 1 / 3).div(200).add(1)),
     effDesc: x => formatMult(x)
   },
   {
-    desc: computed(() => `C${formatInteger(4)}-${formatInteger(7)} caps are increased by ${formatInteger(50)}`),
-    cost: 5e32
+    desc: computed(() => `C${formatInteger(5)}-${formatInteger(7)} caps are increased by ${formatInteger(50)}`),
+    cost: 1e28
   },
   {
     desc: computed(() => `Gain ${formatPercent(0.01, 0)} (additively) more Quarks per challenge completion`),
-    cost: 5e34,
+    cost: 2.5e30,
     eff: computed(() => {
       let comps = Decimal.dZero;
       for (const chal of CHALLENGES) comps = comps.add(chal.cost.amt.value)
@@ -170,7 +170,7 @@ export const ELEMENT_UPGRADES = [
   },
   {
     desc: "Multiply effective completions in Carbon's effect based on the number of elements bought",
-    cost: 1e37,
+    cost: 1e33,
     eff: computed(() => {
       let eff = player.atom.elements.length + 1
       if (hasElement(10)) eff **= 2
@@ -180,35 +180,35 @@ export const ELEMENT_UPGRADES = [
   },
   {
     desc: computed(() => `Add a new effect to C${formatInteger(1)}`),
-    cost: 1e39
+    cost: 5e34
   },
   {
     desc: computed(() => `Tetr scales ${formatPercent(0.15, 0)} slower`),
-    cost: 5e45
+    cost: 2.5e38
   },
   {
     desc: computed(() => `C${formatInteger(3)} and C${formatInteger(4)}'s rewards are stronger`),
-    cost: 5e47
+    cost: 2.5e40
   },
   {
     desc: "Nitrogen's multiplier is squared",
-    cost: 5e53
+    cost: 2.5e44
   },
   {
-    desc: "Particle Power gain is improved",
-    cost: 2.5e57
+    desc: "Particle Power gain is stronger",
+    cost: 5e46
   },
   {
-    desc: computed(() => `Increase C${formatInteger(5)} and C${formatInteger(6)} cap for every C${formatInteger(7)} completion past ${formatInteger(100)}`),
-    cost: 1e65,
+    desc: computed(() => `Increase C${formatInteger(5)} and C${formatInteger(6)} cap for every C${formatInteger(7)} completion past ${formatInteger(100)}, and its cap is increased by ${formatInteger(25)}`),
+    cost: 2.5e48,
     eff: computed(() => player.challenge.comps[6].sub(100).max(0)),
     effDesc: x => `+${formatInteger(x)}`
   },
   {
     desc: computed(() => `Automatically gain a percentage of Quarks gained from reset passively`),
-    cost: 6.9e69,
+    cost: 2.5e50,
     eff: computed(() => {
-      let eff = 0.25
+      let eff = 0.5
       if (hasElement(15)) eff += elementEffect(15)
       return eff
     }),
@@ -216,24 +216,35 @@ export const ELEMENT_UPGRADES = [
   },
   {
     desc: computed(() => `BH Condenser and Cosmic Ray scale ${formatPercent(0.05, 0)} slower`),
-    cost: 5e70
+    cost: 1e51
   },
   {
-    desc: computed(() => `Increase Silicon's effect by ${formatPercent(0.02, 0)} for every element bought`),
-    // TODO: is this balanced?
-    cost: 1e77,
-    eff: computed(() => 0.02 * player.atom.elements.length),
-    effDesc: x => `+${formatPercent(x)}`
+    desc: computed(() => `Increase Silicon's effect by ${formatPercent(0.04, 0)} for every element bought`),
+    cost: 1e56,
+    eff: computed(() => 0.04 * player.atom.elements.length),
+    effDesc: x => `+${formatPercent(x, 0)}`
   },
   {
-    desc: computed(() => `Raise Atom gain by ${format(1.05, 2)}`),
-    cost: 2.5e78
+    desc: computed(() => `Raise Atom gain by ${format(1.1, 2)}`),
+    cost: 1e57
   },
   {
     desc: "Auto-buy Cosmic Ray, and it raises the Tickspeed effect",
-    cost: 5e86,
+    cost: 5e64,
     eff: computed(() => dilate(player.buildings.cosmic, 1 / 3).div(500).add(1)),
     effDesc: x => `^${format(x)}`
+  },
+  {
+    desc: "The second Neutron effect is stronger",
+    cost: 1e66
+  },
+  {
+    desc: computed(() => `Increase C${formatInteger(7)}'s cap by ${formatInteger(50)}`),
+    cost: 2.5e70
+  },
+  {
+    desc: "Unlock Mass Dilation, a new subtab found in the Atom tab",
+    cost: 1e72
   }
 ];
 

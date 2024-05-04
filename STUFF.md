@@ -1,8 +1,8 @@
 # TODO
 
-- REBALANCE FROM DARK MATTER UPGRADE 14 TO STOP INFLATION
 - add a loading screen
 - add offline progress
+- fix grammar?
 
 # Balance
 

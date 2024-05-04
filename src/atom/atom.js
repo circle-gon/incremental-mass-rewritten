@@ -21,7 +21,7 @@ export const atomGain = computed(() => {
 
   let base = player.dm.mass.div(REQUIRE).root(5);
   if (hasUpgrade("rp", 14)) base = base.mul(upgradeEffect("rp", 14));
-  if (hasElement(16)) base = base.pow(1.05)
+  if (hasElement(16)) base = base.pow(1.1)
   return base.floor();
 });
 
@@ -125,8 +125,8 @@ export const PARTICLES = [
     effect: computed(() => {
       const amt = player.atom.powers[1];
       const mass = player.mass.add(1).log10().add(1).pow(1.25);
-      const rage = player.rage.power.add(1).log10().add(1).pow(0.2).sub(1);
-      const amtboost = amt.add(1).log10().add(1).pow(0.4).sub(1);
+      const rage = player.rage.power.add(1).log10().add(1).pow(hasElement(18) ? 0.25 : 0.2).sub(1);
+      const amtboost = amt.add(1).log10().add(1).pow(hasElement(18) ? 0.5 : 0.4).sub(1);
       return [amt.add(1).pow(2), mass.pow(rage.mul(amtboost))];
     }),
     desc: (eff) => [

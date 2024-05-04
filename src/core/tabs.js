@@ -8,7 +8,9 @@ import DM from "../main/DM.vue";
 import AtomicGenerator from "../atom/AtomicGenerator.vue";
 import Particles from "../atom/Particles.vue";
 import Elements from "../atom/Elements.vue";
+import MD from "../atom/MD.vue"
 import { player } from "./save";
+import { hasElement } from "../atom/elements";
 
 const tabs = [
   {
@@ -81,6 +83,12 @@ const tabs = [
         comp: Elements,
         unlocked: computed(() => player.challenge.comps[6].gte(16)),
       },
+      {
+        name: "Mass Dilation",
+        comp: MD,
+        class: "md",
+        unlocked: computed(() => hasElement(20))
+      }
     ],
   },
   {

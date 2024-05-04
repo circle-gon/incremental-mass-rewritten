@@ -76,7 +76,7 @@ export const RANKS = [
         require: 2,
         desc: computed(
           () =>
-            `unlock Booster, and reduce Muscler's scaling by ${formatPercent(
+            `unlock Booster, and reduce Muscler's linear scaling by ${formatPercent(
               0.2,
               0,
             )}`,
@@ -86,7 +86,7 @@ export const RANKS = [
         require: 3,
         desc: computed(
           () =>
-            `unlock Stronger, reduce Booster's scaling by ${formatPercent(
+            `unlock Stronger, reduce Booster's linear scaling by ${formatPercent(
               0.2,
               0,
             )}, and Muscler boosts itself`,
@@ -97,7 +97,7 @@ export const RANKS = [
       {
         require: 4,
         desc: computed(
-          () => `reduce Stronger's scaling by ${formatPercent(0.1, 0)}`,
+          () => `reduce Stronger's linear scaling by ${formatPercent(0.1, 0)}`,
         ),
       },
       {
@@ -212,7 +212,7 @@ export const RANKS = [
     rewards: [
       {
         require: 1,
-        desc: computed(() => `reduce Rank scaling by ${formatPercent(0.1, 0)}`),
+        desc: computed(() => `reduce Rank linear scaling by ${formatPercent(0.1, 0)}`),
       },
       {
         require: 2,
@@ -221,7 +221,7 @@ export const RANKS = [
       {
         require: 3,
         desc: computed(
-          () => `reduce Mass upgrade scalings by ${formatPercent(0.1, 0)}`,
+          () => `reduce Mass upgrade linear scalings by ${formatPercent(0.1, 0)}`,
         ),
       },
       {
@@ -253,7 +253,7 @@ export const RANKS = [
         effDesc: (x) => `^${format(x)}`,
       },
       {
-        require: 67,
+        require: 66,
         desc: computed(
           () => `Stronger's power is increased by ${format(0.05, 2)}`,
         ),
@@ -293,7 +293,7 @@ export const RANKS = [
       {
         require: 1,
         desc: computed(
-          () => `Reduce Rank and Tier scaling by ${formatPercent(0.1, 0)}`,
+          () => `Reduce Rank and Tier linear scaling by ${formatPercent(0.1, 0)}`,
         ),
       },
       {
@@ -310,7 +310,7 @@ export const RANKS = [
         require: 4,
         desc: computed(
           () =>
-            `Tier scales ${formatPercent(0.1, 0)} slower, and Rank scaling is reduced based on Tiers`,
+            `Tier scales ${formatPercent(0.1, 0)} slower, and Rank amount scaling is reduced based on Tiers`,
         ),
         eff: computed(() =>
           dilate(player.ranks[1], 1 / 3)

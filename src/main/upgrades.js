@@ -68,7 +68,7 @@ export const UPGRADES = {
       },
       {
         desc: computed(
-          () => `Reduce Rank scaling by ${formatPercent(0.2, 0)}.`,
+          () => `Reduce Rank linear scaling by ${formatPercent(0.2, 0)}.`,
         ),
         cost: 1e80,
         unlocked: computed(() => player.dm.unlocked),

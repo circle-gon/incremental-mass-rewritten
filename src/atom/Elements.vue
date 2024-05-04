@@ -27,7 +27,7 @@
         </template>
         <template v-if="char === 'x'">
           <button
-            class="elements"
+            class="element"
             :class="{
               bought: hasElement(idx),
               locked: !canBuyElement(idx),
@@ -87,3 +87,11 @@ const elemOrder = ELEMENT_MAP.split("v").map((i) => {
   return out;
 });
 </script>
+<style scoped>
+.element {
+  font-size: var(--elem-symbol-size);
+  width: 50px;
+  height: 50px;
+  background-color: #444;
+}
+</style>
