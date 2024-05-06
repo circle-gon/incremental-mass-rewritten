@@ -3,6 +3,7 @@
 - add a loading screen
 - add offline progress
 - fix grammar?
+- rewrite `formatGain` because it seems to be inaccurate as hell
 
 # Balance
 

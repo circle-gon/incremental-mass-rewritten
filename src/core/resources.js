@@ -92,8 +92,8 @@ export default {
     show: computed(() => player.atom.unlocked),
     desc: computed(() => [
       formatInteger(player.atom.quark),
-      hasElement(13) 
-        ? formatGain(player.atom.quark, quarkGain.value.mul(elementEffect(13))) 
+      hasElement(13)
+        ? formatGain(player.atom.quark, quarkGain.value.mul(elementEffect(13)))
         : `(+${formatInteger(quarkGain.value)})`,
     ]),
   },

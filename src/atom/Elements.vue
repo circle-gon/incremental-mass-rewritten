@@ -2,14 +2,13 @@
   <div style="min-height: 70px">
     <template v-if="elemSelected !== -1">
       <span class="sky"
-        ><b>[{{ ELEMENT_FULL_LIST[elemSelected] }}]</b>
+        ><b>[{{ ELEMENT_METADATA.fullNames[elemSelected] }}]</b>
         {{ unref(selected.desc) }}.</span
       ><br />
-      Cost: <span>{{ formatInteger(selected.cost) }} Quarks</span
-      ><br />
-      <span class="green" v-if="selected.effDesc">Currently: {{
-        selected.effDesc(selected.eff.value)
-      }}</span>
+      Cost: <span>{{ formatInteger(selected.cost) }} Quarks</span><br />
+      <span class="green" v-if="selected.effDesc"
+        >Currently: {{ selected.effDesc(selected.eff.value) }}</span
+      >
     </template>
   </div>
   <br />
@@ -17,11 +16,14 @@
     <div class="table-center" v-for="order in elemOrder">
       <template v-for="{ char, idx } in order">
         <template v-if="char === '_' || !isNaN(char)">
-          <div style="width: 50px; height: 50px" :style="{
-            visibility: idx < elementsUnlocked ? 'visible' : 'hidden'
-          }">
+          <div
+            style="width: 50px; height: 50px"
+            :style="{
+              visibility: idx < elementsUnlocked ? 'visible' : 'hidden',
+            }"
+          >
             <template v-if="!isNaN(char)">
-              <br />{{ ELEMENT_ASTERISK[char] }}
+              <br />{{ ELEMENT_METADATA.asterisk[char] }}
             </template>
           </div>
         </template>
@@ -33,14 +35,14 @@
               locked: !canBuyElement(idx),
             }"
             :style="{
-              visibility: idx < elementsUnlocked ? 'visible' : 'hidden'
+              visibility: idx < elementsUnlocked ? 'visible' : 'hidden',
             }"
             @click="buyElement(idx)"
             @mouseover="elemSelected = idx"
             @mouseleave="elemSelected = -1"
           >
             <div style="font-size: 12px">{{ idx + 1 }}</div>
-            {{ ELEMENT_LIST[idx] }}
+            {{ ELEMENT_METADATA.names[idx] }}
           </button>
         </template>
       </template>
@@ -49,16 +51,13 @@
 </template>
 <script setup>
 import {
-  ELEMENT_MAP,
-  ELEMENT_LIST,
-  ELEMENT_FULL_LIST,
-  ELEMENT_ASTERISK,
+  ELEMENT_METADATA,
   ELEMENT_UPGRADES,
   elemSelected,
   hasElement,
   canBuyElement,
   buyElement,
-  elementsUnlocked
+  elementsUnlocked,
 } from "./elements";
 import { formatInteger } from "../core/format";
 import { computed, unref } from "vue";
@@ -66,7 +65,7 @@ import { computed, unref } from "vue";
 const selected = computed(() => ELEMENT_UPGRADES[elemSelected.value]);
 
 let idx = 0;
-const elemOrder = ELEMENT_MAP.split("v").map((i) => {
+const elemOrder = ELEMENT_METADATA.map.split("v").map((i) => {
   const out = [];
 
   for (const char of i) {

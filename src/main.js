@@ -11,6 +11,7 @@ import { bhGain, darkMatterGain } from "./main/dm";
 import { ragePowerGain } from "./main/rage";
 import { PARTICLES, atomicPowerGain, powerGain, quarkGain } from "./atom/atom";
 import { elementEffect, hasElement } from "./atom/elements";
+import { MASS_DILATION } from "./atom/md";
 
 function loop() {
   const now = Date.now();
@@ -42,7 +43,11 @@ function loop() {
     if (hasElement(13))
       player.atom.quark = quarkGain.value
         .mul(elementEffect(13) * diff)
-        .add(player.atom.quark)
+        .add(player.atom.quark);
+    if (hasElement(20))
+      player.md.mass = MASS_DILATION.dilatedMassGain.value
+        .mul(diff)
+        .add(player.md.mass)
   }
 
   upgradeAuto();

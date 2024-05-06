@@ -9,6 +9,7 @@ import { hasUpgrade, resetUpgrades, upgradeEffect } from "../main/upgrades";
 import { format, formatMult, formatPercent } from "../core/format";
 import { hasRankReward, rankReward } from "../main/ranks";
 import { elementEffect, hasElement } from "./elements";
+import { MASS_DILATION } from "./md";
 
 const REQUIRE = uni(1e90);
 
@@ -21,20 +22,20 @@ export const atomGain = computed(() => {
 
   let base = player.dm.mass.div(REQUIRE).root(5);
   if (hasUpgrade("rp", 14)) base = base.mul(upgradeEffect("rp", 14));
-  if (hasElement(16)) base = base.pow(1.1)
+  if (hasElement(16)) base = base.pow(1.1);
   return base.floor();
 });
 
 export const quarkGain = computed(() => {
   if (!canAtomReset.value) return Decimal.dZero;
 
-  let base = hasElement(0) 
-    ? atomGain.value.root(10) 
+  let base = hasElement(0)
+    ? atomGain.value.root(10)
     : atomGain.value.log10().add(1).pow(1.1);
   if (hasUpgrade("dm", 12)) base = base.mul(10);
   if (hasUpgrade("atom", 7)) base = base.mul(upgradeEffect("atom", 7));
   if (hasRankReward(0, 13)) base = base.mul(rankReward(0, 13));
-  if (hasElement(5)) base = base.mul(elementEffect(5))
+  if (hasElement(5)) base = base.mul(elementEffect(5));
   return base.floor();
 });
 
@@ -88,7 +89,12 @@ export function assignParticles() {
 export function powerGain(i) {
   let base = player.atom.particles[i].pow(2);
   if (hasUpgrade("atom", 6)) base = base.mul(upgradeEffect("atom", 6));
-  if (hasElement(11)) base = base.pow(dilate(base.add(1).log10(), 1 / 3).div(100).add(1))
+  if (hasElement(11))
+    base = base.pow(
+      dilate(base.add(1).log10(), 1 / 3)
+        .div(100)
+        .add(1),
+    );
   return base;
 }
 
@@ -98,7 +104,8 @@ export function powerEffect(i, j) {
 
 export const atomicPowerGain = computed(() => {
   let base = buildingEffect("cosmic");
-  if (hasElement(2)) base = base.mul(elementEffect(2))
+  if (hasElement(2)) base = base.mul(elementEffect(2));
+  if (player.md.active) base = dilate(base, MASS_DILATION.penalty.value)
   return base;
 });
 
@@ -125,8 +132,18 @@ export const PARTICLES = [
     effect: computed(() => {
       const amt = player.atom.powers[1];
       const mass = player.mass.add(1).log10().add(1).pow(1.25);
-      const rage = player.rage.power.add(1).log10().add(1).pow(hasElement(18) ? 0.25 : 0.2).sub(1);
-      const amtboost = amt.add(1).log10().add(1).pow(hasElement(18) ? 0.5 : 0.4).sub(1);
+      const rage = player.rage.power
+        .add(1)
+        .log10()
+        .add(1)
+        .pow(hasElement(18) ? 0.25 : 0.2)
+        .sub(1);
+      const amtboost = amt
+        .add(1)
+        .log10()
+        .add(1)
+        .pow(hasElement(18) ? 0.5 : 0.4)
+        .sub(1);
       return [amt.add(1).pow(2), mass.pow(rage.mul(amtboost))];
     }),
     desc: (eff) => [

@@ -154,12 +154,12 @@ p {
 }
 
 .btn-tab.md {
-	color: #25ff30;
-	border-color: #25ff30;
+  color: #25ff30;
+  border-color: #25ff30;
 }
 
 .btn-tab.md:hover {
-	background-color: #0a470d;
+  background-color: #0a470d;
 }
 
 .btn-tab.chosen {
@@ -181,7 +181,12 @@ p {
   text-decoration: none;
 }
 
-.btn:not(.locked):hover,
+.btn.full {
+  width: 250px;
+  height: 120px;
+}
+
+.btn:not(.locked):not(.md):hover,
 .img-btn:not(.locked):not(.bought):hover,
 .element:not(.locked):not(.bought):hover {
   background-color: #555;

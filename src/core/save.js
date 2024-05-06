@@ -7,6 +7,7 @@ import { UPGRADES } from "../main/upgrades";
 import { notify } from "./popups";
 import { CHALLENGES } from "../main/challenges";
 import { PARTICLES } from "../atom/atom";
+import { MASS_DILATION } from "../atom/md";
 
 function defaultStart() {
   return {
@@ -33,6 +34,12 @@ function defaultStart() {
       powers: Array(PARTICLES.length).fill(Decimal.dZero),
       elements: [],
       unlocked: false,
+    },
+    md: {
+      active: false,
+      particle: Decimal.dZero,
+      mass: Decimal.dZero,
+      upgrades: Array(MASS_DILATION.upgrades.length).fill(Decimal.dZero)
     },
     quotes: [],
     options: {
@@ -142,7 +149,7 @@ export function load(str) {
     const result = JSON.parse(decompressFromBase64(str));
     decimalize(result, defaultStart());
     Object.assign(player, result);
-    player.options.paused = true
+    player.options.paused = true;
     save();
   } catch (e) {
     // don't panic on invalid saves
