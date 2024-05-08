@@ -295,6 +295,14 @@ export const UPGRADES = {
         eff: computed(() => player.ranks[1].pow10()),
         effDesc: (x) => `/${format(x)}`,
       },
+      {
+        desc: "TBD.",
+        cost: Infinity
+      },
+      {
+        desc: "TBD.",
+        cost: Infinity
+      }
     ],
   },
 };

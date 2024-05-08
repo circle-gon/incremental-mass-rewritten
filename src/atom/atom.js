@@ -111,6 +111,7 @@ export const atomicPowerGain = computed(() => {
 
 export const atomicPowerEffect = computed(() => {
   let base = player.atom.power.add(1).log2();
+  if (hasElement(22)) base = base.mul(1.5)
   return base.floor();
 });
 

@@ -31,7 +31,7 @@
         <template v-if="upg.max > 1">
           [Level {{ formatInteger(upg.cost.amt.value) }}{{ upg.max < Infinity ? " / " + formatInteger(upg.max) : "" }}]<br />
         </template>
-        {{  upg.desc }}.<br />
+        {{  unref(upg.desc) }}.<br />
         {{  upg.effDesc ? "Currently: " + upg.effDesc(upg.eff.value) : "" }}
       </div>
       {{ upg.cost.amt.value.lt(upg.max) ? ("Cost: " + formatMass(upg.cost.cost.value)) : ""}}
@@ -44,7 +44,7 @@ import Tooltip from "../core/Tooltip.vue";
 import { MASS_DILATION } from "./md";
 import { formatInteger, formatMass, formatMult, format, formatGain } from "../core/format";
 import { player } from "../core/save"
-import { computed } from "vue";
+import { computed, unref } from "vue";
 
 const dilateText = computed(() => {
   if (!player.md.active) return "Dilate Mass"

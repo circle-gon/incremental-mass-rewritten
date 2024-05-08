@@ -10,6 +10,7 @@ import { player } from "../core/save";
 import { dilate } from "../core/utils";
 import Decimal from "break_eternity.js";
 import { CHALLENGES } from "../main/challenges";
+import { MASS_DILATION } from "./md";
 
 // Element metadata
 export const ELEMENT_METADATA = {
@@ -286,9 +287,19 @@ export const ELEMENT_UPGRADES = [
     cost: 2.5e70,
   },
   {
-    desc: "Unlock Mass Dilation, a new subtab found in the Atom tab",
+    desc: "Unlock more Atom upgrades and Mass Dilation, a new subtab found in the Atom tab",
     cost: 1e72,
   },
+  {
+    desc: "Dilated Mass gain is boosted by Tickspeed",
+    cost: 1e98,
+    eff: computed(() => player.buildings.tickspeed.pow(2).div(4e4).add(1)),
+    effDesc: x => formatMult(x)
+  },
+  {
+    desc: computed(() => `Atomic Power gives ${formatPercent(0.5, 0)} more Tickspeed`),
+    cost: 1e107
+  }
 ];
 
 ELEMENT_UPGRADES.push(
@@ -303,6 +314,7 @@ export const elementsUnlocked = computed(() => {
   if (player.challenge.comps[6].gte(16)) unl += 4;
   if (player.challenge.comps[7].gte(1)) unl += 14;
   if (hasElement(17)) unl += 3;
+  if (MASS_DILATION.unlocked.value) unl += 15;
   return unl;
 });
 

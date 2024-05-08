@@ -1,11 +1,11 @@
 import { computed } from "vue";
-import { hasElement } from "./elements";
+import { elementEffect, hasElement } from "./elements";
 import Decimal from "break_eternity.js";
 import { player } from "../core/save";
 import { atomReset } from "./atom";
 import { costScaling } from "../core/cost";
-import { format, formatMult } from "../core/format";
-import { dilate } from "../core/utils";
+import { format, formatInteger, formatMult, formatReduction } from "../core/format";
+import { dilate, uni } from "../core/utils";
 
 const unlocked = computed(() => hasElement(20));
 const penalty = computed(() => 0.8);
@@ -70,7 +70,7 @@ const UPGRADES = createUpgrades([
     },
     eff: computed(() => {
       const amt = player.md.upgrades[1]
-      return amt.mul(0.03).add(1)
+      return amt.mul(0.02).add(1)
     }),
     effDesc: x => `^${format(x)}`
   },
@@ -78,6 +78,8 @@ const UPGRADES = createUpgrades([
     desc: "Double Relativistic Particle gain",
     max: Infinity,
     cost: {
+      amtScale: x => x.mul(effect(4)),
+      amtInvert: x => x.div(effect(4)),
       base: 1000,
       linear: 12,
       quad: 1.02
@@ -91,8 +93,30 @@ const UPGRADES = createUpgrades([
   {
     ...single(1.619e21),
     desc: "Stronger's power is boosted by dilated mass",
-    eff: computed(() => dilate(player.md.mass, 1 / 3).div(2500).add(1)),
+    eff: computed(() => dilate(player.md.mass.add(1).log10(), 1 / 3).div(140).add(1).pow(2)),
     effDesc: x => formatMult(x)
+  },
+  {
+    desc: computed(() => `Mass Dilation upgrade ${formatInteger(3)} scales slower`),
+    max: 3,
+    cost: {
+      base: 1.619e23,
+      linear: 1e6,
+      quad: 100
+    },
+    eff: computed(() => player.md.upgrades[4].mul(-0.1).add(1)),
+    effDesc: x => formatReduction(x)
+  },
+  {
+    desc: "Increase the exponent in the Relativistic Particle formula",
+    max: Infinity,
+    cost: {
+      base: uni(1e19),
+      linear: 25,
+      quad: 1.04
+    },
+    eff: computed(() => player.md.upgrades[5].mul(0.25)),
+    effDesc: x => `+^${format(x)}`
   }
 ]);
 
@@ -112,7 +136,7 @@ function effect(upg) {
   return UPGRADES[upg].eff.value
 }
 
-const rpExp = computed(() => 1);
+const rpExp = computed(() => effect(5).add(1));
 const rpMult = computed(() => effect(2));
 const rpGain = computed(() => {
   const base = player.mass.max(1).log10().div(50).sub(9).max(0).pow(rpExp.value).mul(rpMult.value)
@@ -123,9 +147,10 @@ const rpNextAt = computed(() => player.md.particle.add(1).div(rpMult.value).root
 const dilatedMassGain = computed(() => {
   let gain = player.md.particle.pow(2)
   gain = gain.mul(effect(0))
+  if (hasElement(21)) gain = gain.mul(elementEffect(21))
   return gain
 });
-const dilatedMassEffect = computed(() => player.md.mass.add(1).log10().div(3).add(1).sqrt().pow(effect(1)));
+const dilatedMassEffect = computed(() => player.md.mass.add(1).log10().div(5).add(1).sqrt().pow(effect(1)));
 
 export const MASS_DILATION = {
   unlocked,
