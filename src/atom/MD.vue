@@ -19,24 +19,22 @@
     </template>
   </Tooltip>
   <br /><br />
-  <div class="table-center">
-    <div style="width: 1000px">
-      <button v-for="(upg, idx) in MASS_DILATION.upgrades" 
+  <div class="table-center" style="width: 1000px">
+    <button v-for="(upg, idx) in MASS_DILATION.upgrades" 
       @click="MASS_DILATION.buy(idx)" style="font-size: 11px" class="btn full md" :style="{
               visibility: (upg.unl?.value ?? true) ? 'visible' : 'hidden',
             }" :class="{
               locked: !MASS_DILATION.canBuy(idx)
             }">
-      <div style="min-height: 80px">
-        <template v-if="upg.max > 1">
-          [Level {{ formatInteger(upg.cost.amt.value) }}{{ upg.max < Infinity ? " / " + formatInteger(upg.max) : "" }}]<br />
-        </template>
-        {{  unref(upg.desc) }}.<br />
-        {{  upg.effDesc ? "Currently: " + upg.effDesc(upg.eff.value) : "" }}
-      </div>
-      {{ upg.cost.amt.value.lt(upg.max) ? ("Cost: " + formatMass(upg.cost.cost.value)) : ""}}
-    </button>
+    <div style="min-height: 80px">
+      <template v-if="upg.max > 1">
+        [Level {{ formatInteger(upg.cost.amt.value) }}{{ upg.max < Infinity ? " / " + formatInteger(upg.max) : "" }}]<br />
+      </template>
+      {{  unref(upg.desc) }}.<br />
+      {{  upg.effDesc ? "Currently: " + upg.effDesc(upg.eff.value) : "" }}
     </div>
+    {{ upg.cost.amt.value.lt(upg.max) ? ("Cost: " + formatMass(upg.cost.cost.value)) : ""}}
+    </button>
   </div>
 </template>
 <script setup>

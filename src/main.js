@@ -9,7 +9,7 @@ import { hasUpgrade, upgradeAuto } from "./main/upgrades";
 import { rankAuto } from "./main/ranks";
 import { bhGain, darkMatterGain } from "./main/dm";
 import { ragePowerGain } from "./main/rage";
-import { PARTICLES, atomicPowerGain, powerGain, quarkGain } from "./atom/atom";
+import { PARTICLES, atomGain, atomicPowerGain, powerGain, quarkGain } from "./atom/atom";
 import { elementEffect, hasElement } from "./atom/elements";
 import { MASS_DILATION } from "./atom/md";
 
@@ -48,6 +48,10 @@ function loop() {
       player.md.mass = MASS_DILATION.dilatedMassGain.value
         .mul(diff)
         .add(player.md.mass)
+    if (hasElement(23))
+      player.atom.atom = atomGain.value
+        .mul(diff)
+        .add(player.atom.atom)
   }
 
   upgradeAuto();

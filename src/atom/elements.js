@@ -299,6 +299,20 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(() => `Atomic Power gives ${formatPercent(0.5, 0)} more Tickspeed`),
     cost: 1e107
+  },
+  {
+    desc: computed(() => `Gain ${formatPercent(1, 0)} of Atoms gained from reset per second, and Relativistic Particle gain is boosted by Atomic Power`),
+    cost: 1e119,
+    eff: computed(() => player.atom.power.add(1).log10().add(1)),
+    effDesc: x => formatMult(x)
+  },
+  {
+    desc: computed(() => `Increase Mass Dilation upgrade ${formatInteger(1)}'s base by ${format(0.5, 1)}`),
+    cost: 1e142
+  },
+  {
+    desc: computed(() => `Increase C${formatInteger(7)}'s cap by ${formatInteger(100)} and C${formatInteger(8)}'s cap by ${formatInteger(50)}`),
+    cost: 1e161
   }
 ];
 

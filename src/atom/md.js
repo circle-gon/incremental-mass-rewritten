@@ -47,7 +47,7 @@ function single(cost) {
 
 const UPGRADES = createUpgrades([
   {
-    desc: "Double dilated mass gain",
+    desc: computed(() => `${hasElement(24) ? formatMult(2.5) : "Double"} dilated mass gain`),
     max: Infinity,
     cost: {
       base: 10,
@@ -56,7 +56,7 @@ const UPGRADES = createUpgrades([
     },
     eff: computed(() => {
       const amt = player.md.upgrades[0]
-      return amt.pow_base(2)
+      return amt.pow_base(hasElement(24) ? 2.5 : 2)
     }),
     effDesc: x => formatMult(x)
   },
@@ -75,7 +75,7 @@ const UPGRADES = createUpgrades([
     effDesc: x => `^${format(x)}`
   },
   {
-    desc: "Double Relativistic Particle gain",
+    desc: computed(() => "Double Relativistic Particle gain"),
     max: Infinity,
     cost: {
       amtScale: x => x.mul(effect(4)),
@@ -117,6 +117,12 @@ const UPGRADES = createUpgrades([
     },
     eff: computed(() => player.md.upgrades[5].mul(0.25)),
     effDesc: x => `+^${format(x)}`
+  },
+  {
+    ...single(uni(1e100)),
+    desc: "Quark gain is boosted by Dilated Mass",
+    eff: computed(() => dilate(player.md.mass.add(1), 1 / 2)),
+    effDesc: x => formatMult(x)
   }
 ]);
 
@@ -137,7 +143,11 @@ function effect(upg) {
 }
 
 const rpExp = computed(() => effect(5).add(1));
-const rpMult = computed(() => effect(2));
+const rpMult = computed(() => {
+  let mult = effect(2)
+  if (hasElement(23)) mult = mult.mul(elementEffect(23))
+  return mult
+});
 const rpGain = computed(() => {
   const base = player.mass.max(1).log10().div(50).sub(9).max(0).pow(rpExp.value).mul(rpMult.value)
   return base.sub(player.md.particle).max(0).floor()

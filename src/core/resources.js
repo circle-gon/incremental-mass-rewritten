@@ -59,7 +59,7 @@ export default {
   bh: {
     name: "Black Hole",
     tooltip: computed(
-      () => `Your Black Hole is at ${formatMass(player.dm.mass)}.`,
+      () => `Your Black Hole is at <b>${formatMass(player.dm.mass)}</b>.`,
     ),
     class: "yellow",
     show: computed(() => player.dm.unlocked),
@@ -77,7 +77,9 @@ export default {
     show: computed(() => player.dm.unlocked),
     desc: computed(() => [
       formatInteger(player.atom.atom),
-      `(+${formatInteger(atomGain.value)})`,
+      hasElement(23) 
+        ? formatGain(player.atom.atom, atomGain.value)
+        : `(+${formatInteger(atomGain.value)})`,
     ]),
     click() {
       manualAtomReset();

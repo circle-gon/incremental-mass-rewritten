@@ -36,6 +36,7 @@ export const quarkGain = computed(() => {
   if (hasUpgrade("atom", 7)) base = base.mul(upgradeEffect("atom", 7));
   if (hasRankReward(0, 13)) base = base.mul(rankReward(0, 13));
   if (hasElement(5)) base = base.mul(elementEffect(5));
+  if (player.md.upgrades[6].gte(1)) base = base.mul(MASS_DILATION.effect(6))
   return base.floor();
 });
 

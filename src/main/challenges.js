@@ -223,6 +223,7 @@ export const CHALLENGES = [
       if (hasElement(4)) max = max.add(50);
       if (hasElement(12)) max = max.add(25);
       if (hasElement(19)) max = max.add(50);
+      if (hasElement(25)) max = max.add(100)
       return max;
     }),
     eff: computed(() => {
@@ -255,7 +256,9 @@ export const CHALLENGES = [
       spend: false,
     }),
     max: computed(() => {
-      return new Decimal(50);
+      let max = new Decimal(50);
+      if (hasElement(25)) max = max.add(50)
+      return max
     }),
     eff: computed(() => {
       const comps = player.challenge.comps[7];
