@@ -25,6 +25,7 @@ export const RANKS = [
     cost: costScaling({
       amtScale: (a) => {
         let amt = a;
+        if (hasElement(26)) amt = amt.mul(0.95)
         if (hasElement(7)) amt = amt.div(challengeEffect(0).amount);
         if (hasRankReward(2, 3)) amt = amt.div(rankReward(2, 3));
         amt = amt.div(challengeEffect(4));
@@ -39,6 +40,7 @@ export const RANKS = [
         amt = amt.mul(challengeEffect(4));
         if (hasRankReward(2, 3)) amt = amt.mul(rankReward(2, 3));
         if (hasElement(7)) amt = amt.mul(challengeEffect(0).amount);
+        if (hasElement(26)) amt = amt.div(0.95)
         return amt;
       },
       costScale: (c) => {
@@ -299,7 +301,7 @@ export const RANKS = [
         require: 1,
         desc: computed(
           () =>
-            `Reduce Rank and Tier linear scaling by ${formatPercent(0.1, 0)}`,
+            `Reduce Rank and Tier amount scaling by ${formatPercent(0.1, 0)}`,
         ),
       },
       {

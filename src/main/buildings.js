@@ -257,6 +257,7 @@ export const BUILDINGS = {
     cost: costScaling({
       amtScale: (a) => {
         let amt = a;
+        if (hasElement(26)) amt = amt.mul(0.95)
         if (hasElement(7)) amt = amt.div(challengeEffect(0).amount);
         if (hasRankReward(2, 4)) amt = amt.div(rankReward(2, 4));
         if (inChallenge(5)) amt = amt.mul(5);
@@ -271,6 +272,7 @@ export const BUILDINGS = {
         if (inChallenge(5)) amt = amt.div(5);
         if (hasRankReward(2, 4)) amt = amt.mul(rankReward(2, 4));
         if (hasElement(7)) amt = amt.mul(challengeEffect(0).amount);
+        if (hasElement(26)) amt = amt.div(0.95)
         return amt;
       },
       costScale: (c) => {
@@ -377,6 +379,7 @@ export const BUILDINGS = {
       if (better) power = power.add(challengeEffect(5).bhc);
       if (hasUpgrade("dm", 1)) power = power.mul(upgradeEffect("dm", 1));
       if (!better) power = power.add(challengeEffect(5).bhc);
+      if (hasUpgrade("atom", 10)) power = power.mul(upgradeEffect("atom", 10))
 
       return {
         power,
@@ -421,6 +424,7 @@ export const BUILDINGS = {
     effect(amt) {
       let power = Decimal.dTwo;
       if (hasUpgrade("atom", 3)) power = power.add(upgradeEffect("atom", 3));
+      if (hasUpgrade("atom", 10)) power = power.mul(upgradeEffect("atom", 10))
 
       return {
         power,

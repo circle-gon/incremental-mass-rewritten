@@ -296,8 +296,10 @@ export const UPGRADES = {
         effDesc: (x) => `/${format(x)}`,
       },
       {
-        desc: "TBD.",
-        cost: Infinity
+        desc: "BH Condenser and Cosmic Ray power is boosted by Dilated Mass.",
+        cost: "1e1460",
+        eff: computed(() => player.md.mass.add(1).log10().add(1).root(4).sub(1).div(20).add(1)),
+        effDesc: x => formatMult(x)
       },
       {
         desc: "TBD.",

@@ -313,6 +313,10 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(() => `Increase C${formatInteger(7)}'s cap by ${formatInteger(100)} and C${formatInteger(8)}'s cap by ${formatInteger(50)}`),
     cost: 1e161
+  },
+  {
+    desc: computed(() => `Reduce Rank and Tickspeed scaling by ${formatPercent(0.05, 0)}`),
+    cost: 1e168
   }
 ];
 
