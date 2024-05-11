@@ -317,6 +317,18 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(() => `Reduce Rank and Tickspeed scaling by ${formatPercent(0.05, 0)}`),
     cost: 1e168
+  },
+  {
+    desc: computed(() => `Raise Mass gain by ${format(1.5, 1)} after the dilation penalty when in Mass Dilation`),
+    cost: 1e192
+  },
+  {
+    desc: computed(() => `Raise Proton Power's first effect by ${formatInteger(2)}`),
+    cost: 1e203
+  },
+  {
+    desc: computed(() => `Raise Neutron Power's first effect by ${formatInteger(2)}`),
+    cost: 1e210
   }
 ];
 

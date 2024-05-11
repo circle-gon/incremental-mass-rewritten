@@ -70,7 +70,7 @@ const UPGRADES = createUpgrades([
     },
     eff: computed(() => {
       const amt = player.md.upgrades[1]
-      return amt.mul(0.02).add(1)
+      return amt.mul(player.md.upgrades[7].gte(1) ? 0.03 : 0.02).add(1)
     }),
     effDesc: x => `^${format(x)}`
   },
@@ -123,6 +123,10 @@ const UPGRADES = createUpgrades([
     desc: "Quark gain is boosted by Dilated Mass",
     eff: computed(() => dilate(player.md.mass.add(1), 1 / 2)),
     effDesc: x => formatMult(x)
+  },
+  {
+    ...single(uni(1e267)),
+    desc: computed(() => `Dilated Mass upgrade ${formatInteger(2)} is stronger`),
   }
 ]);
 

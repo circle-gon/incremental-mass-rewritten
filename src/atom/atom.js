@@ -121,7 +121,11 @@ export const PARTICLES = [
     name: "Proton",
     effect: computed(() => {
       const amt = player.atom.powers[0];
-      return [amt.add(1).pow(3), amt.add(1).log10().mul(0.2)];
+
+      let mass = amt.add(1).pow(3)
+      if (hasElement(28)) mass = mass.pow(2)
+      
+      return [mass, amt.add(1).log10().mul(0.2)];
     }),
     desc: (eff) => [
       `Boost Mass gain by ${formatMult(eff[0])}`,
@@ -133,6 +137,10 @@ export const PARTICLES = [
     name: "Neutron",
     effect: computed(() => {
       const amt = player.atom.powers[1];
+
+      let massboost = amt.add(1).pow(2)
+      if (hasElement(29)) massboost = massboost.pow(2)
+
       const mass = player.mass.add(1).log10().add(1).pow(1.25);
       const rage = player.rage.power
         .add(1)
@@ -146,7 +154,8 @@ export const PARTICLES = [
         .add(1)
         .pow(hasElement(18) ? 0.5 : 0.4)
         .sub(1);
-      return [amt.add(1).pow(2), mass.pow(rage.mul(amtboost))];
+
+      return [massboost, mass.pow(rage.mul(amtboost))];
     }),
     desc: (eff) => [
       `Boost Rage Power gain by ${formatMult(eff[0])}`,

@@ -9,6 +9,7 @@ import { powerEffect } from "../atom/atom";
 import { player } from "../core/save";
 import { dilate } from "../core/utils";
 import { MASS_DILATION } from "../atom/md";
+import { hasElement } from "../atom/elements";
 
 export const massGain = computed(() => {
   let gain = Decimal.dOne;
@@ -30,7 +31,10 @@ export const massGain = computed(() => {
   if (hasRankReward(0, 12)) gain = gain.pow(1.02);
   if (hasRankReward(2, 5)) gain = gain.pow(1.02);
 
-  if (player.md.active) gain = dilate(gain, MASS_DILATION.penalty.value)
+  if (player.md.active) {
+    gain = dilate(gain, MASS_DILATION.penalty.value)
+    if (hasElement(27)) gain = gain.pow(1.5)
+  }
 
   return gain;
 });
