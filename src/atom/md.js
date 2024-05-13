@@ -1,6 +1,5 @@
 import { computed } from "vue";
 import { elementEffect, hasElement } from "./elements";
-import Decimal from "break_eternity.js";
 import { player } from "../core/save";
 import { atomReset } from "./atom";
 import { costScaling } from "../core/cost";
@@ -70,7 +69,7 @@ const UPGRADES = createUpgrades([
     },
     eff: computed(() => {
       const amt = player.md.upgrades[1]
-      return amt.mul(player.md.upgrades[7].gte(1) ? 0.03 : 0.02).add(1)
+      return amt.mul(player.md.upgrades[7].gte(1) ? 0.025 : 0.02).add(1)
     }),
     effDesc: x => `^${format(x)}`
   },
@@ -126,7 +125,7 @@ const UPGRADES = createUpgrades([
   },
   {
     ...single(uni(1e267)),
-    desc: computed(() => `Dilated Mass upgrade ${formatInteger(2)} is stronger`),
+    desc: computed(() => `Mass Dilation upgrade ${formatInteger(2)} is stronger`),
   }
 ]);
 
@@ -150,6 +149,7 @@ const rpExp = computed(() => effect(5).add(1));
 const rpMult = computed(() => {
   let mult = effect(2)
   if (hasElement(23)) mult = mult.mul(elementEffect(23))
+  if (hasElement(30)) mult = mult.mul(elementEffect(30))
   return mult
 });
 const rpGain = computed(() => {

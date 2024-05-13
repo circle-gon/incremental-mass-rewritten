@@ -327,8 +327,14 @@ export const ELEMENT_UPGRADES = [
     cost: 1e203
   },
   {
-    desc: computed(() => `Raise Neutron Power's first effect by ${formatInteger(2)}`),
+    desc: computed(() => `Raise Neutron Power's first effect by ${formatInteger(2)}, and gain ${formatPercent(0.1, 0)} of each Particle gained from assigning per second`),
     cost: 1e210
+  },
+  {
+    desc: "Relativistic Particle gain is boosted by Dilated Mass",
+    cost: 1e233,
+    eff: computed(() => dilate(player.md.mass.add(1), 1 / 3).sqrt()),
+    effDesc: x => formatMult(x)
   }
 ];
 

@@ -52,6 +52,11 @@ function loop() {
       player.atom.atom = atomGain.value
         .mul(diff)
         .add(player.atom.atom)
+    if (hasElement(29))
+      for (let i = 0; i < PARTICLES.length; i++)
+        player.atom.particles[i] = player.atom.quark
+          .mul(0.1 * diff)
+          .add(player.atom.particles[i]);
   }
 
   upgradeAuto();

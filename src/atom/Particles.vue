@@ -28,10 +28,11 @@
           <span>{{ formatInteger(player.atom.particles[i]) }}</span>
           {{ particle.name }}
         </h2>
+        {{ hasElement(29) ? formatGain(player.atom.particles[i], player.atom.quark.div(10)) : ""}},
         <br />
-        Which generates
+        which generates
         <span>{{ format(powerGain(i)) }}</span>
-        {{ particle.name }} Powers<br />
+        {{ particle.name }} Powers.<br />
         You have
         <span
           >{{ format(player.atom.powers[i]) }}
@@ -49,6 +50,7 @@
 import { player } from "../core/save";
 import { formatInteger, formatGain, format } from "../core/format";
 import { PARTICLES, assignParticle, assignParticles, powerGain } from "./atom";
+import { hasElement } from "./elements";
 import { computed } from "vue";
 
 const RATIO_DESC = ["+1", "25%", "100%"];
