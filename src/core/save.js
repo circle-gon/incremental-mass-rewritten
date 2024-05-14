@@ -8,6 +8,7 @@ import { notify } from "./popups";
 import { CHALLENGES } from "../main/challenges";
 import { PARTICLES } from "../atom/atom";
 import { MASS_DILATION } from "../atom/md";
+import { STARS } from "../atom/stars";
 
 function defaultStart() {
   return {
@@ -40,6 +41,11 @@ function defaultStart() {
       particle: Decimal.dZero,
       mass: Decimal.dZero,
       upgrades: Array(MASS_DILATION.upgrades.length).fill(Decimal.dZero)
+    },
+    stars: {
+      unlocked: 0,
+      collapsed: Decimal.dZero,
+      stars: Array(STARS.count).fill(Decimal.dZero)
     },
     quotes: [],
     options: {

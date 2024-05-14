@@ -56,7 +56,7 @@ export const UPGRADES = {
       {
         desc: "Divide Mass upgrade costs based on Rage Powers.",
         cost: 1e14,
-        eff: computed(() => player.rage.power.add(1).log10().add(1).pow(2)),
+        eff: computed(() => player.rage.power.add(1).log10().add(1).sqr()),
         effDesc: (x) => `/${format(x)}`,
       },
       {
@@ -156,14 +156,14 @@ export const UPGRADES = {
         ),
         cost: 5e12,
         // todo: probably use dilate instead
-        eff: computed(() => player.dm.mass.add(1).log10().add(1).pow(2)),
+        eff: computed(() => player.dm.mass.add(1).log10().add(1).sqr()),
         effDesc: (x) => formatMult(x),
       },
       {
         desc: "Divide BH Condenser cost based on Mass.",
         cost: 1e45,
         unlocked: computed(() => player.challenge.unlocked),
-        eff: computed(() => player.mass.add(1).log10().add(1).pow(2)),
+        eff: computed(() => player.mass.add(1).log10().add(1).sqr()),
         effDesc: (x) => `/${format(x)}`,
       },
       {
@@ -185,7 +185,7 @@ export const UPGRADES = {
         desc: "Multiply Mass gain based on Dark Matter.",
         cost: 1.11e111,
         unlocked: computed(() => player.challenge.unlocked),
-        eff: computed(() => dilate(player.dm.darkMatter, 0.5).pow(2)),
+        eff: computed(() => dilate(player.dm.darkMatter, 0.5).sqr()),
         effDesc: (x) => formatMult(x),
       },
       {
@@ -302,8 +302,8 @@ export const UPGRADES = {
         effDesc: x => formatMult(x)
       },
       {
-        desc: "TBD.",
-        cost: Infinity
+        desc: "Black Hole's effect is stronger.",
+        cost: "1e2280"
       }
     ],
   },

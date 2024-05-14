@@ -18,7 +18,7 @@ export const CHALLENGES = [
   {
     title: "Instant Scale",
     desc: "Mass upgrades, Rank, and Tickspeed scale twice as fast after 25.",
-    reward: "Reduce Rank and Tickspeed scaling.",
+    reward: "Reduce Rank and Tickspeed scaling",
     unlocked: computed(() => player.challenge.unlocked),
     cost: costScaling({
       base: 1e54,
@@ -54,7 +54,7 @@ export const CHALLENGES = [
     title: "Anti-Tickspeed",
     desc: "Tickspeed is disabled.",
     reward: computed(
-      () => `+${formatPercent(0.05, 0)} Tickspeed power per completion.`,
+      () => `+${formatPercent(0.05, 0)} Tickspeed power per completion`,
     ),
     unlocked: computed(() => player.challenge.comps[0].gte(3)),
     cost: costScaling({
@@ -81,7 +81,7 @@ export const CHALLENGES = [
     title: "Melted Mass",
     desc: computed(() => `Mass gain is ^${format(0.7, 1)}.`),
     reward:
-      "Mass gain is raised based on completions, but it doesn't work in this challenge.",
+      "Mass gain is raised based on completions, but it doesn't work in this challenge",
     unlocked: computed(() => player.challenge.comps[1].gte(5)),
     cost: costScaling({
       base: 1e50,
@@ -109,7 +109,7 @@ export const CHALLENGES = [
     title: "Weakened Rage",
     desc: computed(() => `Rage Power gain is rooted by ${formatInteger(10)}.`),
     reward:
-      "Rage Power gain is raised based on completions, but it doesn't work in this challenge.",
+      "Rage Power gain is raised based on completions, but it doesn't work in this challenge",
     unlocked: computed(() => player.challenge.comps[2].gte(12)),
     cost: costScaling({
       base: 1e110,
@@ -136,7 +136,7 @@ export const CHALLENGES = [
   {
     title: "No Rank",
     desc: "Ranks are disabled.",
-    reward: "Reduce Rank scaling.",
+    reward: "Reduce Rank scaling",
     unlocked: computed(() => player.atom.unlocked),
     cost: costScaling({
       base: 1e58,
@@ -165,7 +165,7 @@ export const CHALLENGES = [
     desc: computed(
       () => `Tickspeed and BH Condenser scale ${formatMult(5, 0)} as fast.`,
     ),
-    reward: "Add to Tickspeed and BH Condenser power.",
+    reward: computed(() => `+${formatPercent(0.2, 0)} to Tickspeed and +${format(0.1, 1)} to BH Condenser power per completion`),
     unlocked: computed(() => player.challenge.comps[4].gte(1)),
     cost: costScaling({
       base: 1e35,
@@ -193,7 +193,7 @@ export const CHALLENGES = [
       };
     }),
     effDesc: (x) =>
-      `+${formatPercent(x.tickspeed)} to Tickspeed, +${format(x.bhc)} to Black Hole Condenser`,
+      `+${formatPercent(x.tickspeed)} to Tickspeed, +${format(x.bhc)} to BH Condenser power`,
   },
   {
     title: "No Rage Power",
@@ -204,7 +204,7 @@ export const CHALLENGES = [
     ),
     reward: computed(
       () =>
-        `Each completion adds ${formatInteger(4)} to C${formatInteger(1)}-${formatInteger(4)} cap.`,
+        `Each completion adds ${formatInteger(4)} to C${formatInteger(1)}-${formatInteger(4)} cap`,
     ),
     unlocked: computed(() => player.challenge.comps[5].gte(1)),
     cost: costScaling({
@@ -224,10 +224,13 @@ export const CHALLENGES = [
       if (hasElement(12)) max = max.add(25);
       if (hasElement(19)) max = max.add(50);
       if (hasElement(25)) max = max.add(100)
+      if (hasElement(32)) max = max.add(200);
       return max;
     }),
     eff: computed(() => {
-      return player.challenge.comps[6].mul(4);
+      let eff = player.challenge.comps[6].mul(4);
+      if (hasElement(32)) eff = eff.mul(1.5)
+      return eff
     }),
     effDesc: (x) => `+${formatInteger(x)}`,
   },
@@ -242,7 +245,7 @@ export const CHALLENGES = [
         `After completing this challenge once, unlock up to ${formatInteger(3)} rows of Elements`,
     ),
     reward:
-      "Raise Dark Matter & Black Hole's mass gain multiplier based on completions.",
+      "Raise Dark Matter & Black Hole's mass gain multiplier based on completions",
     unlocked: computed(() => player.challenge.comps[6].gte(1)),
     cost: costScaling({
       base: 1e27,
@@ -262,7 +265,7 @@ export const CHALLENGES = [
     }),
     eff: computed(() => {
       const comps = player.challenge.comps[7];
-      return comps.add(1).log10().mul(0.05).add(1).pow(2);
+      return comps.add(1).log10().mul(0.05).add(1).sqr();
     }),
     effDesc: (x) => `^${format(x)}`,
   },

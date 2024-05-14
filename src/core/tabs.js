@@ -9,6 +9,7 @@ import AtomicGenerator from "../atom/AtomicGenerator.vue";
 import Particles from "../atom/Particles.vue";
 import Elements from "../atom/Elements.vue";
 import MD from "../atom/MD.vue";
+import Stars from "../atom/Stars.vue"
 import { player } from "./save";
 import { hasElement } from "../atom/elements";
 
@@ -33,6 +34,12 @@ const tabs = [
         class: "atom",
         unlocked: computed(() => player.atom.unlocked),
       },
+      {
+        name: "Stars",
+        comp: Stars,
+        class: "supernova",
+        unlocked: computed(() => hasElement(35))
+      }
     ],
   },
   {

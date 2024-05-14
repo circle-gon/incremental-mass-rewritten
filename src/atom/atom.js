@@ -37,6 +37,7 @@ export const quarkGain = computed(() => {
   if (hasRankReward(0, 13)) base = base.mul(rankReward(0, 13));
   if (hasElement(5)) base = base.mul(elementEffect(5));
   if (player.md.upgrades[6].gte(1)) base = base.mul(MASS_DILATION.effect(6))
+  base = base.mul(MASS_DILATION.effect(9))
   return base.floor();
 });
 
@@ -88,7 +89,7 @@ export function assignParticles() {
 }
 
 export function powerGain(i) {
-  let base = player.atom.particles[i].pow(2);
+  let base = player.atom.particles[i].sqr();
   if (hasUpgrade("atom", 6)) base = base.mul(upgradeEffect("atom", 6));
   if (hasElement(11))
     base = base.pow(
@@ -123,7 +124,7 @@ export const PARTICLES = [
       const amt = player.atom.powers[0];
 
       let mass = amt.add(1).pow(3)
-      if (hasElement(28)) mass = mass.pow(2)
+      if (hasElement(28)) mass = mass.sqr()
       
       return [mass, amt.add(1).log10().mul(0.2)];
     }),
@@ -138,8 +139,8 @@ export const PARTICLES = [
     effect: computed(() => {
       const amt = player.atom.powers[1];
 
-      let massboost = amt.add(1).pow(2)
-      if (hasElement(29)) massboost = massboost.pow(2)
+      let massboost = amt.add(1).sqr()
+      if (hasElement(29)) massboost = massboost.sqr()
 
       const mass = player.mass.add(1).log10().add(1).pow(1.25);
       const rage = player.rage.power

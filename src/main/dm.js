@@ -79,5 +79,5 @@ export const bhGain = computed(() => {
 });
 
 export const bhEffect = computed(() => {
-  return player.dm.mass.add(1).root(4);
+  return player.dm.mass.add(1).pow(hasUpgrade("atom", 11) ? 1.25 : 0.25)
 });

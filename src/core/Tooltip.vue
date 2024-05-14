@@ -1,6 +1,6 @@
 <template>
   <slot name="content" />
-  <Teleport to="body">
+  <Teleport to="#tooltips">
     <div v-if="hovered" ref="tooltip" class="tooltip-div" :style="style">
       <slot name="tooltip" />
     </div>

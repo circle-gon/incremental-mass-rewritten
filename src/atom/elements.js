@@ -293,7 +293,7 @@ export const ELEMENT_UPGRADES = [
   {
     desc: "Dilated Mass gain is boosted by Tickspeed",
     cost: 1e98,
-    eff: computed(() => player.buildings.tickspeed.pow(2).div(4e4).add(1)),
+    eff: computed(() => player.buildings.tickspeed.sqr().div(4e4).add(1)),
     effDesc: x => formatMult(x)
   },
   {
@@ -335,6 +335,30 @@ export const ELEMENT_UPGRADES = [
     cost: 1e233,
     eff: computed(() => dilate(player.md.mass.add(1), 1 / 3).sqrt()),
     effDesc: x => formatMult(x)
+  },
+  {
+    desc: computed(() => `Raise Dilated Mass gain by ${format(1.02, 2)}`),
+    cost: 1e240
+  },
+  {
+    desc: computed(() => `Increase C${formatInteger(7)}'s cap by ${formatInteger(200)}, and its reward is ${formatPercent(0.5, 0)} more effective`),
+    cost: 1e250
+  },
+  {
+    desc: "Relativistic Particle gain is boosted by Rage Power",
+    cost: 1e285,
+    eff: computed(() => player.rage.power.add(1).log10().add(1).pow(1.25)),
+    effDesc: x => formatMult(x)
+  },
+  {
+    desc: "Dilated Mass gain is boosted by Black Hole's mass",
+    cost: 1e291,
+    eff: computed(() => player.dm.mass.add(1).log10().add(1).pow(2.25)),
+    effDesc: x => formatMult(x)
+  },
+  {
+    desc: "Unlock Stars and more Mass Dilation upgrades",
+    cost: 1e300
   }
 ];
 
@@ -350,7 +374,8 @@ export const elementsUnlocked = computed(() => {
   if (player.challenge.comps[6].gte(16)) unl += 4;
   if (player.challenge.comps[7].gte(1)) unl += 14;
   if (hasElement(17)) unl += 3;
-  if (MASS_DILATION.unlocked.value) unl += 15;
+  if (hasElement(20)) unl += 15;
+  if (hasElement(35)) unl += 18
   return unl;
 });
 

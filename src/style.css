@@ -14,8 +14,11 @@ body {
   background-color: hsl(0, 0%, 7%);
   overflow: hidden;
   font-size: 14px;
-  margin: 0px;
+  margin: 0;
   user-select: none;
+}
+
+#app {
   /* this is so stupid why does redshark not have that problem grumble grumble */
   width: 100vw;
   height: 100vh;
@@ -156,6 +159,15 @@ p {
 .btn-tab.md {
   color: #25ff30;
   border-color: #25ff30;
+}
+
+.btn-tab.supernova {
+	color: #ff009d;
+	border-color: #ff009d;
+}
+
+.btn-tab.supernova:hover {
+	background-color: #500031;
 }
 
 .btn-tab.md:hover {

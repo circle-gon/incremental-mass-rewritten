@@ -12,6 +12,7 @@ import { ragePowerGain } from "./main/rage";
 import { PARTICLES, atomGain, atomicPowerGain, powerGain, quarkGain } from "./atom/atom";
 import { elementEffect, hasElement } from "./atom/elements";
 import { MASS_DILATION } from "./atom/md";
+import { STARS } from "./atom/stars";
 
 function loop() {
   const now = Date.now();
@@ -57,6 +58,16 @@ function loop() {
         player.atom.particles[i] = player.atom.quark
           .mul(0.1 * diff)
           .add(player.atom.particles[i]);
+    if (hasElement(35))
+      // give the gain for each of the previous ones
+      // this makes the gain slightly more smoother
+      for (let i = player.stars.unlocked - 1; i >= 0; i--) 
+        player.stars.stars[i] = STARS.starGain(player.stars.stars[i + 1] ?? 0)
+          .mul(diff)
+          .add(player.stars.stars[i])
+      player.stars.collapsed = STARS.gain.value
+        .mul(diff)
+        .add(player.stars.collapsed)
   }
 
   upgradeAuto();
@@ -73,7 +84,7 @@ function updateCss() {
 }
 
 function init() {
-  createApp(App).mount("body");
+  createApp(App).mount("#app");
   loadStorage();
   startAutoSave();
   updateCss();

@@ -42,7 +42,7 @@ export function costScaling(data) {
     cost: (amt) =>
       costScale(
         amtScale(amt)
-          .pow(2)
+          .sqr()
           .pow_base(unref(data.quad))
           .mul(amtScale(amt).pow_base(unref(data.linear)))
           .mul(unref(data.base)),

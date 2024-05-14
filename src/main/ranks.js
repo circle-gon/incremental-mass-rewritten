@@ -147,7 +147,7 @@ export const RANKS = [
       {
         require: 180,
         desc: "Boost Rage Power gain based on Rank",
-        eff: computed(() => player.ranks[0].pow(2)),
+        eff: computed(() => player.ranks[0].sqr()),
         effDesc: (x) => formatMult(x),
       },
       {
@@ -288,7 +288,7 @@ export const RANKS = [
       cost: (a) => {
         let amt = a;
         if (hasElement(8)) amt = amt.mul(0.85);
-        return amt.pow(2).mul(3).add(23).ceil();
+        return amt.sqr().mul(3).add(23).ceil();
       },
       invert: (res) => {
         let amt = res.sub(23).div(3).max(0).sqrt();

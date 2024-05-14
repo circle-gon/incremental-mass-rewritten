@@ -6,7 +6,6 @@ import { costScaling } from "../core/cost";
 import { format, formatInteger, formatMult, formatReduction } from "../core/format";
 import { dilate, uni } from "../core/utils";
 
-const unlocked = computed(() => hasElement(20));
 const penalty = computed(() => 0.8);
 function run() {
   if (player.md.active) player.md.particle = player.md.particle.add(rpGain.value)
@@ -33,14 +32,15 @@ function createUpgrades(base) {
   return base
 }
 
-function single(cost) {
+function single(cost, obj) {
   return {
     max: 1,
     cost: {
       base: cost,
       linear: Infinity,
       quad: Infinity
-    }
+    },
+    ...obj
   }
 }
 
@@ -89,12 +89,11 @@ const UPGRADES = createUpgrades([
     }),
     effDesc: x => formatMult(x)
   },
-  {
-    ...single(1.619e21),
+  single(1.69e21, {
     desc: "Stronger's power is boosted by dilated mass",
-    eff: computed(() => dilate(player.md.mass.add(1).log10(), 1 / 3).div(140).add(1).pow(2)),
+    eff: computed(() => dilate(player.md.mass.add(1).log10(), 1 / 3).div(140).add(1).sqr()),
     effDesc: x => formatMult(x)
-  },
+  }),
   {
     desc: computed(() => `Mass Dilation upgrade ${formatInteger(3)} scales slower`),
     max: 3,
@@ -117,15 +116,29 @@ const UPGRADES = createUpgrades([
     eff: computed(() => player.md.upgrades[5].mul(0.25)),
     effDesc: x => `+^${format(x)}`
   },
-  {
-    ...single(uni(1e100)),
+  single(uni(1e100), {
     desc: "Quark gain is boosted by Dilated Mass",
     eff: computed(() => dilate(player.md.mass.add(1), 1 / 2)),
     effDesc: x => formatMult(x)
-  },
-  {
-    ...single(uni(1e267)),
+  }),
+  single(uni(1e267), {
     desc: computed(() => `Mass Dilation upgrade ${formatInteger(2)} is stronger`),
+  }),
+  single(Infinity, {
+    desc: "All-star resources are boosted by Tickspeed",
+    eff: computed(() => 1),
+    effDesc: x => formatMult(x)
+  }),
+  {
+    desc: "Double Quark gain",
+    max: Infinity,
+    cost: {
+      base: Infinity,
+      linear: Infinity,
+      quad: Infinity
+    },
+    eff: computed(() => 1),
+    effDesc: x => formatMult(x)
   }
 ]);
 
@@ -150,6 +163,7 @@ const rpMult = computed(() => {
   let mult = effect(2)
   if (hasElement(23)) mult = mult.mul(elementEffect(23))
   if (hasElement(30)) mult = mult.mul(elementEffect(30))
+  if (hasElement(33)) mult = mult.mul(elementEffect(33))
   return mult
 });
 const rpGain = computed(() => {
@@ -159,15 +173,16 @@ const rpGain = computed(() => {
 const rpNextAt = computed(() => player.md.particle.add(1).div(rpMult.value).root(rpExp.value).add(9).mul(50).pow10());
 
 const dilatedMassGain = computed(() => {
-  let gain = player.md.particle.pow(2)
+  let gain = player.md.particle.sqr()
   gain = gain.mul(effect(0))
   if (hasElement(21)) gain = gain.mul(elementEffect(21))
+  if (hasElement(34)) gain = gain.mul(elementEffect(34))
+  if (hasElement(31)) gain = gain.pow(1.03)
   return gain
 });
 const dilatedMassEffect = computed(() => player.md.mass.add(1).log10().div(5).add(1).sqrt().pow(effect(1)));
 
 export const MASS_DILATION = {
-  unlocked,
   penalty,
   run,
   rpMult,
