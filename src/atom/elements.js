@@ -371,7 +371,7 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(() => `Cosmic Ray also boosts Rage Upgrade ${formatInteger(7)}'s effect`),
     cost: "1e340",
-    eff: computed(() => atomicPowerEffect.value.div(10).floor()),
+    eff: computed(() => atomicPowerEffect.value.div(5).floor()),
     effDesc: x => `+${formatInteger(x)}`
   }
 ];

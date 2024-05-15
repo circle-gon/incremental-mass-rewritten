@@ -3,7 +3,7 @@ import { player } from "../core/save"
 import Decimal from "break_eternity.js"
 import { MASS_DILATION } from "./md"
 
-const REQUIREMENTS = [1e300, Infinity, Infinity, Infinity, Infinity]
+const REQUIREMENTS = [1e300, "1e350", Infinity, Infinity, Infinity]
 
 const nextAt = computed(() => {
     const unl = player.stars.unlocked

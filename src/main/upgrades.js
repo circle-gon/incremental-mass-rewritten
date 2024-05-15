@@ -7,6 +7,7 @@ import {
   formatPercent,
 } from "../core/format";
 import { dilate } from "../core/utils";
+import { elementEffect, hasElement } from "../atom/elements";
 
 export const UPGRADES = {
   rp: {
@@ -50,7 +51,11 @@ export const UPGRADES = {
       {
         desc: "Tickspeeds give free Strongers.",
         cost: 1e5,
-        eff: computed(() => player.buildings.tickspeed.sqrt().floor()),
+        eff: computed(() => {
+          let free = player.buildings.tickspeed.sqrt().floor()
+          if (hasElement(37)) free = free.add(elementEffect(37))
+          return free
+        }),
         effDesc: (x) => `+${formatInteger(x)}`,
       },
       {
