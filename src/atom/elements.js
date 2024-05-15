@@ -5,12 +5,14 @@ import {
   formatInteger,
   formatMult,
   formatPercent,
+  formatReduction,
 } from "../core/format";
 import { player } from "../core/save";
 import { dilate } from "../core/utils";
 import Decimal from "break_eternity.js";
 import { CHALLENGES } from "../main/challenges";
 import { MASS_DILATION } from "./md";
+import { atomicPowerEffect } from "./atom";
 
 // Element metadata
 export const ELEMENT_METADATA = {
@@ -357,8 +359,20 @@ export const ELEMENT_UPGRADES = [
     effDesc: x => formatMult(x)
   },
   {
-    desc: "Unlock Stars and more Mass Dilation upgrades",
+    desc: "Unlock Stars, a new subtab found in the Main tab, and more Mass Dilation upgrades",
     cost: 1e300
+  },
+  {
+    desc: "Tier scales slower based on Tetr",
+    cost: "1e330",
+    eff: computed(() => dilate(player.ranks[2], 1 / 3).div(100).add(1)),
+    effDesc: x => formatReduction(x.recip())
+  },
+  {
+    desc: computed(() => `Cosmic Ray also boosts Rage Upgrade ${formatInteger(7)}'s effect`),
+    cost: "1e340",
+    eff: computed(() => atomicPowerEffect.value.div(10).floor()),
+    effDesc: x => `+${formatInteger(x)}`
   }
 ];
 

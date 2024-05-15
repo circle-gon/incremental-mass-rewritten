@@ -14,13 +14,14 @@ import { elementEffect, hasElement } from "./atom/elements";
 import { MASS_DILATION } from "./atom/md";
 import { STARS } from "./atom/stars";
 
+let paused = true
 function loop() {
   const now = Date.now();
   const diff = (now - player.lastUpdate) / 1000;
   player.lastUpdate = now;
   TPS.value = 1 / diff;
 
-  if (!(import.meta.env.DEV && player.options.paused)) {
+  if (!(import.meta.env.DEV && paused)) {
     player.time += diff;
     player.mass = massGain.value.mul(diff).add(player.mass);
     if (player.dm.unlocked)
@@ -106,7 +107,7 @@ function debug() {
     window.player = player;
     window.addEventListener("keypress", (e) => {
       if (e.key === "p") {
-        player.options.paused = !player.options.paused;
+        paused = !paused;
         save();
       }
     });

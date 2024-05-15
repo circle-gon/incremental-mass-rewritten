@@ -125,12 +125,14 @@ const UPGRADES = createUpgrades([
     desc: computed(() => `Mass Dilation upgrade ${formatInteger(2)} is stronger`),
   }),
   single(Infinity, {
+    unl: computed(() => hasElement(35)),
     desc: "All-star resources are boosted by Tickspeed",
     eff: computed(() => 1),
     effDesc: x => formatMult(x)
   }),
   {
     desc: "Double Quark gain",
+    unl: computed(() => hasElement(35)),
     max: Infinity,
     cost: {
       base: Infinity,

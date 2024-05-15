@@ -14,7 +14,7 @@ import { hasUpgrade, upgradeEffect } from "./upgrades";
 import { showQuote } from "../core/popups";
 import { challengeEffect, inChallenge } from "./challenges";
 import { dilate } from "../core/utils";
-import { hasElement } from "../atom/elements";
+import { elementEffect, hasElement } from "../atom/elements";
 
 export const RANKS = [
   {
@@ -195,6 +195,7 @@ export const RANKS = [
         if (hasRankReward(2, 0)) base = base.mul(0.9);
         if (hasUpgrade("atom", 4)) base = base.mul(0.86);
         if (hasRankReward(2, 3)) base = base.mul(0.9);
+        if (hasElement(36)) base = base.div(elementEffect(36))
 
         let cost = base.add(2).sqr();
         if (hasUpgrade("atom", 9)) cost = cost.mul(0.7);
@@ -208,6 +209,7 @@ export const RANKS = [
         if (hasRankReward(2, 0)) cost = cost.div(0.9);
         if (hasUpgrade("atom", 4)) cost = cost.div(0.86);
         if (hasRankReward(2, 3)) cost = cost.div(0.9);
+        if (hasElement(36)) cost = cost.mul(elementEffect(36))
         return cost;
       },
     }),

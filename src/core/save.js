@@ -57,7 +57,6 @@ function defaultStart() {
       rankRewardSelected: 0,
       // this is probably stupid but I'm following IMR conventions
       upgradeHovered: ["", 0],
-      paused: false,
       confirm: {
         rage: true,
         dm: true,
@@ -155,7 +154,6 @@ export function load(str) {
     const result = JSON.parse(decompressFromBase64(str));
     decimalize(result, defaultStart());
     Object.assign(player, result);
-    player.options.paused = true;
     save();
   } catch (e) {
     // don't panic on invalid saves

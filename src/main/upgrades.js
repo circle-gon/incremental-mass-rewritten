@@ -107,7 +107,7 @@ export const UPGRADES = {
         desc: "Atom gain is boosted by Mass.",
         cost: "1e1045",
         unlocked: computed(() => player.atom.unlocked),
-        eff: computed(() => player.mass.add(1).log10().add(1).pow(0.5)),
+        eff: computed(() => player.mass.add(1).log10().add(1).sqrt()),
         effDesc: (x) => formatMult(x),
       },
     ],
