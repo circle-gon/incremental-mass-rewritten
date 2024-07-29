@@ -36,13 +36,15 @@ export const quarkGain = computed(() => {
   if (hasUpgrade("atom", 7)) base = base.mul(upgradeEffect("atom", 7));
   if (hasRankReward(0, 13)) base = base.mul(rankReward(0, 13));
   if (hasElement(5)) base = base.mul(elementEffect(5));
-  if (player.md.upgrades[6].gte(1)) base = base.mul(MASS_DILATION.effect(6))
-  base = base.mul(MASS_DILATION.effect(9))
+  if (player.md.upgrades[6].gte(1)) base = base.mul(MASS_DILATION.effect(6));
+  base = base.mul(MASS_DILATION.effect(9));
+  if (hasElement(41)) base = base.mul(elementEffect(41));
+  if (hasElement(46)) base = base.pow(1.05);
   return base.floor();
 });
 
 const KEEP_DM_UPGRADES = [4];
-function atomResetCore() {
+export function atomResetCore() {
   resetUpgrades("dm", KEEP_DM_UPGRADES);
   player.dm.darkMatter = Decimal.dZero;
   resetBuilding("bhc");
@@ -107,13 +109,14 @@ export function powerEffect(i, j) {
 export const atomicPowerGain = computed(() => {
   let base = buildingEffect("cosmic");
   if (hasElement(2)) base = base.mul(elementEffect(2));
-  if (player.md.active) base = dilate(base, MASS_DILATION.penalty.value)
+  if (hasElement(51)) base = base.mul(elementEffect(51));
+  if (player.md.active) base = dilate(base, MASS_DILATION.penalty.value);
   return base;
 });
 
 export const atomicPowerEffect = computed(() => {
   let base = player.atom.power.add(1).log2();
-  if (hasElement(22)) base = base.mul(1.5)
+  if (hasElement(22)) base = base.mul(1.5);
   return base.floor();
 });
 
@@ -123,9 +126,9 @@ export const PARTICLES = [
     effect: computed(() => {
       const amt = player.atom.powers[0];
 
-      let mass = amt.add(1).pow(3)
-      if (hasElement(28)) mass = mass.sqr()
-      
+      let mass = amt.add(1).pow(3);
+      if (hasElement(28)) mass = mass.sqr();
+
       return [mass, amt.add(1).log10().mul(0.2)];
     }),
     desc: (eff) => [
@@ -139,8 +142,8 @@ export const PARTICLES = [
     effect: computed(() => {
       const amt = player.atom.powers[1];
 
-      let massboost = amt.add(1).sqr()
-      if (hasElement(29)) massboost = massboost.sqr()
+      let massboost = amt.add(1).sqr();
+      if (hasElement(29)) massboost = massboost.sqr();
 
       const mass = player.mass.add(1).log10().add(1).pow(1.25);
       const rage = player.rage.power
@@ -160,7 +163,7 @@ export const PARTICLES = [
     }),
     desc: (eff) => [
       `Boost Rage Power gain by ${formatMult(eff[0])}`,
-      `Boost Mass gain based on Rage Power - ${formatMult(eff[1])}`,
+      `Boost Mass gain based on Mass & Rage Power - ${formatMult(eff[1])}`,
     ],
     color: "#ff0",
   },

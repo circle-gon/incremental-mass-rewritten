@@ -625,32 +625,41 @@ function formatARV(ex, gain = false) {
 export function formatGain(amt, gain, isMass = false) {
   const md = player.options.massDis;
   const next = amt.add(gain);
-  const nextTick = amt.add(gain.div(TPS.value))
+  const nextTick = amt.add(gain.div(TPS.value));
   let rate;
-  const oom = next.max(1).log10().sub(amt.max(1).log10())
-  const oom2 = next.max(1).log10().max(1).log10().sub(amt.max(1).log10().max(1).log10())
-  if (((oom2.gte(1) && amt.gte('ee100')) || (oom2.gte(0.05) && amt.gte('ee1000'))) && (!isMass || md === 1 || md === 2)) {
-    rate = `(+${format(oom2)} OoM^2/sec)`
+  const oom = next.max(1).log10().sub(amt.max(1).log10());
+  const oom2 = next
+    .max(1)
+    .log10()
+    .max(1)
+    .log10()
+    .sub(amt.max(1).log10().max(1).log10());
+  if (
+    ((oom2.gte(1) && amt.gte("ee100")) ||
+      (oom2.gte(0.05) && amt.gte("ee1000"))) &&
+    (!isMass || md === 1 || md === 2)
+  ) {
+    rate = `(+${format(oom2)} OoM^2/sec)`;
   } else {
     if ((oom.gte(10) && amt.gte(1e100)) || (isMass && md === 2)) {
-      if (isMass && amt.gte(mlt(1)) && oom.gte(1e6) && md !== 1){
-        const mlt_amt = getMltValue(amt)
-        const mlt_next = getMltValue(nextTick)
-        rate = `(+${formatARV(mlt_next.sub(mlt_amt).mul(TPS.value), true)}/sec)`
-      } else rate = `(+${format(oom)} OoM/sec)`
+      if (isMass && amt.gte(mlt(1)) && oom.gte(1e6) && md !== 1) {
+        const mlt_amt = getMltValue(amt);
+        const mlt_next = getMltValue(nextTick);
+        rate = `(+${formatARV(mlt_next.sub(mlt_amt).mul(TPS.value), true)}/sec)`;
+      } else rate = `(+${format(oom)} OoM/sec)`;
 
       if ((md === 0 || md === 3) && isMass) {
         const arv_amt = getMltValue(amt).log10().div(15);
-			  const arv_next = getMltValue(nextTick).log10().div(15);
-			  if (arv_next.gte(1000) || arv_next.sub(arv_amt).gte(10))
-          rate = `(+${format(arv_next.sub(arv_amt).mul(TPS.value))} arvs/sec)`
+        const arv_next = getMltValue(nextTick).log10().div(15);
+        if (arv_next.gte(1000) || arv_next.sub(arv_amt).gte(10))
+          rate = `(+${format(arv_next.sub(arv_amt).mul(TPS.value))} arvs/sec)`;
       }
     } else {
       const f = isMass ? formatMass : format;
-      rate = `(+${f(gain)}/sec)`
+      rate = `(+${f(gain)}/sec)`;
     }
   }
-  
+
   return rate;
 }
 

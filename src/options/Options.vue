@@ -63,7 +63,7 @@ import { formatTime } from "../core/format";
 import { showPopup, notify } from "../core/popups";
 import Tooltip from "../core/Tooltip.vue";
 
-const CONFIRMATIONS = ["rage", "dm", "atom"];
+const CONFIRMATIONS = ["rage", "dm", "atom", "supernova"];
 
 // i love vite guys
 function getSrc(icon) {

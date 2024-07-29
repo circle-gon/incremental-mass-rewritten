@@ -8,6 +8,9 @@ import { hasUpgrade } from "../main/upgrades";
 import { uni } from "./utils";
 import { atomGain, manualAtomReset, quarkGain } from "../atom/atom";
 import { elementEffect, hasElement } from "../atom/elements";
+import { MASS_DILATION } from "../atom/md";
+import { STARS } from "../atom/stars";
+import { supernovaGain, supernovaRequirement } from "../supernova/supernova";
 
 export default {
   mass: {
@@ -77,7 +80,7 @@ export default {
     show: computed(() => player.dm.unlocked),
     desc: computed(() => [
       formatInteger(player.atom.atom),
-      hasElement(23) 
+      hasElement(23)
         ? formatGain(player.atom.atom, atomGain.value)
         : `(+${formatInteger(atomGain.value)})`,
     ]),
@@ -97,6 +100,39 @@ export default {
       hasElement(13)
         ? formatGain(player.atom.quark, quarkGain.value.mul(elementEffect(13)))
         : `(+${formatInteger(quarkGain.value)})`,
+    ]),
+  },
+  md: {
+    name: "Mass Dilation",
+    tooltip: computed(() => {
+      const dilationText = player.md.active
+        ? `Reach <b>${formatMass(MASS_DILATION.rpNextAt.value)}</b> to gain more Relativistic Particles, or cancel Mass Dilation.<br /><br />`
+        : "";
+      return `You have <b>${formatMass(player.md.mass)} ${formatGain(player.md.mass, MASS_DILATION.dilatedMassGain.value, true)}</b> Dilated Mass.<br class="line" /><i>${dilationText}${MASS_DILATION.rpText.value}<br /></i>`;
+    }),
+    class: "green",
+    show: computed(() => hasElement(20)),
+    desc: computed(() => [
+      formatInteger(player.md.particle),
+      player.md.active
+        ? `(+${formatInteger(MASS_DILATION.rpGain.value)})`
+        : "(inactive)",
+    ]),
+    click() {
+      MASS_DILATION.run();
+    },
+  },
+  supernova: {
+    name: "Supernova",
+    tooltip: computed(
+      () =>
+        `You have gone Supernova <b>${formatInteger(player.supernova.count)}</b> times. <br class="line" />You have <b>${formatInteger(player.stars.collapsed)}</b> ${formatGain(player.stars.collapsed, STARS.gain.value)} Collapsed Star.<br /><br class="line" /><i>Reach over <b>${format(supernovaRequirement.value)}</b> Collapsed Star to go Supernova.</i>`,
+    ),
+    class: "magenta",
+    show: computed(() => player.supernova.unlocked),
+    desc: computed(() => [
+      formatInteger(player.supernova.count),
+      `(+${formatInteger(supernovaGain.value)})`,
     ]),
   },
 };

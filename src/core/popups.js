@@ -8,6 +8,7 @@ import { hardReset, load, player } from "./save";
 import { rageReset } from "../main/rage";
 import { DMReset } from "../main/dm";
 import { atomReset } from "../atom/atom";
+import { supernovaReset } from "../supernova/supernova";
 
 export const activePopups = reactive([]);
 
@@ -30,6 +31,10 @@ const QUOTES = [
   {
     title: "The Atom",
     desc: "You discovered a Atom! You decompose it to find a physical miracle: Gravity. This helps you to go further!",
+  },
+  {
+    title: "Supernova Created",
+    desc: "A new age of stars rises, while the stars collapsed.  Neutron stars felt elder...",
   },
 ];
 
@@ -79,6 +84,13 @@ export const POPUPS = {
     comp: textComponent("Do you want to atom reset?"),
     result: (x) => {
       if (x) atomReset();
+    },
+  },
+  supernova: {
+    type: "confirm",
+    comp: textComponent("Do you want to supernova reset?"),
+    result: (x) => {
+      if (x) supernovaReset();
     },
   },
   ...Object.fromEntries(

@@ -1,20 +1,35 @@
 import { createApp, watchEffect } from "vue";
 import { loadStorage, player, startAutoSave, save } from "./core/save";
-import { TPS } from "./core/utils";
+import { TPS, supernovaTime } from "./core/utils";
 import { massGain } from "./main/mass";
-import App from "./App.vue";
-import "./style.css";
 import { buildingAuto } from "./main/buildings";
 import { hasUpgrade, upgradeAuto } from "./main/upgrades";
 import { rankAuto } from "./main/ranks";
 import { bhGain, darkMatterGain } from "./main/dm";
 import { ragePowerGain } from "./main/rage";
-import { PARTICLES, atomGain, atomicPowerGain, powerGain, quarkGain } from "./atom/atom";
+import {
+  PARTICLES,
+  atomGain,
+  atomicPowerGain,
+  powerGain,
+  quarkGain,
+} from "./atom/atom";
 import { elementEffect, hasElement } from "./atom/elements";
 import { MASS_DILATION } from "./atom/md";
 import { STARS } from "./atom/stars";
+import App from "./App.vue";
 
-let paused = true
+// Always place after App.vue so that way its styles take priority
+import "./style.css";
+import {
+  canSupernovaReset,
+  supernovaRequirement,
+  supernovaReset,
+} from "./supernova/supernova";
+import { notify } from "./core/popups";
+
+const TICKS = 60;
+let paused = true;
 function loop() {
   const now = Date.now();
   const diff = (now - player.lastUpdate) / 1000;
@@ -49,11 +64,9 @@ function loop() {
     if (hasElement(20))
       player.md.mass = MASS_DILATION.dilatedMassGain.value
         .mul(diff)
-        .add(player.md.mass)
+        .add(player.md.mass);
     if (hasElement(23))
-      player.atom.atom = atomGain.value
-        .mul(diff)
-        .add(player.atom.atom)
+      player.atom.atom = atomGain.value.mul(diff).add(player.atom.atom);
     if (hasElement(29))
       for (let i = 0; i < PARTICLES.length; i++)
         player.atom.particles[i] = player.atom.quark
@@ -62,19 +75,31 @@ function loop() {
     if (hasElement(35))
       // give the gain for each of the previous ones
       // this makes the gain slightly more smoother
-      for (let i = player.stars.unlocked - 1; i >= 0; i--) 
-        player.stars.stars[i] = STARS.starGain(player.stars.stars[i + 1] ?? 0)
+      for (let i = player.stars.unlocked - 1; i >= 0; i--)
+        player.stars.stars[i] = STARS.starGain(i)
           .mul(diff)
-          .add(player.stars.stars[i])
-      player.stars.collapsed = STARS.gain.value
-        .mul(diff)
-        .add(player.stars.collapsed)
+          .add(player.stars.stars[i]);
+    player.stars.collapsed = STARS.gain.value
+      .mul(diff)
+      .add(player.stars.collapsed)
+      .min(supernovaRequirement.value);
+    if (hasElement(42))
+      for (const [id, upg] of MASS_DILATION.upgrades.entries())
+        if ((upg.unl?.value ?? true) && upg.cost.amt.value.gte(1))
+          MASS_DILATION.buy(id);
+    if (canSupernovaReset.value) {
+      if (player.supernova.unlocked) {
+        notify("You have gone Supernova!");
+        supernovaReset();
+      } else supernovaTime.value += diff;
+    }
+
+    upgradeAuto();
+    rankAuto();
+    buildingAuto();
   }
 
-  upgradeAuto();
-  rankAuto();
-  buildingAuto();
-  requestAnimationFrame(loop);
+  setTimeout(loop, 1000 / TICKS);
 }
 
 function updateCss() {
@@ -85,11 +110,15 @@ function updateCss() {
 }
 
 function init() {
-  createApp(App).mount("#app");
+  // core
   loadStorage();
   startAutoSave();
   updateCss();
   loop();
+
+  // UI
+  createApp(App).mount("#app");
+  document.getElementById("loading").remove();
 }
 
 function debug() {

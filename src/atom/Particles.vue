@@ -28,7 +28,11 @@
           <span>{{ formatInteger(player.atom.particles[i]) }}</span>
           {{ particle.name }}
         </h2>
-        {{ hasElement(29) ? formatGain(player.atom.particles[i], player.atom.quark.div(10)) : ""}},
+        {{
+          hasElement(29)
+            ? formatGain(player.atom.particles[i], player.atom.quark.div(10))
+            : ""
+        }},
         <br />
         which generates
         <span>{{ format(powerGain(i)) }}</span>

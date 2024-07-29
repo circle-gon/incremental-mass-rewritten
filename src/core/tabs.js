@@ -9,9 +9,11 @@ import AtomicGenerator from "../atom/AtomicGenerator.vue";
 import Particles from "../atom/Particles.vue";
 import Elements from "../atom/Elements.vue";
 import MD from "../atom/MD.vue";
-import Stars from "../atom/Stars.vue"
+import Stars from "../atom/Stars.vue";
+import Tree from "../supernova/Tree.vue";
 import { player } from "./save";
 import { hasElement } from "../atom/elements";
+import { STARS } from "../atom/stars";
 
 const tabs = [
   {
@@ -38,8 +40,8 @@ const tabs = [
         name: "Stars",
         comp: Stars,
         class: "supernova",
-        unlocked: computed(() => hasElement(35))
-      }
+        unlocked: computed(() => STARS.unlocked.value),
+      },
     ],
   },
   {
@@ -88,13 +90,28 @@ const tabs = [
       {
         name: "Elements",
         comp: Elements,
-        unlocked: computed(() => player.challenge.comps[6].gte(16)),
+        unlocked: computed(
+          () => player.challenge.comps[6].gte(16) || player.supernova.unlocked,
+        ),
       },
       {
         name: "Mass Dilation",
         comp: MD,
         class: "md",
         unlocked: computed(() => hasElement(20)),
+      },
+    ],
+  },
+  {
+    name: "Supernova",
+    icon: "material-symbols:explosion-outline",
+    color: "magenta",
+    unlocked: computed(() => player.supernova.unlocked),
+    class: "supernova",
+    tabs: [
+      {
+        name: "Neutron Tree",
+        comp: Tree,
       },
     ],
   },

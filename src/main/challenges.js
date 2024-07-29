@@ -73,7 +73,9 @@ export const CHALLENGES = [
     }),
     eff: computed(() => {
       const comps = player.challenge.comps[1];
-      return comps.mul(0.05);
+      let eff = comps.mul(0.05);
+      if (hasElement(38)) eff = eff.mul(1.5);
+      return eff;
     }),
     effDesc: (x) => `+${formatPercent(x)}`,
   },
@@ -136,7 +138,7 @@ export const CHALLENGES = [
   {
     title: "No Rank",
     desc: "Ranks are disabled.",
-    reward: "Reduce Rank scaling",
+    reward: "Reduce Rank amount scaling",
     unlocked: computed(() => player.atom.unlocked),
     cost: costScaling({
       base: 1e58,
@@ -165,8 +167,13 @@ export const CHALLENGES = [
     desc: computed(
       () => `Tickspeed and BH Condenser scale ${formatMult(5, 0)} as fast.`,
     ),
-    reward: computed(() => `+${formatPercent(0.2, 0)} to Tickspeed and +${format(0.1, 1)} to BH Condenser power per completion`),
-    unlocked: computed(() => player.challenge.comps[4].gte(1)),
+    reward: computed(
+      () =>
+        `+${formatPercent(0.2, 0)} to Tickspeed and +${format(0.1, 1)} to BH Condenser power per completion`,
+    ),
+    unlocked: computed(
+      () => player.challenge.comps[4].gte(1) || player.supernova.unlocked,
+    ),
     cost: costScaling({
       base: 1e35,
       linear: computed(() => (hasElement(1) ? 5 : 100)),
@@ -188,8 +195,8 @@ export const CHALLENGES = [
       const comps = player.challenge.comps[5];
       const better = hasElement(1) && !(inChallenge(1) || inChallenge(6));
       return {
-        tickspeed: comps.mul(0.2),
-        bhc: comps.mul(better ? 0.05 : 0.1),
+        tickspeed: comps.mul(0.2).mul(hasElement(38) ? 3 : 1),
+        bhc: comps.mul(better ? 0.05 : 0.1).mul(hasElement(38) ? 2 : 1),
       };
     }),
     effDesc: (x) =>
@@ -206,7 +213,9 @@ export const CHALLENGES = [
       () =>
         `Each completion adds ${formatInteger(4)} to C${formatInteger(1)}-${formatInteger(4)} cap`,
     ),
-    unlocked: computed(() => player.challenge.comps[5].gte(1)),
+    unlocked: computed(
+      () => player.challenge.comps[5].gte(1) || player.supernova.unlocked,
+    ),
     cost: costScaling({
       base: 1e53,
       linear: 100,
@@ -223,14 +232,16 @@ export const CHALLENGES = [
       if (hasElement(4)) max = max.add(50);
       if (hasElement(12)) max = max.add(25);
       if (hasElement(19)) max = max.add(50);
-      if (hasElement(25)) max = max.add(100)
+      if (hasElement(25)) max = max.add(100);
       if (hasElement(32)) max = max.add(200);
+      if (hasElement(40)) max = max.add(100);
       return max;
     }),
     eff: computed(() => {
       let eff = player.challenge.comps[6].mul(4);
-      if (hasElement(32)) eff = eff.mul(1.5)
-      return eff
+      if (hasElement(32)) eff = eff.mul(1.5);
+      if (hasElement(40)) eff = eff.mul(1.25);
+      return eff.floor();
     }),
     effDesc: (x) => `+${formatInteger(x)}`,
   },
@@ -246,7 +257,9 @@ export const CHALLENGES = [
     ),
     reward:
       "Raise Dark Matter & Black Hole's mass gain multiplier based on completions",
-    unlocked: computed(() => player.challenge.comps[6].gte(1)),
+    unlocked: computed(
+      () => player.challenge.comps[6].gte(1) || player.supernova.unlocked,
+    ),
     cost: costScaling({
       base: 1e27,
       linear: 50,
@@ -260,8 +273,9 @@ export const CHALLENGES = [
     }),
     max: computed(() => {
       let max = new Decimal(50);
-      if (hasElement(25)) max = max.add(50)
-      return max
+      if (hasElement(25)) max = max.add(50);
+      if (hasElement(40)) max = max.add(50);
+      return max;
     }),
     eff: computed(() => {
       const comps = player.challenge.comps[7];
@@ -300,7 +314,7 @@ export function enterChallenge(num) {
 export function exitChallenge() {
   const active = player.challenge.active;
   const chal = CHALLENGES[active];
-  chal.cost.buy(chal.max.value.sub(chal.cost.amt.value))
+  chal.cost.buy(chal.max.value.sub(chal.cost.amt.value));
   challengeReset(active);
   player.challenge.active = -1;
 }

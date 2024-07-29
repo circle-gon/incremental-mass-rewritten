@@ -13,7 +13,7 @@ import {
 import { hasUpgrade, upgradeEffect } from "./upgrades";
 import { showQuote } from "../core/popups";
 import { challengeEffect, inChallenge } from "./challenges";
-import { dilate } from "../core/utils";
+import { dilate, superlinear } from "../core/utils";
 import { elementEffect, hasElement } from "../atom/elements";
 
 export const RANKS = [
@@ -25,7 +25,7 @@ export const RANKS = [
     cost: costScaling({
       amtScale: (a) => {
         let amt = a;
-        if (hasElement(26)) amt = amt.mul(0.95)
+        if (hasElement(26)) amt = amt.mul(0.95);
         if (hasElement(7)) amt = amt.div(challengeEffect(0).amount);
         if (hasRankReward(2, 3)) amt = amt.div(rankReward(2, 3));
         amt = amt.div(challengeEffect(4));
@@ -40,7 +40,7 @@ export const RANKS = [
         amt = amt.mul(challengeEffect(4));
         if (hasRankReward(2, 3)) amt = amt.mul(rankReward(2, 3));
         if (hasElement(7)) amt = amt.mul(challengeEffect(0).amount);
-        if (hasElement(26)) amt = amt.div(0.95)
+        if (hasElement(26)) amt = amt.div(0.95);
         return amt;
       },
       costScale: (c) => {
@@ -170,6 +170,19 @@ export const RANKS = [
         }),
         effDesc: (x) => formatMult(x),
       },
+      {
+        require: 36180,
+        desc: computed(
+          () =>
+            `Raise Mass gain by +${format(0.25, 2)}% every ${formatInteger(100)} Rank beyond ${formatInteger(35000)}, caps at ${format(1.25, 2)}`,
+        ),
+        eff: computed(() =>
+          superlinear(player.ranks[0].sub(35000).div(100), 0.0025, 0.25, 2).add(
+            1,
+          ),
+        ),
+        effDesc: (x) => `^${format(x)}`,
+      },
     ],
   },
   {
@@ -195,7 +208,7 @@ export const RANKS = [
         if (hasRankReward(2, 0)) base = base.mul(0.9);
         if (hasUpgrade("atom", 4)) base = base.mul(0.86);
         if (hasRankReward(2, 3)) base = base.mul(0.9);
-        if (hasElement(36)) base = base.div(elementEffect(36))
+        if (hasElement(36)) base = base.div(elementEffect(36));
 
         let cost = base.add(2).sqr();
         if (hasUpgrade("atom", 9)) cost = cost.mul(0.7);
@@ -209,7 +222,7 @@ export const RANKS = [
         if (hasRankReward(2, 0)) cost = cost.div(0.9);
         if (hasUpgrade("atom", 4)) cost = cost.div(0.86);
         if (hasRankReward(2, 3)) cost = cost.div(0.9);
-        if (hasElement(36)) cost = cost.mul(elementEffect(36))
+        if (hasElement(36)) cost = cost.mul(elementEffect(36));
         return cost;
       },
     }),
@@ -273,6 +286,10 @@ export const RANKS = [
         eff: computed(() => player.ranks[1].sub(74).div(30).add(1).pow(0.3)),
         effDesc: (x) => `^${format(x)}`,
       },
+      {
+        require: 328,
+        desc: computed(() => `Tetr scales ${formatPercent(0.05, 0)} slower`),
+      },
     ],
   },
   {
@@ -290,11 +307,21 @@ export const RANKS = [
       cost: (a) => {
         let amt = a;
         if (hasElement(8)) amt = amt.mul(0.85);
-        return amt.sqr().mul(3).add(23).ceil();
+        if (hasRankReward(1, 8)) amt = amt.mul(0.9);
+        return amt
+          .pow(hasElement(43) ? 1.75 : 2)
+          .mul(3)
+          .add(23)
+          .ceil();
       },
       invert: (res) => {
-        let amt = res.sub(23).div(3).max(0).sqrt();
+        let amt = res
+          .sub(23)
+          .div(3)
+          .max(0)
+          .root(hasElement(43) ? 1.75 : 2);
         if (hasElement(8)) amt = amt.div(0.85);
+        if (hasRankReward(1, 8)) amt = amt.div(0.9);
         return amt;
       },
     }),

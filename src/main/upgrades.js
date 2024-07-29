@@ -52,9 +52,9 @@ export const UPGRADES = {
         desc: "Tickspeeds give free Strongers.",
         cost: 1e5,
         eff: computed(() => {
-          let free = player.buildings.tickspeed.sqrt().floor()
-          if (hasElement(37)) free = free.add(elementEffect(37))
-          return free
+          let free = player.buildings.tickspeed.sqrt().floor();
+          if (hasElement(37)) free = free.add(elementEffect(37));
+          return free;
         }),
         effDesc: (x) => `+${formatInteger(x)}`,
       },
@@ -190,7 +190,7 @@ export const UPGRADES = {
         desc: "Multiply Mass gain based on Dark Matter.",
         cost: 1.11e111,
         unlocked: computed(() => player.challenge.unlocked),
-        eff: computed(() => dilate(player.dm.darkMatter, 0.5).sqr()),
+        eff: computed(() => dilate(player.dm.darkMatter.add(1), 0.5).sqr()),
         effDesc: (x) => formatMult(x),
       },
       {
@@ -303,13 +303,15 @@ export const UPGRADES = {
       {
         desc: "BH Condenser and Cosmic Ray power is boosted by Dilated Mass.",
         cost: "1e1460",
-        eff: computed(() => player.md.mass.add(1).log10().add(1).root(4).sub(1).div(20).add(1)),
-        effDesc: x => formatMult(x)
+        eff: computed(() =>
+          player.md.mass.add(1).log10().add(1).root(4).sub(1).div(20).add(1),
+        ),
+        effDesc: (x) => formatMult(x),
       },
       {
         desc: "Black Hole's effect is stronger.",
-        cost: "1e2280"
-      }
+        cost: "1e2280",
+      },
     ],
   },
 };

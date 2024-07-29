@@ -11,6 +11,7 @@ import { MASS_DILATION } from "../atom/md";
 import { STARS } from "../atom/stars";
 
 function defaultStart() {
+  // DON'T USE UNDEFINED AS A VALUE, BAD THINGS HAPPEN
   return {
     time: 0,
     version: 0.01,
@@ -40,12 +41,16 @@ function defaultStart() {
       active: false,
       particle: Decimal.dZero,
       mass: Decimal.dZero,
-      upgrades: Array(MASS_DILATION.upgrades.length).fill(Decimal.dZero)
+      upgrades: Array(MASS_DILATION.upgrades.length).fill(Decimal.dZero),
     },
     stars: {
       unlocked: 0,
       collapsed: Decimal.dZero,
-      stars: Array(STARS.count).fill(Decimal.dZero)
+      stars: Array(STARS.count).fill(Decimal.dZero),
+    },
+    supernova: {
+      count: Decimal.dZero,
+      unlocked: false,
     },
     quotes: [],
     options: {
@@ -61,6 +66,7 @@ function defaultStart() {
         rage: true,
         dm: true,
         atom: true,
+        supernova: true,
       },
       buildingAuto: Object.fromEntries(
         Object.keys(BUILDINGS).map((i) => [i, false]),

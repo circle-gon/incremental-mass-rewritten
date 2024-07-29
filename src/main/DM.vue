@@ -5,14 +5,18 @@
       <h4>
         {{ formatMass(player.dm.mass) }}
         {{ formatGain(player.dm.mass, bhGain, true) }}
-      </h4>,
+      </h4>
+      ,
       <br />
       <span class="green"
         >which boosts Mass gain by
-        <h4>{{ formatMult(bhEffect) }}</h4>.</span
+        <h4>{{ formatMult(bhEffect) }}</h4>
+        .</span
       ><br /><br />
-      Black Hole's mass gain formula - ([BH Mass] + 1)<sup>{{ format(bhExpo) }}</sup> *
-      <span>{{ format(bhMulti) }}</span
+      Black Hole's mass gain formula - ([BH Mass] + 1)<sup>{{
+        format(bhExpo)
+      }}</sup>
+      * <span>{{ format(bhMulti) }}</span
       ><sup v-if="bhMultiExpo.gt(1)">{{ format(bhMultiExpo) }}</sup>
     </div>
   </div>

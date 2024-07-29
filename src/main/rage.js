@@ -26,7 +26,7 @@ export const ragePowerGain = computed(() => {
   else base = base.pow(challengeEffect(3));
   if (hasUpgrade("dm", 7)) base = base.pow(1.15);
 
-  if (player.md.active) base = dilate(base, MASS_DILATION.penalty.value)
+  if (player.md.active) base = dilate(base, MASS_DILATION.penalty.value);
 
   return base.floor();
 });

@@ -49,8 +49,7 @@
           challengeResetText(player.challenge.chosen)
         }}</span>
         <p>{{ goalText }}</p>
-        <span class="green">{{ unref(current.reward) }}.</span
-        ><br />
+        <span class="green">{{ unref(current.reward) }}.</span><br />
         <template v-if="current.firstTime">
           <span class="yellow">{{ unref(current.firstTime) }}</span>
           <br />

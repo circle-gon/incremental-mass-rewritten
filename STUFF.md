@@ -1,8 +1,16 @@
 # TODO
 
-- add a loading screen
 - add offline progress
-- fix grammar?
+- add tab notifications
+- clean up description
+- clean up code
+- add resource hiding tab
+- use exports instead of objects for <12 exports
+- clean up magic things in App.vue
+- move Options.vue to /core
+- bump dependencies
+- make the game translatable?
+- add multiplier tab
 
 # Balance
 

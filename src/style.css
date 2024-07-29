@@ -9,6 +9,17 @@
   text-align: center;
 }
 
+html,
+body,
+#app {
+  height: 100%;
+}
+
+#loading {
+  align-items: center;
+  height: 100%;
+}
+
 body {
   color: white;
   background-color: hsl(0, 0%, 7%);
@@ -16,12 +27,6 @@ body {
   font-size: 14px;
   margin: 0;
   user-select: none;
-}
-
-#app {
-  /* this is so stupid why does redshark not have that problem grumble grumble */
-  width: 100vw;
-  height: 100vh;
 }
 
 table,
@@ -123,6 +128,14 @@ p {
 }
 
 /* GLOBAL CLASSES */
+.line {
+  content: "";
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  height: 6px;
+  border-top: solid 2px white;
+}
 
 .stab-btn .btn-tab {
   min-height: 40px;
@@ -162,12 +175,12 @@ p {
 }
 
 .btn-tab.supernova {
-	color: #ff009d;
-	border-color: #ff009d;
+  color: #ff009d;
+  border-color: #ff009d;
 }
 
 .btn-tab.supernova:hover {
-	background-color: #500031;
+  background-color: #500031;
 }
 
 .btn-tab.md:hover {
@@ -240,7 +253,7 @@ p {
   }
 }
 
-/* TODO: upload fonts */
+/* FONTS */
 @font-face {
   font-family: "Andy Bold";
   src: url("fonts/design.graffiti.ANDYB.ttf");

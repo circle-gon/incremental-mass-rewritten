@@ -238,7 +238,8 @@ export const BUILDINGS = {
       if (hasUpgrade("atom", 8)) power = power.add(0.05);
       if (hasRankReward(1, 6)) power = power.add(0.05);
       if (hasElement(3)) power = power.mul(elementEffect(3));
-      if (player.md.upgrades[3].gte(1)) power = power.mul(MASS_DILATION.effect(3))
+      if (player.md.upgrades[3].gte(1))
+        power = power.mul(MASS_DILATION.effect(3));
 
       let effect = power.mul(amt).add(1);
       if (hasUpgrade("dm", 8)) effect = effect.add(upgradeEffect("dm", 8));
@@ -257,10 +258,10 @@ export const BUILDINGS = {
     cost: costScaling({
       amtScale: (a) => {
         let amt = a;
-        if (hasElement(26)) amt = amt.mul(0.95)
+        if (hasElement(26)) amt = amt.mul(0.95);
         if (hasElement(7)) amt = amt.div(challengeEffect(0).amount);
         if (hasRankReward(2, 4)) amt = amt.div(rankReward(2, 4));
-        if (inChallenge(5)) amt = amt.mul(5);
+        if (inChallenge(5)) amt = amt.mul(hasElement(40) ? 1.6 : 5);
         if (hasUpgrade("rp", 13)) amt = amt.sub(50);
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
         return amt;
@@ -269,10 +270,10 @@ export const BUILDINGS = {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).div(2).add(25);
         if (hasUpgrade("rp", 13)) amt = amt.add(50);
-        if (inChallenge(5)) amt = amt.div(5);
+        if (inChallenge(5)) amt = amt.div(hasElement(40) ? 1.6 : 5);
         if (hasRankReward(2, 4)) amt = amt.mul(rankReward(2, 4));
         if (hasElement(7)) amt = amt.mul(challengeEffect(0).amount);
-        if (hasElement(26)) amt = amt.div(0.95)
+        if (hasElement(26)) amt = amt.div(0.95);
         return amt;
       },
       costScale: (c) => {
@@ -317,7 +318,7 @@ export const BUILDINGS = {
       power = power.add(challengeEffect(1));
       power = power.add(powerEffect(0, 1));
       power = power.add(challengeEffect(5).tickspeed);
-      power = power.mul(MASS_DILATION.dilatedMassEffect.value)
+      power = power.mul(MASS_DILATION.dilatedMassEffect.value);
 
       let effect = power.pow(amt);
       if (hasRankReward(2, 2)) effect = effect.pow(1.05);
@@ -336,13 +337,13 @@ export const BUILDINGS = {
     cost: costScaling({
       amtScale: (a) => {
         let amt = a;
-        if (inChallenge(5)) amt = amt.mul(5);
+        if (inChallenge(5)) amt = amt.mul(hasElement(40) ? 1.6 : 5);
         if (hasElement(14)) amt = amt.mul(0.95);
         return amt;
       },
       amtInvert: (a) => {
         let amt = a;
-        if (inChallenge(5)) amt = amt.div(5);
+        if (inChallenge(5)) amt = amt.div(hasElement(40) ? 1.6 : 5);
         if (hasElement(14)) amt = amt.div(0.95);
         return amt;
       },
@@ -379,7 +380,7 @@ export const BUILDINGS = {
       if (better) power = power.add(challengeEffect(5).bhc);
       if (hasUpgrade("dm", 1)) power = power.mul(upgradeEffect("dm", 1));
       if (!better) power = power.add(challengeEffect(5).bhc);
-      if (hasUpgrade("atom", 10)) power = power.mul(upgradeEffect("atom", 10))
+      if (hasUpgrade("atom", 10)) power = power.mul(upgradeEffect("atom", 10));
 
       return {
         power,
@@ -424,7 +425,7 @@ export const BUILDINGS = {
     effect(amt) {
       let power = Decimal.dTwo;
       if (hasUpgrade("atom", 3)) power = power.add(upgradeEffect("atom", 3));
-      if (hasUpgrade("atom", 10)) power = power.mul(upgradeEffect("atom", 10))
+      if (hasUpgrade("atom", 10)) power = power.mul(upgradeEffect("atom", 10));
 
       return {
         power,

@@ -9,6 +9,7 @@ import { powerEffect } from "../atom/atom";
 import { challengeEffect, inChallenge } from "./challenges";
 import { MASS_DILATION } from "../atom/md";
 import { dilate } from "../core/utils";
+import { elementEffect, hasElement } from "../atom/elements";
 
 const canDMReset = computed(() => {
   if (inChallenge(6)) return player.mass.gte(1e200);
@@ -24,7 +25,7 @@ export const darkMatterGain = computed(() => {
   base = base.mul(powerEffect(2, 0));
   if (inChallenge(7)) base = base.root(8);
 
-  if (player.md.active) base = dilate(base, MASS_DILATION.penalty.value)
+  if (player.md.active) base = dilate(base, MASS_DILATION.penalty.value);
 
   return base.floor();
 });
@@ -57,6 +58,7 @@ export const bhMulti = computed(() => {
   base = base.mul(buildingEffect("bhc"));
   if (hasUpgrade("rp", 10)) base = base.mul(upgradeEffect("rp", 10));
   if (hasUpgrade("dm", 13)) base = base.mul(upgradeEffect("dm", 13));
+  if (hasElement(45)) base = base.mul(elementEffect(45));
 
   return base;
 });
@@ -74,10 +76,10 @@ export const bhGain = computed(() => {
   const multi = bhMulti.value.pow(bhMultiExpo.value);
   let gain = multi.mul(self);
   if (inChallenge(7)) gain = gain.root(8);
-  if (player.md.active) gain = dilate(gain, MASS_DILATION.penalty.value)
+  if (player.md.active) gain = dilate(gain, MASS_DILATION.penalty.value);
   return gain;
 });
 
 export const bhEffect = computed(() => {
-  return player.dm.mass.add(1).pow(hasUpgrade("atom", 11) ? 1.25 : 0.25)
+  return player.dm.mass.add(1).pow(hasUpgrade("atom", 11) ? 1.25 : 0.25);
 });
