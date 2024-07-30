@@ -10,6 +10,7 @@ import {
   formatReduction,
 } from "../core/format";
 import { dilate, uni } from "../core/utils";
+import { STARS } from "./stars";
 
 const penalty = computed(() => 0.8);
 function run() {
