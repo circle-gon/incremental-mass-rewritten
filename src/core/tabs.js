@@ -23,6 +23,7 @@ const tabs = [
       {
         name: "Mass",
         comp: Mass,
+        notify: computed(() => true)
       },
       {
         name: "Black Hole",

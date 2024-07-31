@@ -4,7 +4,7 @@
       <div v-if="tab.unlocked?.value ?? true" style="width: 100%">
         <button
           class="btn-tab"
-          :class="[idx === selectedTab.tab ? 'chosen' : null, tab.class]"
+          :class="[idx === selectedTab.tab ? 'chosen' : null, tab.class, shouldNotify(tab) ? 'notif' : null]"
           @click="selectedTab.tab = idx"
         >
           <Icon
@@ -24,6 +24,10 @@
 <script setup>
 import tabs, { selectedTab } from "./tabs";
 import { Icon } from "@iconify/vue";
+
+function shouldNotify(tab) {
+  return tab.tabs.some(i => i.notify?.value)
+}
 </script>
 <style scoped>
 #tabs {

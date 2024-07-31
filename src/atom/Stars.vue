@@ -8,9 +8,7 @@
   stars, and based on all Rank types,<br />
   <span class="green"
     >it boosts Mass gain by
-    <h4>{{ formatMult(STARS.effect.value) }}</h4>
-    .</span
-  ><br /><br />
+    <h4>{{ formatMult(STARS.effect.value) }}</h4>.</span><br /><br />
   <button
     v-if="player.stars.unlocked < STARS.count"
     class="btn"

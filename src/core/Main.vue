@@ -23,7 +23,7 @@
           <button
             v-if="tab.unlocked?.value ?? true"
             class="btn-tab"
-            :class="[chosen === idx ? 'chosen' : null, tab.class]"
+            :class="[chosen === idx ? 'chosen' : null, tab.class, tab.notify?.value ? 'notif' : null]"
             @click="selectedTab.subtabs[selectedTab.tab] = idx"
           >
             {{ tab.name }}

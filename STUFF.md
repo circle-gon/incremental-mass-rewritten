@@ -1,5 +1,6 @@
 # TODO
 
+- add LICENSE.md
 - add offline progress
 - add tab notifications
 - add resource hiding tab
