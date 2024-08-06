@@ -153,8 +153,7 @@ function decimalize(obj, orig) {
   for (const key of Object.keys(orig)) {
     const item = obj[key];
     const other = orig[key];
-    // Get rid of excess properties
-    if (item === undefined || other === undefined) obj[key] = other;
+    if (item === undefined) obj[key] = other;
     if (other instanceof Decimal) obj[key] = new Decimal(item);
     else if (typeof item === "object" && item !== null) decimalize(item, other);
   }
