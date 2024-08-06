@@ -60,7 +60,7 @@ function defaultStart() {
       notation: "sc",
       massDis: 0,
       font: "Verdana",
-      offlineProgress: true,
+      offlineProgress: import.meta.env.PROD,
       navHide: [false, false],
       confirm: {
         rage: true,
@@ -123,8 +123,9 @@ function nanGuard(obj, name) {
 
       if (
         (typeof value === "number" || value instanceof Decimal) &&
-        Decimal.isNaN(value)
+        (Decimal.isNaN(value) || !Decimal.isFinite(value))
       ) {
+        // This technically could be Infinite but I don't think anyone will notice or care
         notify(`Game NaNed because of <b>${str}</b>`);
         // Don't crash the game because this could happen really often
         console.error("Bad NaN value: " + str);
@@ -152,7 +153,8 @@ function decimalize(obj, orig) {
   for (const key of Object.keys(orig)) {
     const item = obj[key];
     const other = orig[key];
-    if (item === undefined) obj[key] = other;
+    // Get rid of excess properties
+    if (item === undefined || other === undefined) obj[key] = other;
     if (other instanceof Decimal) obj[key] = new Decimal(item);
     else if (typeof item === "object" && item !== null) decimalize(item, other);
   }

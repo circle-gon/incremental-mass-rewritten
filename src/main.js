@@ -17,10 +17,6 @@ import {
 import { elementEffect, hasElement } from "./atom/elements";
 import { MASS_DILATION } from "./atom/md";
 import { STARS } from "./atom/stars";
-import App from "./App.vue";
-
-// Always place after App.vue so that way its styles take priority
-import "./style.css";
 import {
   canSupernovaReset,
   supernovaRequirement,
@@ -28,13 +24,18 @@ import {
 } from "./supernova/supernova";
 import { notify, showPopup } from "./core/popups";
 import { runOfflineProgress } from "./core/offline";
+import Decimal from "break_eternity.js";
+import App from "./App.vue";
 
-let paused = true;
+// Always place after App.vue so that way its styles take priority
+import "./style.css";
+
+let paused = false;
 
 const reachedEnd = computed(() => player.supernova.count.gte(1));
 
 export function tick(diff) {
-  if (!(import.meta.env.DEV && paused)) {
+  if (!paused) {
     player.time += diff;
     player.mass = massGain.value.mul(diff).add(player.mass);
 
@@ -138,6 +139,9 @@ function init() {
   updateCss();
   start();
 
+  window.player = player;
+  window.Decimal = Decimal;
+
   // UI
   createApp(App).mount("#app");
   document.getElementById("loading").remove();
@@ -156,7 +160,6 @@ function debug() {
     resolve();
 
     // debug helps
-    window.player = player;
     window.addEventListener("keypress", (e) => {
       if (e.key === "p") {
         paused = !paused;
