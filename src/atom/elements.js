@@ -11,7 +11,6 @@ import { player } from "../core/save";
 import { dilate } from "../core/utils";
 import Decimal from "break_eternity.js";
 import { CHALLENGES } from "../main/challenges";
-import { MASS_DILATION } from "./md";
 import { atomicPowerEffect } from "./atom";
 import { STARS } from "./stars";
 
@@ -152,7 +151,7 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(
       () =>
-        `Reduce C${formatInteger(6)}'s linear scaling and strengthen its effect when not in C${formatInteger(2)} or C${formatInteger(7)}`,
+        `Reduce C${formatInteger(6)}'s linear scaling and strengthen its effect when not in C${formatInteger(2)} or C${formatInteger(7)}`
     ),
     cost: 5e13,
   },
@@ -169,21 +168,21 @@ export const ELEMENT_UPGRADES = [
     eff: computed(() =>
       dilate(player.atom.powers[0].add(1).log10(), 1 / 3)
         .div(200)
-        .add(1),
+        .add(1)
     ),
     effDesc: (x) => formatMult(x),
   },
   {
     desc: computed(
       () =>
-        `C${formatInteger(5)}-${formatInteger(7)} caps are increased by ${formatInteger(50)}`,
+        `C${formatInteger(5)}-${formatInteger(7)} caps are increased by ${formatInteger(50)}`
     ),
     cost: 1e28,
   },
   {
     desc: computed(
       () =>
-        `Gain ${formatPercent(0.01, 0)} (additively) more Quarks per challenge completion`,
+        `Gain ${formatPercent(0.01, 0)} (additively) more Quarks per challenge completion`
     ),
     cost: 2.5e30,
     eff: computed(() => {
@@ -215,7 +214,7 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(
       () =>
-        `C${formatInteger(3)} and C${formatInteger(4)}'s effects are stronger`,
+        `C${formatInteger(3)} and C${formatInteger(4)}'s effects are stronger`
     ),
     cost: 2.5e40,
   },
@@ -230,7 +229,7 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(
       () =>
-        `Increase C${formatInteger(5)} and C${formatInteger(6)} cap for every C${formatInteger(7)} completion past ${formatInteger(100)}, and its cap is increased by ${formatInteger(25)}`,
+        `Increase C${formatInteger(5)} and C${formatInteger(6)} cap for every C${formatInteger(7)} completion past ${formatInteger(100)}, and its cap is increased by ${formatInteger(25)}`
     ),
     cost: 2.5e48,
     eff: computed(() => player.challenge.comps[6].sub(100).max(0)),
@@ -239,7 +238,7 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(
       () =>
-        `Automatically gain a percentage of Quarks gained from reset passively`,
+        `Automatically gain a percentage of Quarks gained from reset passively`
     ),
     cost: 2.5e50,
     eff: computed(() => {
@@ -251,15 +250,14 @@ export const ELEMENT_UPGRADES = [
   },
   {
     desc: computed(
-      () =>
-        `BH Condenser and Cosmic Ray scale ${formatPercent(0.05, 0)} slower`,
+      () => `BH Condenser and Cosmic Ray scale ${formatPercent(0.05, 0)} slower`
     ),
     cost: 1e51,
   },
   {
     desc: computed(
       () =>
-        `Increase Silicon's effect by ${formatPercent(0.04, 0)} for every element bought`,
+        `Increase Silicon's effect by ${formatPercent(0.04, 0)} for every element bought`
     ),
     cost: 1e56,
     eff: computed(() => 0.04 * player.atom.elements.length),
@@ -275,7 +273,7 @@ export const ELEMENT_UPGRADES = [
     eff: computed(() =>
       dilate(player.buildings.cosmic, 1 / 3)
         .div(500)
-        .add(1),
+        .add(1)
     ),
     effDesc: (x) => `^${format(x)}`,
   },
@@ -285,7 +283,7 @@ export const ELEMENT_UPGRADES = [
   },
   {
     desc: computed(
-      () => `Increase C${formatInteger(7)}'s cap by ${formatInteger(50)}`,
+      () => `Increase C${formatInteger(7)}'s cap by ${formatInteger(50)}`
     ),
     cost: 2.5e70,
   },
@@ -301,14 +299,14 @@ export const ELEMENT_UPGRADES = [
   },
   {
     desc: computed(
-      () => `Atomic Power gives ${formatPercent(0.5, 0)} more Tickspeed`,
+      () => `Atomic Power gives ${formatPercent(0.5, 0)} more Tickspeed`
     ),
     cost: 1e107,
   },
   {
     desc: computed(
       () =>
-        `Gain ${formatPercent(1, 0)} of Atoms gained from reset per second, and Relativistic Particle gain is boosted by Atomic Power`,
+        `Gain ${formatPercent(1, 0)} of Atoms gained from reset per second, and Relativistic Particle gain is boosted by Atomic Power`
     ),
     cost: 1e119,
     eff: computed(() => player.atom.power.add(1).log10().add(1)),
@@ -317,41 +315,41 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(
       () =>
-        `Increase Mass Dilation upgrade ${formatInteger(1)}'s base by ${format(0.5, 1)}`,
+        `Increase Mass Dilation upgrade ${formatInteger(1)}'s base by ${format(0.5, 1)}`
     ),
     cost: 1e142,
   },
   {
     desc: computed(
       () =>
-        `Increase C${formatInteger(7)}'s cap by ${formatInteger(100)} and C${formatInteger(8)}'s cap by ${formatInteger(50)}`,
+        `Increase C${formatInteger(7)}'s cap by ${formatInteger(100)} and C${formatInteger(8)}'s cap by ${formatInteger(50)}`
     ),
     cost: 1e161,
   },
   {
     desc: computed(
       () =>
-        `Reduce Rank and Tickspeed amount scaling by ${formatPercent(0.05, 0)}`,
+        `Reduce Rank and Tickspeed amount scaling by ${formatPercent(0.05, 0)}`
     ),
     cost: 1e168,
   },
   {
     desc: computed(
       () =>
-        `Raise Mass gain by ${format(1.5, 1)} after the dilation penalty when in Mass Dilation`,
+        `Raise Mass gain by ${format(1.5, 1)} after the dilation penalty when in Mass Dilation`
     ),
     cost: 1e192,
   },
   {
     desc: computed(
-      () => `Raise Proton Power's first effect by ${formatInteger(2)}`,
+      () => `Raise Proton Power's first effect by ${formatInteger(2)}`
     ),
     cost: 1e203,
   },
   {
     desc: computed(
       () =>
-        `Raise Neutron Power's first effect by ${formatInteger(2)}, and gain ${formatPercent(0.1, 0)} of each Particle gained from assigning per second`,
+        `Raise Neutron Power's first effect by ${formatInteger(2)}, and gain ${formatPercent(0.1, 0)} of each Particle gained from assigning per second`
     ),
     cost: 1e210,
   },
@@ -368,7 +366,7 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(
       () =>
-        `Increase C${formatInteger(7)}'s cap by ${formatInteger(200)}, and its effect is ${formatPercent(0.5, 0)} more effective`,
+        `Increase C${formatInteger(7)}'s cap by ${formatInteger(200)}, and its effect is ${formatPercent(0.5, 0)} more effective`
     ),
     cost: 1e250,
   },
@@ -394,14 +392,13 @@ export const ELEMENT_UPGRADES = [
     eff: computed(() =>
       dilate(player.ranks[2], 1 / 3)
         .div(100)
-        .add(1),
+        .add(1)
     ),
     effDesc: (x) => formatReduction(x.recip()),
   },
   {
     desc: computed(
-      () =>
-        `Atomic Power also boosts Rage Upgrade ${formatInteger(7)}'s effect`,
+      () => `Atomic Power also boosts Rage Upgrade ${formatInteger(7)}'s effect`
     ),
     cost: "6.54e321",
     eff: computed(() => atomicPowerEffect.value.div(5).floor()),
@@ -410,7 +407,7 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(
       () =>
-        `C${formatInteger(2)}'s effect is ${formatPercent(0.5, 0)} more effective, and C${formatInteger(6)}'s Tickspeed boost is tripled and its BH Condenser boost doubled`,
+        `C${formatInteger(2)}'s effect is ${formatPercent(0.5, 0)} more effective, and C${formatInteger(6)}'s Tickspeed boost is tripled and its BH Condenser boost doubled`
     ),
     cost: "1e338",
   },
@@ -418,14 +415,14 @@ export const ELEMENT_UPGRADES = [
     desc: "Collapsed Star boosts Dilated Mass gain",
     cost: "1e368",
     eff: computed(() =>
-      dilate(player.stars.collapsed.add(1).log10().add(1).pow(3), 2),
+      dilate(player.stars.collapsed.add(1).log10().add(1).pow(3), 2)
     ),
     effDesc: (x) => formatMult(x),
   },
   {
     desc: computed(
       () =>
-        `Increase C${formatInteger(8)}'s cap by ${formatInteger(50)}, C${formatInteger(7)}'s cap is increased by ${formatInteger(100)}, its effect is ${formatPercent(0.25, 0)} more effective, and C${formatInteger(6)}'s penalty is reduced to ${format(1.6, 1)}`,
+        `Increase C${formatInteger(8)}'s cap by ${formatInteger(50)}, C${formatInteger(7)}'s cap is increased by ${formatInteger(100)}, its effect is ${formatPercent(0.25, 0)} more effective, and C${formatInteger(6)}'s penalty is reduced to ${format(1.6, 1)}`
     ),
     cost: "1e385",
   },
@@ -447,7 +444,7 @@ export const ELEMENT_UPGRADES = [
     desc: "Collapsed Star boosts Relativistic Particle gain",
     cost: "1e455",
     eff: computed(() =>
-      dilate(player.stars.collapsed.add(1).log10().add(1).pow(2), 2),
+      dilate(player.stars.collapsed.add(1).log10().add(1).pow(2), 2)
     ),
     effDesc: (x) => formatMult(x),
   },
@@ -463,7 +460,7 @@ export const ELEMENT_UPGRADES = [
   },
   {
     desc: computed(
-      () => `Collapsed Star's effect is ${formatPercent(0.5, 0)} stronger`,
+      () => `Collapsed Star's effect is ${formatPercent(0.5, 0)} stronger`
     ),
     cost: "1e580",
   },
@@ -490,7 +487,7 @@ export const ELEMENT_UPGRADES = [
   {
     desc: computed(
       () =>
-        `Mass Dilation upgrade ${formatInteger(6)} is ${formatPercent(0.5, 0)} stronger`,
+        `Mass Dilation upgrade ${formatInteger(6)} is ${formatPercent(0.5, 0)} stronger`
     ),
     cost: "1e850",
   },
@@ -506,7 +503,7 @@ ELEMENT_UPGRADES.push(
   ...Array(118 - ELEMENT_UPGRADES.length).fill({
     desc: "TBD",
     cost: Infinity,
-  }),
+  })
 );
 
 export const elementsUnlocked = computed(() => {

@@ -2,7 +2,7 @@ import { computed } from "vue";
 import { elementEffect, hasElement } from "./elements";
 import { player } from "../core/save";
 import { atomReset } from "./atom";
-import { costScaling } from "../core/cost";
+import { quadCostScaling } from "../core/cost";
 import {
   format,
   formatInteger,
@@ -22,7 +22,7 @@ function run() {
 
 function createUpgrades(base) {
   for (const [id, upg] of base.entries()) {
-    upg.cost = costScaling({
+    upg.cost = quadCostScaling({
       ...upg.cost,
       amt: computed({
         get: () => player.md.upgrades[id],

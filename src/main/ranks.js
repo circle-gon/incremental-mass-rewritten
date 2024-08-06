@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import { player } from "../core/save";
 import Decimal from "break_eternity.js";
-import { costScaling, manualCostScaling } from "../core/cost";
+import { quadCostScaling, manualCostScaling } from "../core/cost";
 import { buildingAmount, resetBuilding } from "./buildings";
 import {
   format,
@@ -22,7 +22,7 @@ export const RANKS = [
     unlocked: computed(() => true),
     autoUnlocked: computed(() => hasUpgrade("rp", 4)),
     noReset: computed(() => hasUpgrade("rp", 3)),
-    cost: costScaling({
+    cost: quadCostScaling({
       amtScale: (a) => {
         let amt = a;
         if (hasElement(26)) amt = amt.mul(0.95);

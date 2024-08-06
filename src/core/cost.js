@@ -30,7 +30,7 @@ export function manualCostScaling(data) {
   };
 }
 
-export function costScaling(data) {
+export function quadCostScaling(data) {
   const amtScale = (amt) => (data.amtScale ? data.amtScale(amt) : amt);
   const amtInvert = (amt) => (data.amtInvert ? data.amtInvert(amt) : amt);
   const costScale = (cost) => (data.costScale ? data.costScale(cost) : cost);

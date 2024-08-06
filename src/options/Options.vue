@@ -49,12 +49,13 @@
   </div>
   <br />
   <br /><br />
-  Incremental Mass Rewritten v0.7.1.6 - made by MrRedShark77<br />
+  Incremental Mass Rewritten Unsoftcapped v0.0.1<br />
+  Based off of Incremental Mass Rewritten v0.7.1.6 - made by MrRedShark77<br />
   The game is inspired by Distance Incremental & Synergism<br />
-  Contributors:
+  Original IMR contributors:
   <span style="cursor: pointer" @click="lemon">Bézier</span>, 16777216 & Aarex
   (Artists)<br /><br /><br />
-  Hint 1: Hover top image above tabs to show description...<br /><br />
+  Tip: Hover over the images on the side to show its description...<br /><br />
   Total time played: {{ formatTime(player.time) }}<br /><br />
 </template>
 <script setup>
@@ -63,7 +64,7 @@ import { formatTime } from "../core/format";
 import { showPopup, notify } from "../core/popups";
 import Tooltip from "../core/Tooltip.vue";
 
-const CONFIRMATIONS = ["rage", "dm", "atom", "supernova"];
+const CONFIRMATIONS = Object.keys(player.options.confirm);
 
 // i love vite guys
 function getSrc(icon) {
@@ -112,7 +113,7 @@ function open(url) {
 function lemon() {
   // this is quite literally the only reason why notify accepts HTML
   notify(
-    'where lemon<br><img src="https://i.imgflip.com/57cc98.jpg" style="width:100%">',
+    'where lemon<br><img src="https://i.imgflip.com/57cc98.jpg" style="width:100%">'
   );
 }
 </script>

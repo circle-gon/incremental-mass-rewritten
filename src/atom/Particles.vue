@@ -4,19 +4,25 @@
     <button class="btn" @click="assignParticles">Distribute</button><br /><br />
     <input
       v-for="(particle, i) in PARTICLES"
+      :key="i"
+      v-model="splits[i].value"
       :style="{ color: particle.color }"
       type="number"
       class="input-ratio"
-      v-model="splits[i].value"
     />
   </div>
   <br /><br />
   Ratio mode: {{ RATIO_DESC[player.atom.split] }}<br />
-  <button class="btn" v-for="i in 3" @click="player.atom.split = i - 1">
+  <button
+    v-for="i in 3"
+    :key="i"
+    class="btn"
+    @click="player.atom.split = i - 1"
+  >
     {{ RATIO_DESC[i - 1] }}</button
   ><br /><br />
   <div class="table-center" style="justify-content: space-evenly">
-    <div style="width: 30%" v-for="(particle, i) in PARTICLES">
+    <div v-for="(particle, i) in PARTICLES" :key="i" style="width: 30%">
       <button class="btn" @click="assignParticle(i)">Assign</button><br /><br />
       <div
         style="min-height: 120px"
@@ -67,7 +73,7 @@ const splits = Array(PARTICLES.length)
         const num = Math.max(Number(v), 1);
         player.atom.ratio[i] = num;
       },
-    }),
+    })
   );
 
 function desc(particle) {

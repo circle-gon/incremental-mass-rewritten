@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 300px" v-if="rank.unlocked.value">
+  <div v-if="rank.unlocked.value" style="width: 300px">
     <button
       v-if="rank.autoUnlocked.value"
       class="btn"

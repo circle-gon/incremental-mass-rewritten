@@ -23,7 +23,6 @@ body,
 body {
   color: white;
   background-color: hsl(0, 0%, 7%);
-  overflow: hidden;
   font-size: 14px;
   margin: 0;
   user-select: none;

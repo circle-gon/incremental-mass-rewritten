@@ -3,6 +3,7 @@ import Quote from "../popups/Quote.vue";
 import Help from "../popups/Help.vue";
 import Fonts from "../popups/Fonts.vue";
 import Notations from "../popups/Notations.vue";
+import Endgame from "../popups/Endgame.vue";
 import { curryComponent, textComponent } from "./utils";
 import { hardReset, load, player } from "./save";
 import { rageReset } from "../main/rage";
@@ -49,7 +50,7 @@ export const POPUPS = {
   import: {
     type: "input",
     comp: textComponent(
-      "Paste in your save. WARNING: this will overwrite your current save!",
+      "Paste in your save. WARNING: this will overwrite your current save!"
     ),
     result: load,
   },
@@ -93,6 +94,11 @@ export const POPUPS = {
       if (x) supernovaReset();
     },
   },
+  endgame: {
+    type: "popup",
+    comp: Endgame,
+    text: "Nice",
+  },
   ...Object.fromEntries(
     QUOTES.map((i, x) => [
       "quote" + x,
@@ -104,7 +110,7 @@ export const POPUPS = {
         }),
         text: "Let's go!",
       },
-    ]),
+    ])
   ),
 };
 

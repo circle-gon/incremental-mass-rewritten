@@ -28,7 +28,7 @@
   <div class="table-center" style="width: 1000px">
     <button
       v-for="(upg, idx) in MASS_DILATION.upgrades"
-      @click="MASS_DILATION.buy(idx)"
+      :key="idx"
       style="font-size: 11px"
       class="btn full md"
       :style="{
@@ -37,6 +37,7 @@
       :class="{
         locked: !MASS_DILATION.canBuy(idx),
       }"
+      @click="MASS_DILATION.buy(idx)"
     >
       <div style="min-height: 80px">
         <template v-if="upg.max > 1">

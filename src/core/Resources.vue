@@ -1,7 +1,7 @@
 <template>
   <div id="resources-table">
-    <template v-for="(resource, icon) in resources" :key="resource.icon">
-      <div v-if="resource.show.value">
+    <template v-for="(resource, icon) in resources" :key="icon">
+      <div v-if="resource.show.value && !player.options.hideResource[icon]">
         <Tooltip pos="left" tooltip-align="left" text-align="left">
           <template #content>
             <div :class="resource.class">
@@ -22,6 +22,7 @@
           <template #tooltip>
             <h3>[ {{ resource.name }} ]</h3>
             <br class="line" />
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <span v-html="resource.tooltip.value" />
           </template>
         </Tooltip>
@@ -32,6 +33,7 @@
 <script setup>
 import resources from "./resources";
 import Tooltip from "./Tooltip.vue";
+import { player } from "./save";
 // i love vite guys
 function getSrc(icon) {
   return new URL(`../images/resources/${icon}.png`, import.meta.url).href;

@@ -10,6 +10,7 @@ export function mlt(x) {
   return uni("ee9").pow(x);
 }
 
+export const TICKS = 60;
 export const TPS = ref(Infinity);
 export const supernovaTime = ref(0);
 

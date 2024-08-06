@@ -8,7 +8,10 @@
   stars, and based on all Rank types,<br />
   <span class="green"
     >it boosts Mass gain by
-    <h4>{{ formatMult(STARS.effect.value) }}</h4>.</span><br /><br />
+    <!-- display: inline -->
+    <h4>{{ formatMult(STARS.effect.value) }}</h4
+    >.</span
+  ><br /><br />
   <button
     v-if="player.stars.unlocked < STARS.count"
     class="btn"
@@ -19,7 +22,7 @@
     {{ formatInteger(STARS.nextAt.value) }} Quark.</button
   ><br /><br />
   <div class="table-center">
-    <template v-for="i in player.stars.unlocked">
+    <template v-for="i in player.stars.unlocked" :key="i">
       <div v-if="i > 1" style="width: 30px; font-size: 30px"><br />&larr;</div>
       <div style="width: 250px">
         <img :src="getSrc(i - 1)" /><br /><br />

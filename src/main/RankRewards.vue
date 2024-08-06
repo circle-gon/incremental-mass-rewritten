@@ -4,7 +4,7 @@
       <div v-if="rk.unlocked.value" style="width: 145px">
         <button
           class="btn-tab"
-          @click="player.options.rankRewardSelected = idx"
+          @click="selected = idx"
         >
           {{ rk.name }}
         </button>
@@ -24,10 +24,10 @@
 <script setup>
 import { RANKS } from "./ranks";
 import { formatInteger } from "../core/format";
-import { player } from "../core/save";
-import { computed, unref } from "vue";
+import { computed, ref, unref } from "vue";
 
-const rank = computed(() => RANKS[player.options.rankRewardSelected]);
+const selected = ref(0)
+const rank = computed(() => RANKS[selected.value]);
 
 function formatEffect(reward) {
   if (!reward.effDesc) return "";

@@ -9,12 +9,15 @@ import { CHALLENGES } from "../main/challenges";
 import { PARTICLES } from "../atom/atom";
 import { MASS_DILATION } from "../atom/md";
 import { STARS } from "../atom/stars";
+import resources from "./resources";
+import { offlineProgress } from "./offline";
 
 function defaultStart() {
   // DON'T USE UNDEFINED AS A VALUE, BAD THINGS HAPPEN
   return {
     time: 0,
-    version: 0.01,
+    version: 0,
+    end: false,
     lastUpdate: Date.now(),
     mass: Decimal.dZero,
     rage: {
@@ -59,26 +62,26 @@ function defaultStart() {
       font: "Verdana",
       offlineProgress: true,
       navHide: [false, false],
-      rankRewardSelected: 0,
-      // this is probably stupid but I'm following IMR conventions
-      upgradeHovered: ["", 0],
       confirm: {
         rage: true,
         dm: true,
         atom: true,
         supernova: true,
       },
+      hideResource: Object.fromEntries(
+        Object.keys(resources).map((i) => [i, false])
+      ),
       buildingAuto: Object.fromEntries(
-        Object.keys(BUILDINGS).map((i) => [i, false]),
+        Object.keys(BUILDINGS).map((i) => [i, false])
       ),
       upgradeAuto: Object.fromEntries(
-        Object.keys(UPGRADES).map((i) => [i, false]),
+        Object.keys(UPGRADES).map((i) => [i, false])
       ),
       rankAuto: Array(RANKS.length).fill(false),
     },
     ranks: Array(RANKS.length).fill(Decimal.dZero),
     buildings: Object.fromEntries(
-      Object.keys(BUILDINGS).map((i) => [i, Decimal.dZero]),
+      Object.keys(BUILDINGS).map((i) => [i, Decimal.dZero])
     ),
     upgrades: Object.fromEntries(Object.keys(UPGRADES).map((i) => [i, []])),
     challenge: {
@@ -155,11 +158,24 @@ function decimalize(obj, orig) {
   }
 }
 
+function fixSave(save) {
+  const latest = defaultStart().version;
+
+  // Insert fix save thingies here
+
+  if (save.version < latest) {
+    save.end = false;
+    save.version = latest;
+  }
+}
+
 export function load(str) {
   try {
     const result = JSON.parse(decompressFromBase64(str));
     decimalize(result, defaultStart());
+    fixSave(result);
     Object.assign(player, result);
+    if (!player.options.offlineProgress) player.lastUpdate = Date.now()
     save();
   } catch (e) {
     // don't panic on invalid saves
@@ -169,6 +185,7 @@ export function load(str) {
 
 const SAVE_KEY = "save";
 export function save() {
+  if (offlineProgress.active) return
   localStorage.setItem(SAVE_KEY, compress());
   notify("Game Saved");
 }

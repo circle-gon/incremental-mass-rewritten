@@ -1,5 +1,5 @@
 import { computed } from "vue";
-import { costScaling } from "../core/cost";
+import { quadCostScaling } from "../core/cost";
 import { player } from "../core/save";
 import { DMReset } from "./dm";
 import Decimal from "break_eternity.js";
@@ -20,7 +20,7 @@ export const CHALLENGES = [
     desc: "Mass upgrades, Rank, and Tickspeed scale twice as fast after 25.",
     reward: "Reduce Rank and Tickspeed scaling",
     unlocked: computed(() => player.challenge.unlocked),
-    cost: costScaling({
+    cost: quadCostScaling({
       base: 1e54,
       linear: 10,
       quad: 1.02,
@@ -57,7 +57,7 @@ export const CHALLENGES = [
       () => `+${formatPercent(0.05, 0)} Tickspeed power per completion`,
     ),
     unlocked: computed(() => player.challenge.comps[0].gte(3)),
-    cost: costScaling({
+    cost: quadCostScaling({
       base: 1e43,
       linear: 20,
       quad: 1.02,
@@ -85,7 +85,7 @@ export const CHALLENGES = [
     reward:
       "Mass gain is raised based on completions, but it doesn't work in this challenge",
     unlocked: computed(() => player.challenge.comps[1].gte(5)),
-    cost: costScaling({
+    cost: quadCostScaling({
       base: 1e50,
       linear: 50,
       quad: 1.04,
@@ -113,7 +113,7 @@ export const CHALLENGES = [
     reward:
       "Rage Power gain is raised based on completions, but it doesn't work in this challenge",
     unlocked: computed(() => player.challenge.comps[2].gte(12)),
-    cost: costScaling({
+    cost: quadCostScaling({
       base: 1e110,
       linear: 50,
       quad: 1.04,
@@ -140,7 +140,7 @@ export const CHALLENGES = [
     desc: "Ranks are disabled.",
     reward: "Reduce Rank amount scaling",
     unlocked: computed(() => player.atom.unlocked),
-    cost: costScaling({
+    cost: quadCostScaling({
       base: 1e58,
       linear: 200,
       quad: 1.1,
@@ -174,7 +174,7 @@ export const CHALLENGES = [
     unlocked: computed(
       () => player.challenge.comps[4].gte(1) || player.supernova.unlocked,
     ),
-    cost: costScaling({
+    cost: quadCostScaling({
       base: 1e35,
       linear: computed(() => (hasElement(1) ? 5 : 100)),
       quad: 1.1,
@@ -216,7 +216,7 @@ export const CHALLENGES = [
     unlocked: computed(
       () => player.challenge.comps[5].gte(1) || player.supernova.unlocked,
     ),
-    cost: costScaling({
+    cost: quadCostScaling({
       base: 1e53,
       linear: 100,
       quad: 1.1,
@@ -260,7 +260,7 @@ export const CHALLENGES = [
     unlocked: computed(
       () => player.challenge.comps[6].gte(1) || player.supernova.unlocked,
     ),
-    cost: costScaling({
+    cost: quadCostScaling({
       base: 1e27,
       linear: 50,
       quad: 1.1,

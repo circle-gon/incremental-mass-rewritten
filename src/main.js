@@ -1,6 +1,6 @@
-import { createApp, watchEffect } from "vue";
+import { computed, createApp, watchEffect } from "vue";
 import { loadStorage, player, startAutoSave, save } from "./core/save";
-import { TPS, supernovaTime } from "./core/utils";
+import { TICKS, TPS, supernovaTime } from "./core/utils";
 import { massGain } from "./main/mass";
 import { buildingAuto } from "./main/buildings";
 import { hasUpgrade, upgradeAuto } from "./main/upgrades";
@@ -26,19 +26,18 @@ import {
   supernovaRequirement,
   supernovaReset,
 } from "./supernova/supernova";
-import { notify } from "./core/popups";
+import { notify, showPopup } from "./core/popups";
+import { runOfflineProgress } from "./core/offline";
 
-const TICKS = 60;
 let paused = true;
-function loop() {
-  const now = Date.now();
-  const diff = (now - player.lastUpdate) / 1000;
-  player.lastUpdate = now;
-  TPS.value = 1 / diff;
 
+const reachedEnd = computed(() => player.supernova.count.gte(1));
+
+export function tick(diff) {
   if (!(import.meta.env.DEV && paused)) {
     player.time += diff;
     player.mass = massGain.value.mul(diff).add(player.mass);
+
     if (player.dm.unlocked)
       player.dm.mass = bhGain.value.mul(diff).add(player.dm.mass);
     if (hasUpgrade("dm", 5) || hasUpgrade("atom", 5))
@@ -94,12 +93,35 @@ function loop() {
       } else supernovaTime.value += diff;
     }
 
+    if (reachedEnd.value && !player.end) {
+      showPopup("endgame");
+      player.end = true;
+    }
+
     upgradeAuto();
     rankAuto();
     buildingAuto();
   }
+}
 
+function loop() {
+  const now = Date.now();
+  const diff = (now - player.lastUpdate) / 1000;
+
+  if (diff >= 60 && player.options.offlineProgress) {
+    runOfflineProgress(diff)
+    return
+  }
+
+  player.lastUpdate = now;
+  TPS.value = 1 / diff;
+
+  tick(diff);
   setTimeout(loop, 1000 / TICKS);
+}
+
+export function start() {
+  loop()
 }
 
 function updateCss() {
@@ -114,7 +136,7 @@ function init() {
   loadStorage();
   startAutoSave();
   updateCss();
-  loop();
+  start();
 
   // UI
   createApp(App).mount("#app");
@@ -124,13 +146,14 @@ function init() {
 function debug() {
   return new Promise((resolve) => {
     // ERUDA
-    const script = document.createElement("script");
+    /*const script = document.createElement("script");
     script.src = "https://cdn.jsdelivr.net/npm/eruda";
     script.onload = () => {
       window.eruda.init();
       resolve();
     };
-    document.body.append(script);
+    document.body.append(script);*/
+    resolve();
 
     // debug helps
     window.player = player;

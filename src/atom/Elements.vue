@@ -6,21 +6,21 @@
         {{ unref(selected.desc) }}.</span
       ><br />
       Cost: <span>{{ formatInteger(selected.cost) }} Quarks</span><br />
-      <span class="green" v-if="selected.effDesc"
+      <span v-if="selected.effDesc" class="green"
         >Currently: {{ selected.effDesc(selected.eff.value) }}</span
       >
     </template>
   </div>
   <br />
   <div style="width: 950px; margin: auto">
-    <div class="table-center" v-for="order in elemOrder">
-      <template v-for="{ char, idx } in order">
+    <div v-for="(order, i) in elemOrder" :key="i" class="table-center">
+      <template v-for="{ char, idx } in order" :key="idx">
         <template v-if="char === '_' || !isNaN(char)">
           <div
-            style="width: 50px; height: 50px"
             :style="{
               visibility: idx < elementsUnlocked ? 'visible' : 'hidden',
             }"
+            style="width: 50px; height: 50px"
           >
             <template v-if="!isNaN(char)">
               <br />{{ ELEMENT_METADATA.asterisk[char] }}
@@ -64,22 +64,22 @@ import { computed, unref } from "vue";
 
 const selected = computed(() => ELEMENT_UPGRADES[elemSelected.value]);
 
-let idx = 0;
+let _idx = 0;
 const elemOrder = ELEMENT_METADATA.map.split("v").map((i) => {
   const out = [];
 
   for (const char of i) {
     out.push({
       char,
-      idx,
+      idx: _idx,
     });
 
     if (char === "x") {
-      idx++;
-      if (idx === 56 || idx === 88) idx += 14;
-      else if (idx === 70) idx += 18;
-      else if (idx === 118) idx = 56;
-      else if (idx === 102) idx = 118;
+      _idx++;
+      if (_idx === 56 || _idx === 88) _idx += 14;
+      else if (_idx === 70) _idx += 18;
+      else if (_idx === 118) _idx = 56;
+      else if (_idx === 102) _idx = 118;
     }
   }
 

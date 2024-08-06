@@ -1,6 +1,6 @@
 <template>
   <div style="min-height: 100px">
-    <template v-if="player.options.upgradeHovered[0] !== ''">
+    <template v-if="hovered !== null">
       <span class="sky">{{ unref(selected.desc) }}</span
       ><br />
       <span
@@ -34,7 +34,7 @@
             <img
               :style="{
                 visibility:
-                  upgrade.unlocked?.value ?? true ? 'visible' : 'hidden',
+                  (upgrade.unlocked?.value ?? true) ? 'visible' : 'hidden',
               }"
               style="margin: 3px"
               class="img-btn"
@@ -44,8 +44,8 @@
               }"
               :src="getSrc(id, num)"
               @click="buyUpgrade(id, num)"
-              @mouseover="player.options.upgradeHovered = [id, num]"
-              @mouseleave="player.options.upgradeHovered = ['', 0]"
+              @mouseover="hovered = [id, num]"
+              @mouseleave="hovered = null"
             />
           </template>
         </div>
@@ -67,22 +67,24 @@
 import { UPGRADES, buyUpgrade, canBuyUpgrade, hasUpgrade } from "./upgrades";
 import { formatInteger } from "../core/format";
 import { player } from "../core/save";
-import { computed, unref } from "vue";
+import { computed, ref, unref } from "vue";
 
 // i love vite guys
 function getSrc(id, num) {
   return new URL(`../images/upgrades/${id}/${num}.png`, import.meta.url).href;
 }
 
+const hovered = ref(null);
+
 const cat = computed(() => {
-  const upg = player.options.upgradeHovered;
-  if (upg[0] === "") return null;
-  return UPGRADES[upg[0]];
+  const h = hovered.value;
+  if (h === null) return null;
+  return UPGRADES[h[0]];
 });
 
 const selected = computed(() => {
-  const upg = player.options.upgradeHovered;
-  if (upg[0] === "") return null;
-  return UPGRADES[upg[0]].upgrades[upg[1]];
+  const h = hovered.value;
+  if (h === null) return null;
+  return UPGRADES[h[0]].upgrades[h[1]];
 });
 </script>

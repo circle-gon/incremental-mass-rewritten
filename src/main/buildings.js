@@ -1,6 +1,6 @@
 import { computed } from "vue";
 import { hasRankReward, rankReward } from "./ranks";
-import { costScaling } from "../core/cost";
+import { quadCostScaling } from "../core/cost";
 import {
   format,
   formatInteger,
@@ -34,7 +34,7 @@ export const BUILDINGS = {
     name: "Muscler",
     unlocked: computed(() => hasRankReward(0, 0) || hasUpgrade("atom", 0)),
     autoUnlocked: computed(() => hasUpgrade("rp", 2)),
-    cost: costScaling({
+    cost: quadCostScaling({
       amtScale: (a) => {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
@@ -104,7 +104,7 @@ export const BUILDINGS = {
     name: "Booster",
     unlocked: computed(() => hasRankReward(0, 1) || hasUpgrade("atom", 0)),
     autoUnlocked: computed(() => hasUpgrade("rp", 2)),
-    cost: costScaling({
+    cost: quadCostScaling({
       amtScale: (a) => {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
@@ -174,7 +174,7 @@ export const BUILDINGS = {
     name: "Stronger",
     unlocked: computed(() => hasRankReward(0, 2) || hasUpgrade("atom", 0)),
     autoUnlocked: computed(() => hasUpgrade("rp", 2)),
-    cost: costScaling({
+    cost: quadCostScaling({
       amtScale: (a) => {
         let amt = a;
         if (inChallenge(0) && amt.gte(25)) amt = amt.sub(25).mul(2).add(25);
@@ -255,7 +255,7 @@ export const BUILDINGS = {
     unlocked: computed(() => player.rage.unlocked),
     purchasable: computed(() => !inChallenge(1)),
     autoUnlocked: computed(() => hasUpgrade("dm", 4)),
-    cost: costScaling({
+    cost: quadCostScaling({
       amtScale: (a) => {
         let amt = a;
         if (hasElement(26)) amt = amt.mul(0.95);
@@ -334,7 +334,7 @@ export const BUILDINGS = {
     name: "Black Hole Condenser",
     unlocked: computed(() => player.dm.unlocked),
     autoUnlocked: computed(() => hasUpgrade("atom", 1)),
-    cost: costScaling({
+    cost: quadCostScaling({
       amtScale: (a) => {
         let amt = a;
         if (inChallenge(5)) amt = amt.mul(hasElement(40) ? 1.6 : 5);
@@ -392,7 +392,7 @@ export const BUILDINGS = {
     name: "Cosmic Ray",
     unlocked: computed(() => player.atom.unlocked),
     autoUnlocked: computed(() => hasElement(17)),
-    cost: costScaling({
+    cost: quadCostScaling({
       amtScale: (a) => {
         let amt = a;
         if (hasElement(14)) amt = amt.mul(0.95);
@@ -404,7 +404,7 @@ export const BUILDINGS = {
         return amt;
       },
       base: computed(() => {
-        let base = Decimal.dOne;
+        const base = Decimal.dOne;
         return base;
       }),
       linear: 2,
