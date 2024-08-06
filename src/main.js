@@ -144,7 +144,6 @@ function init() {
 
   // UI
   createApp(App).mount("#app");
-  document.getElementById("loading").remove();
 }
 
 function debug() {
