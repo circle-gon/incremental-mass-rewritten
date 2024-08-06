@@ -11,13 +11,13 @@
 
 html,
 body,
-#app {
+#app,
+#loading {
   height: 100%;
 }
 
 #loading {
   align-items: center;
-  height: 100%;
 }
 
 body {
