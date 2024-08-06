@@ -31,6 +31,7 @@ function shouldBuyBuilding(id) {
 
   return (
     building.unlocked.value &&
+    building.cost.canAfford.value &&
     (building.purchasable?.value ?? true) &&
     !(building.autoUnlocked.value && player.options.buildingAuto[id])
   );
