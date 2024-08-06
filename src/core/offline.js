@@ -3,7 +3,7 @@ import { tick } from "../main";
 import { TICKS } from "./utils";
 import { player } from "./save";
 import Decimal from "break_eternity.js";
-import { format, formatInteger } from "./format";
+import { formatMass, formatInteger } from "./format";
 
 const ACTIVE_TIME = 60; // 60ms
 
@@ -196,7 +196,7 @@ function drawGraph() {
     ctx.lineTo(790, t)
     ctx.stroke()
 
-    ctx.fillText(format(plot.yAxis.grid[idx], 1, 12), 200, t);
+    ctx.fillText(formatMass(plot.yAxis.grid[idx], 1), 200, t);
   }
 
   ctx.fillText(text, 187, 450);
