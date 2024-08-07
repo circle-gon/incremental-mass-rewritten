@@ -11,6 +11,7 @@ import {
 } from "../core/format";
 import { dilate, uni } from "../core/utils";
 import { STARS } from "./stars";
+import Decimal from "break_eternity.js";
 
 const penalty = computed(() => 0.8);
 function run() {
@@ -44,8 +45,8 @@ function single(cost, obj) {
     max: 1,
     cost: {
       base: cost,
-      linear: Infinity,
-      quad: Infinity,
+      linear: Decimal.dLayerMax,
+      quad: Decimal.dLayerMax,
     },
     ...obj,
   };
