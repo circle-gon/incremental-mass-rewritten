@@ -25,7 +25,7 @@
     </template>
   </Tooltip>
   <br /><br />
-  <div class="table-center" style="width: 1000px">
+  <div class="table-center">
     <button
       v-for="(upg, idx) in MASS_DILATION.upgrades"
       :key="idx"
