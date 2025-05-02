@@ -212,7 +212,8 @@ p {
 
 .btn:not(.locked):not(.md):hover,
 .img-btn:not(.locked):not(.bought):hover,
-.element:not(.locked):not(.bought):hover {
+.element:not(.locked):not(.bought):hover,
+.btn-tree:not(.locked):not(.bought):hover {
   background-color: #555;
 }
 

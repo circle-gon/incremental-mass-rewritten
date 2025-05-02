@@ -11,6 +11,7 @@ import { dilate } from "../core/utils";
 import { MASS_DILATION } from "../atom/md";
 import { hasElement } from "../atom/elements";
 import { STARS } from "../atom/stars";
+import { hasTreeUpgrade, treeUpgradeEffect } from "../supernova/tree";
 
 export const massGain = computed(() => {
   let gain = Decimal.dOne;
@@ -26,6 +27,7 @@ export const massGain = computed(() => {
   gain = gain.mul(powerEffect(1, 1));
   if (hasRankReward(0, 14)) gain = gain.mul(rankReward(0, 14));
   gain = gain.mul(STARS.effect.value);
+  if (hasTreeUpgrade("m1")) gain = gain.mul(treeUpgradeEffect("m1"));
 
   if (hasRankReward(1, 1)) gain = gain.pow(1.1);
   if (inChallenge(2)) gain = gain.pow(0.7);

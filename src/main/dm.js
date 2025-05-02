@@ -10,6 +10,7 @@ import { challengeEffect, inChallenge } from "./challenges";
 import { MASS_DILATION } from "../atom/md";
 import { dilate } from "../core/utils";
 import { elementEffect, hasElement } from "../atom/elements";
+import { hasTreeUpgrade, treeUpgradeEffect } from "../supernova/tree";
 
 const canDMReset = computed(() => {
   if (inChallenge(6)) return player.mass.gte(1e200);
@@ -23,6 +24,8 @@ export const darkMatterGain = computed(() => {
   if (inChallenge(6)) base = player.mass.div(1e200).root(8);
 
   base = base.mul(powerEffect(2, 0));
+  if (hasTreeUpgrade("dm1")) base = base.mul(treeUpgradeEffect("dm1"));
+
   if (inChallenge(7)) base = base.root(8);
 
   if (player.md.active) base = dilate(base, MASS_DILATION.penalty.value);

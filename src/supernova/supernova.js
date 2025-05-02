@@ -8,13 +8,14 @@ import { MASS_DILATION } from "../atom/md";
 import { STARS } from "../atom/stars";
 import { supernovaTime } from "../core/utils";
 import { showQuote } from "../core/popups";
+import { hasTreeUpgrade, treeUpgradeEffect } from "./tree";
 
 export const canSupernovaReset = computed(() => {
   return player.stars.collapsed.gte(supernovaRequirement.value);
 });
 
 export const supernovaRequirement = computed(() =>
-  player.supernova.count.pow(1.25).pow_base(1e50).mul(1e155),
+  player.supernova.count.pow(1.25).pow_base(1e50).mul(1e155)
 );
 
 export const supernovaGain = computed(() => {
@@ -43,7 +44,7 @@ function supernovaResetCore() {
   resetBuilding("cosmic");
   resetUpgrades("atom", KEEP_ATOM_UPGRADES);
   player.atom.elements = player.atom.elements.filter((i) =>
-    KEEP_ELEMENTS.includes(i),
+    KEEP_ELEMENTS.includes(i)
   );
 
   // Mass Dilation Stuff
@@ -71,3 +72,10 @@ export function supernovaReset() {
 
   showQuote(4);
 }
+
+export const neutronStarGain = computed(() => {
+  let gain = Decimal.dZero;
+  if (hasTreeUpgrade("start")) gain = gain.add(0.1);
+  if (hasTreeUpgrade("sn1")) gain = gain.mul(treeUpgradeEffect("sn1"));
+  return gain;
+});

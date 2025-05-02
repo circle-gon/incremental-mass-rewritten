@@ -30,17 +30,17 @@
           color: particle.color,
         }"
       >
+        <!-- display: inline -->
         <h2>
           <span>{{ formatInteger(player.atom.particles[i]) }}</span>
-          {{ particle.name }}
-        </h2>
-        {{
-          hasElement(29)
-            ? formatGain(player.atom.particles[i], player.atom.quark.div(10))
-            : ""
-        }},
+          {{ particle.name }}</h2
+        ><template v-if="hasElement(29)"
+          ><br />{{
+            formatGain(player.atom.particles[i], player.atom.quark.div(10))
+          }}</template
+        >,
         <br />
-        which generates
+        which generate
         <span>{{ format(powerGain(i)) }}</span>
         {{ particle.name }} Powers.<br />
         You have

@@ -24,7 +24,14 @@
   </button>
   <button class="btn" @click="showPopup('fonts')">Fonts</button>
   <button class="btn" @click="showPopup('notations')">Notations</button>
-  <button class="btn">Tree Animation: ON</button>
+  <button
+    class="btn"
+    @click="
+      player.options.treeAnimation = (player.options.treeAnimation + 1) % 3
+    "
+  >
+    Tree Animation: {{ treeAnimations[player.options.treeAnimation] }}
+  </button>
   <button
     class="btn"
     @click="player.options.massDis = (player.options.massDis + 1) % 4"
@@ -77,6 +84,8 @@ const massFormat = [
   "Always show mlt",
   "Important units only",
 ];
+
+const treeAnimations = ["Circle", "Square", "OFF"];
 
 function hardReset() {
   showPopup("hardReset");

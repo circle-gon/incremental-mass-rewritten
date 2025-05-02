@@ -19,6 +19,7 @@ import { MASS_DILATION } from "./atom/md";
 import { STARS } from "./atom/stars";
 import {
   canSupernovaReset,
+  neutronStarGain,
   supernovaRequirement,
   supernovaReset,
 } from "./supernova/supernova";
@@ -29,6 +30,7 @@ import App from "./App.vue";
 
 // Always place after App.vue so that way its styles take priority
 import "./style.css";
+import { treeTime } from "./supernova/tree";
 
 let paused = false;
 
@@ -93,6 +95,10 @@ export function tick(diff) {
         supernovaReset();
       } else supernovaTime.value += diff;
     }
+    if (player.supernova.unlocked)
+      player.supernova.star = neutronStarGain.value
+        .mul(diff)
+        .add(player.supernova.star);
 
     if (reachedEnd.value && !player.end) {
       showPopup("endgame");
@@ -110,19 +116,20 @@ function loop() {
   const diff = (now - player.lastUpdate) / 1000;
 
   if (diff >= 60 && player.options.offlineProgress) {
-    runOfflineProgress(diff)
-    return
+    runOfflineProgress(diff);
+    return;
   }
 
   player.lastUpdate = now;
   TPS.value = 1 / diff;
+  treeTime.value = (treeTime.value + diff) % 3;
 
   tick(diff);
   setTimeout(loop, 1000 / TICKS);
 }
 
 export function start() {
-  loop()
+  loop();
 }
 
 function updateCss() {

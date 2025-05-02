@@ -7,7 +7,14 @@
   </Teleport>
 </template>
 <script setup>
-import { ref, onMounted, onUnmounted, computed, getCurrentInstance } from "vue";
+import {
+  ref,
+  onMounted,
+  onUnmounted,
+  computed,
+  getCurrentInstance,
+  useTemplateRef,
+} from "vue";
 
 const props = defineProps({
   pos: {
@@ -31,7 +38,7 @@ const PADY = 5;
 const hovered = ref(false);
 const time = ref(0);
 const content = ref(null);
-const tooltip = ref(null);
+const tooltip = useTemplateRef("tooltip");
 let interval;
 let last;
 
@@ -76,14 +83,14 @@ const style = computed(() => {
     top:
       Math.max(
         PADY,
-        Math.min(window.innerHeight - tooltipRect.height - PADY, dy),
+        Math.min(window.innerHeight - tooltipRect.height - PADY, dy)
       ) +
       window.scrollY +
       "px",
     left:
       Math.max(
         PADX,
-        Math.min(window.innerWidth - tooltipRect.width - PADX, dx),
+        Math.min(window.innerWidth - tooltipRect.width - PADX, dx)
       ) +
       window.scrollX +
       "px",

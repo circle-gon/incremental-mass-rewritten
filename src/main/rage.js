@@ -8,6 +8,7 @@ import { challengeEffect, inChallenge } from "./challenges";
 import { powerEffect } from "../atom/atom";
 import { MASS_DILATION } from "../atom/md";
 import { dilate } from "../core/utils";
+import { hasTreeUpgrade, treeUpgradeEffect } from "../supernova/tree";
 
 const canRageReset = computed(() => {
   return player.mass.gte(1e16) && !inChallenge(6);
@@ -21,6 +22,7 @@ export const ragePowerGain = computed(() => {
   if (hasUpgrade("dm", 5)) base = base.mul(upgradeEffect("dm", 5));
   if (hasRankReward(0, 11)) base = base.mul(rankReward(0, 11));
   base = base.mul(powerEffect(1, 0));
+  if (hasTreeUpgrade("rp1")) base = base.mul(treeUpgradeEffect("rp1"));
 
   if (inChallenge(3)) base = base.root(10);
   else base = base.pow(challengeEffect(3));

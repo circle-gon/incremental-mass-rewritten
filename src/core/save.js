@@ -53,7 +53,9 @@ function defaultStart() {
     },
     supernova: {
       count: Decimal.dZero,
+      star: Decimal.dZero,
       unlocked: false,
+      tree: [],
     },
     quotes: [],
     options: {
@@ -62,6 +64,7 @@ function defaultStart() {
       font: "Verdana",
       offlineProgress: import.meta.env.PROD,
       navHide: [false, false],
+      treeAnimation: 0,
       confirm: {
         rage: true,
         dm: true,
@@ -176,7 +179,8 @@ export function load(str) {
     decimalize(result, defaultStart());
     fixSave(result);
     Object.assign(player, result);
-    if (!player.options.offlineProgress) player.lastUpdate = Date.now()
+    if (import.meta.env.DEV || !player.options.offlineProgress)
+      player.lastUpdate = Date.now();
     save();
   } catch (e) {
     // don't panic on invalid saves
@@ -186,7 +190,7 @@ export function load(str) {
 
 const SAVE_KEY = "save";
 export function save() {
-  if (offlineProgress.active) return
+  if (offlineProgress.active) return;
   localStorage.setItem(SAVE_KEY, compress());
   notify("Game Saved");
 }

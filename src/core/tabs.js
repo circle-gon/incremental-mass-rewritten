@@ -11,7 +11,7 @@ import Elements from "../atom/Elements.vue";
 import MD from "../atom/MD.vue";
 import Stars from "../atom/Stars.vue";
 import Tree from "../supernova/Tree.vue";
-import ResourceHider from "../options/ResourceHider.vue"
+import ResourceHider from "../options/ResourceHider.vue";
 import { player } from "./save";
 import {
   hasElement,
@@ -25,6 +25,7 @@ import { RANKS } from "../main/ranks";
 import { UPGRADES, canBuyUpgrade } from "../main/upgrades";
 import { inChallenge, CHALLENGES } from "../main/challenges";
 import { MASS_DILATION } from "../atom/md";
+import { canBuyTreeUpgrade, TREE_UPGRADES } from "../supernova/tree";
 
 function shouldBuyBuilding(id) {
   const building = BUILDINGS[id];
@@ -52,11 +53,11 @@ const tabs = [
               (rank, idx) =>
                 rank.cost.canAfford.value &&
                 rank.unlocked.value &&
-                !(rank.autoUnlocked.value && player.options.rankAuto[idx]),
+                !(rank.autoUnlocked.value && player.options.rankAuto[idx])
             );
 
           const buyBuilding = ["mass1", "mass2", "mass3", "tickspeed"].some(
-            (i) => shouldBuyBuilding(i),
+            (i) => shouldBuyBuilding(i)
           );
 
           return buyRank || buyBuilding;
@@ -134,7 +135,7 @@ const tabs = [
         notify: computed(
           () =>
             player.challenge.active !== -1 &&
-            CHALLENGES[player.challenge.active].cost.canAfford.value,
+            CHALLENGES[player.challenge.active].cost.canAfford.value
         ),
       },
     ],
@@ -154,12 +155,12 @@ const tabs = [
         name: "Elements",
         comp: Elements,
         unlocked: computed(
-          () => player.challenge.comps[6].gte(16) || player.supernova.unlocked,
+          () => player.challenge.comps[6].gte(16) || player.supernova.unlocked
         ),
         notify: computed(() =>
           ELEMENT_UPGRADES.some(
-            (_, i) => i < elementsUnlocked.value && canBuyElement(i),
-          ),
+            (_, i) => i < elementsUnlocked.value && canBuyElement(i)
+          )
         ),
       },
       {
@@ -169,9 +170,12 @@ const tabs = [
         unlocked: computed(() => hasElement(20)),
         notify: computed(
           () =>
-            (MASS_DILATION.upgrades.some((_, i) => MASS_DILATION.canBuy(i)) &&
-              !hasElement(42)) ||
-            (player.md.active && MASS_DILATION.rpGain.value.gt(0)),
+            MASS_DILATION.upgrades.some(
+              (upg, i) =>
+                MASS_DILATION.canBuy(i) &&
+                (!hasElement(42) || upg.cost.amt.value.eq(0))
+            ) ||
+            (player.md.active && MASS_DILATION.rpGain.value.gt(0))
         ),
       },
     ],
@@ -186,6 +190,9 @@ const tabs = [
       {
         name: "Neutron Tree",
         comp: Tree,
+        notify: computed(() =>
+          Object.keys(TREE_UPGRADES).some((i) => canBuyTreeUpgrade(i))
+        ),
       },
     ],
   },
@@ -199,8 +206,8 @@ const tabs = [
       },
       {
         name: "Resource Hider",
-        comp: ResourceHider
-      }
+        comp: ResourceHider,
+      },
     ],
   },
 ];

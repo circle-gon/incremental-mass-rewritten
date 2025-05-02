@@ -55,7 +55,7 @@ function single(cost, obj) {
 const UPGRADES = createUpgrades([
   {
     desc: computed(
-      () => `${hasElement(24) ? formatMult(2.5) : "Double"} dilated mass gain`,
+      () => `${hasElement(24) ? formatMult(2.5) : "Double"} dilated mass gain`
     ),
     max: Infinity,
     cost: {
@@ -105,13 +105,13 @@ const UPGRADES = createUpgrades([
       dilate(player.md.mass.add(1).log10(), 1 / 3)
         .div(140)
         .add(1)
-        .sqr(),
+        .sqr()
     ),
     effDesc: (x) => formatMult(x),
   }),
   {
     desc: computed(
-      () => `Mass Dilation upgrade ${formatInteger(3)} scales slower`,
+      () => `Mass Dilation upgrade ${formatInteger(3)} scales slower`
     ),
     max: 3,
     cost: {
@@ -144,7 +144,7 @@ const UPGRADES = createUpgrades([
   }),
   single(uni(1e267), {
     desc: computed(
-      () => `Mass Dilation upgrade ${formatInteger(2)} is stronger`,
+      () => `Mass Dilation upgrade ${formatInteger(2)} is stronger`
     ),
   }),
   single(uni("1e448"), {
@@ -169,7 +169,7 @@ const UPGRADES = createUpgrades([
 
 function canBuy(upg) {
   const u = UPGRADES[upg];
-  return player.md.upgrades[upg].lt(u.max) && u.cost.canAfford.value;
+  return u.cost.amt.value.lt(u.max) && u.cost.canAfford.value;
 }
 
 function buy(upg) {
@@ -210,11 +210,11 @@ const rpNextAt = computed(() =>
     .root(rpExp.value)
     .add(9)
     .mul(50)
-    .pow10(),
+    .pow10()
 );
 const rpText = computed(
   () =>
-    `Dilating mass will force an atom reset. While mass is dilated, all pre-atom resources and atomic power will get their gain exponents raised by ${format(penalty.value)}.`,
+    `Dilating mass will force an atom reset. While mass is dilated, all pre-atom resources and atomic power will get their gain exponents raised by ${format(penalty.value)}.`
 );
 
 const dilatedMassGain = computed(() => {
@@ -227,7 +227,7 @@ const dilatedMassGain = computed(() => {
   return gain;
 });
 const dilatedMassEffect = computed(() =>
-  player.md.mass.add(1).log10().div(5).add(1).sqrt().pow(effect(1)),
+  player.md.mass.add(1).log10().div(5).add(1).sqrt().pow(effect(1))
 );
 
 export const MASS_DILATION = {
